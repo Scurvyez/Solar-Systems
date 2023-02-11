@@ -9,11 +9,19 @@ public class StarAmbientVolumeScaler : MonoBehaviour
     private float originalMaxDistance;
     private float screenSpace;
 
+    private double StarRadius;
+    private float RadiusAsSolarRadii;
+    private const float SolRadii = 695700000.0f;
+
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
         originalMaxDistance = audioSource.maxDistance;
         screenSpace = CalculateScreenSpace();
+
+        StarRadius = SaveManager.instance.activeSave.starRadius;
+        RadiusAsSolarRadii = (float)StarRadius / SolRadii;
+        scaleFactor = (RadiusAsSolarRadii) / 3;
     }
 
     private void Update()

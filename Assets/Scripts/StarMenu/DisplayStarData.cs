@@ -56,7 +56,10 @@ public class DisplayStarData : MonoBehaviour
 
         if (SaveManager.hasBeenReset || !SaveManager.hasLoaded)
         {
-            SystemNameText.text = "<color=#ff8f8f>System Name:</color> " + StarProperties.SystemName;
+            if (SaveManager.activeSave.starSystemName == null || StarProperties.SystemName == null)
+                SystemNameText.text = "<color=#ff8f8f>System Name:</color> " + "N/A";
+            else
+                SystemNameText.text = "<color=#ff8f8f>System Name:</color> " + StarProperties.SystemName;
 
             if (StarProperties.Age >= 1000000000)
                 AgeText.text = "<color=#ff8f8f>Age:</color> " + (StarProperties.Age / 1000000000f).ToString("0.00") + " billion years old";
@@ -70,10 +73,10 @@ public class DisplayStarData : MonoBehaviour
             RotationText.text = "<color=#ff8f8f>Rotation:</color> " + string.Format("{0:0.00}", StarProperties.Rotation) + " km/h";
             MagneticFieldText.text = "<color=#ff8f8f>MagneticField:</color> " + string.Format("{0:0.000000}", StarProperties.MagneticField) + " teslas";
 
-            if (SaveManager.activeSave.starMetallicity == null)
-                MetallicityText.text = "<color=#ff8f8f>Metallicity:</color> Unknown";
+            if (SaveManager.activeSave.starMetallicity == null || StarProperties.Metallicity == null)
+                MetallicityText.text = "<color=#ff8f8f>Metallicity:</color> N/A";
             else
-                MetallicityText.text = "<color=#ff8f8f>Metallicity:</color> " + string.Join(", ", SaveManager.activeSave.starMetallicity);
+                MetallicityText.text = "<color=#ff8f8f>Metallicity:</color> " + string.Join(", ", StarProperties.Metallicity);
         }
 
         if (isSolarSystemScene)

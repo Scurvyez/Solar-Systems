@@ -29,18 +29,18 @@ public class StarProperties : MonoBehaviour
     public bool ExtrinsicVariability;
     public bool IntrinsicVariability;
 
-    //private string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    //private string numbers = "0123456789";
+    private string Letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private string Numbers = "0123456789";
 
     // Arrays to store the consonants and vowels
-    private char[] consonants = { 'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z' };
-    private char[] vowels = { 'a', 'e', 'i', 'o', 'u' };
+    private char[] Consonants = { 'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z' };
+    private char[] Vowels = { 'a', 'e', 'i', 'o', 'u' };
 
     // Roman numerals for hyphenated names
-    private string[] romanNumerals = { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X" };
+    private string[] RomanNumerals = { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X" };
 
     // Random number generator
-    private System.Random random = new ();
+    private System.Random nameGenRandom = new ();
 
     public StarProperties instance;
 
@@ -53,68 +53,93 @@ public class StarProperties : MonoBehaviour
     {
         
     }
+
+    /// <summary>
+    /// Chooses between 2 available naming methods.
+    /// Randomly picks one and returns the generated star system name.
+    /// </summary>
+    public string PickNamingMethodAndGenerate()
+    {
+        if (nameGenRandom.Next(100) < 5)
+        {
+            SystemName = GenerateStarSystemNameSemiUnique();
+        }
+        else
+        {
+            SystemName = GenerateStarSystemNameGeneric();
+        }
+
+        return SystemName;
+    }
     
-    // Generates a name
-    public string GenerateStarSystemName()
+    /// <summary>
+    /// Generates a semi-unique star system name using the English alphabet.
+    /// Alternating patterns of consonants and vowels.
+    /// (Lazy naming method.)
+    /// </summary>
+    private string GenerateStarSystemNameSemiUnique()
     {
         // Set the name length to a random number between 3 and 9
-        int nameLength = random.Next(3, 10);
+        int nameLength = nameGenRandom.Next(3, 10);
 
         // Start with an empty string
-        SystemName = "";
+        string tempSystemName = "";
 
         // Loop for the specified number of characters in the name
         for (int i = 0; i < nameLength; i++)
         {
             // Choose a random character from either the consonants or vowels
-            char letter = i % 2 == 0 ? consonants[random.Next(consonants.Length)] : vowels[random.Next(vowels.Length)];
+            char letter = i % 2 == 0 ? Consonants[nameGenRandom.Next(Consonants.Length)] : Vowels[nameGenRandom.Next(Vowels.Length)];
 
             // Add the letter to the name
-            SystemName += letter;
+            tempSystemName += letter;
         }
 
         // Capitalize the first letter of the name
-        SystemName = char.ToUpper(SystemName[0]) + SystemName.Substring(1);
+        tempSystemName = char.ToUpper(tempSystemName[0]) + tempSystemName.Substring(1);
 
         // Check if the name should be hyphenated
-        if (random.Next(100) < 50)
+        if (nameGenRandom.Next(100) < 50)
         {
             // If so, choose a random Roman numeral and add it to the name
-            string numeral = romanNumerals[random.Next(romanNumerals.Length)];
-            SystemName = SystemName + "-" + numeral;
+            string numeral = RomanNumerals[nameGenRandom.Next(RomanNumerals.Length)];
+            tempSystemName = tempSystemName + "-" + numeral;
         }
 
         // Return the generated name
-        return SystemName;
+        return tempSystemName;
     }
 
-    /*
-    public string GenerateStarSystemName()
+    /// <summary>
+    /// Generates a standard star system name.
+    /// Based on how the International Astronomical Union (IAU) names stars.
+    /// A simple mix of "x" letters, a "-", followed by a mix of "y" numbers.
+    /// </summary>
+    private string GenerateStarSystemNameGeneric()
     {
-        SystemName = "";
-        int nameLength = Random.Range(5, 10);
+        string tempSystemName = "";
+        int nameLength = Random.Range(5, 14);
         bool addingLetters = true;
         for (int i = 0; i < nameLength; i++)
         {
             if (addingLetters)
             {
-                SystemName += letters[Random.Range(0, letters.Length)];
+                tempSystemName += Letters[Random.Range(0, Letters.Length)];
             }
             else
             {
-                SystemName += numbers[Random.Range(0, numbers.Length)];
+                tempSystemName += Numbers[Random.Range(0, Numbers.Length)];
             }
 
             if (i == (nameLength / 2) - 1)
             {
-                SystemName += "-";
+                tempSystemName += "-";
                 addingLetters = false;
             }
         }
-        return SystemName;
+        return tempSystemName;
     }
-    */
-
+    
     /// <summary>
     /// Generates a random yet realistic radius for the star.
     /// Used later to rescale star GameObject by applying final value to a Vector3.

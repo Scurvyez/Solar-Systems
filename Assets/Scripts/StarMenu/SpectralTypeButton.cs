@@ -171,7 +171,7 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
         StarProperties.SpectralType spectralType = (StarProperties.SpectralType)Index;
         StarProperties.SpectralClass = spectralType;
 
-        StarProperties.GenerateStarSystemName();
+        StarProperties.PickNamingMethodAndGenerate();
         StarProperties.GenerateMass(spectralType);
         StarProperties.GenerateRadius(spectralType);
         StarProperties.GenerateLuminosity(spectralType);
