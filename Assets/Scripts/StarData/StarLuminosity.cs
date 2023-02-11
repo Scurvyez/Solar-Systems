@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class StarLuminosity : MonoBehaviour
 {
-    public StarFlux StarFlux;
-    public StarDistance StarDistance;
+    public StarFlux starFlux;
+    public StarDistance starDistance;
 
     /// <summary>
     /// Calculates a stars' total energy output using its' flux value.
@@ -14,11 +14,11 @@ public class StarLuminosity : MonoBehaviour
     /// <returns>bolometric flux, watts per square meter (double)</returns>
     public double CalculateEnergyOutput()
     {
-        double starFlux = StarFlux.CalculateFlux();
+        double finalStarFlux = starFlux.CalculateFlux();
 
         // b = total ernergy output in L = b × 4 * PI * d^2.
-        double b = starFlux / (4 * Mathf.PI * Mathf.Pow((float)StarDistance.GenerateDistanceToStar(), 2));
-        b *= (4 * Mathf.PI * Mathf.Pow((float)StarDistance.GenerateDistanceToStar(), 2));
+        double b = finalStarFlux / (4 * Mathf.PI * Mathf.Pow((float)starDistance.GenerateDistanceToStar(), 2));
+        b *= (4 * Mathf.PI * Mathf.Pow((float)starDistance.GenerateDistanceToStar(), 2));
 
         return b;
     }
@@ -33,7 +33,7 @@ public class StarLuminosity : MonoBehaviour
     public double CalculateLuminosity()
     {
         // luminosity (l) = totalEnergyOutput (b) * (4 * PI * distance (d)^2)
-        double l = CalculateEnergyOutput() * (4 * Mathf.PI * Mathf.Pow((float)StarDistance.GenerateDistanceToStar(), 2));
+        double l = CalculateEnergyOutput() * (4 * Mathf.PI * Mathf.Pow((float)starDistance.GenerateDistanceToStar(), 2));
 
         return l;
     }

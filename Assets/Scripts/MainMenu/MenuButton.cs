@@ -10,10 +10,13 @@ public class MenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 {
     public Button Button;
     public TextMeshProUGUI ButtonText;
+
     public Color TextDefaultColor = new (185, 141, 255);
     public Color TextHighlightColor = new ();
+
     public Vector3 DefaultScale = new(1f, 1f, 1f);
     public Vector3 HighlightScale = new(2.0f, 2.0f, 2.0f);
+
     private bool IsMouseOver = false;
     private float ScaleLerpSpeed = 0.025f;
 

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class StarFlux : MonoBehaviour
 {
-    public StarMagnitude StarMagnitude;
-    public StarDistance StarDistance;
+    public StarMagnitude starMagnitude;
+    public StarDistance starDistance;
 
     /// <summary>
     /// Calculates the flux of a star using the apparent magnitude and absolute magnitude.
@@ -17,7 +17,7 @@ public class StarFlux : MonoBehaviour
         //double distance = (float)StarDistance.GenerateDistanceToStar();
         //double absoluteMagnitude = StarMagnitude.CalculateAbsoluteMagnitude(apparentMagnitude, distance);
 
-        double d = Mathf.Pow(10, -0.4f * ((float)StarMagnitude.GenerateRandomApparentMagnitudePDF() - (float)StarMagnitude.CalculateAbsoluteMagnitude(StarMagnitude.GenerateRandomApparentMagnitudePDF(), StarDistance.GenerateDistanceToStar())));
+        double d = Mathf.Pow(10, -0.4f * ((float)starMagnitude.GenerateRandomApparentMagnitudePDF() - (float)starMagnitude.CalculateAbsoluteMagnitude(starMagnitude.GenerateRandomApparentMagnitudePDF(), starDistance.GenerateDistanceToStar())));
 
         return d;
     }

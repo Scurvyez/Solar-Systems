@@ -1,45 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+using System;
+
 
 public class SaveManager : MonoBehaviour
 {
     public static SaveManager instance;
     public StarSaveData activeSave;
+    public Button resetButton = null;
     public bool hasLoaded;
+    public bool hasBeenReset;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        resetButton.onClick.AddListener(DeleteSaveData);
     }
 
     public void Awake()
     {
         instance = this;
         Load();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            Save();
-        }
-
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            Load();
-        }
-
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            DeleteSaveData();
-        }
     }
 
     public void Save()
@@ -52,13 +39,13 @@ public class SaveManager : MonoBehaviour
         var serializer = new XmlSerializer(typeof(StarSaveData));
 
         // where we are saving it to
-        var stream = new FileStream(dataPath + "/" + activeSave.saveName + "currentSolarSystem.xml", FileMode.Create);
+        var stream = new FileStream(dataPath + "/" + activeSave.saveName + ".xml", FileMode.Create);
 
         // object to save
         serializer.Serialize(stream, activeSave);
 
         stream.Close();
-        Debug.Log("Saved.");
+        //Debug.Log("Saved.");
         //Debug.Log(dataPath);
     }
 
@@ -66,14 +53,15 @@ public class SaveManager : MonoBehaviour
     {
         string dataPath = Application.persistentDataPath;
 
-        if (System.IO.File.Exists(dataPath + "/" + activeSave.saveName + "currentSolarSystem.xml"))
+        if (System.IO.File.Exists(dataPath + "/" + activeSave.saveName + ".xml"))
         {
             var serializer = new XmlSerializer(typeof(StarSaveData));
-            var stream = new FileStream(dataPath + "/" + activeSave.saveName + "currentSolarSystem.xml", FileMode.Open);
+            var stream = new FileStream(dataPath + "/" + activeSave.saveName + ".xml", FileMode.Open);
+
             activeSave = serializer.Deserialize(stream) as StarSaveData;
 
             stream.Close();
-            Debug.Log("Loaded.");
+            //Debug.Log("Loaded.");
 
             hasLoaded = true;
         }
@@ -83,10 +71,13 @@ public class SaveManager : MonoBehaviour
     {
         string dataPath = Application.persistentDataPath;
 
-        if (System.IO.File.Exists(dataPath + "/" + activeSave.saveName + "currentSolarSystem.xml"))
+        if (System.IO.File.Exists(dataPath + "/" + activeSave.saveName + ".xml"))
         {
-            File.Delete(dataPath + "/" + activeSave.saveName + "currentSolarSystem.xml");
+            File.Delete(dataPath + "/" + activeSave.saveName + ".xml");
         }
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        hasBeenReset = true;
     }
 }
 
@@ -95,15 +86,25 @@ public class StarSaveData
 {
     public string saveName;
 
-    public double savedStarAge;
-    public double savedStarMass;
-    public double savedStarRadius;
-    public double savedStarLuminosity;
-    public double savedStarTemperature;
-    public double savedStarRotation;
-    public double savedStarMagneticField;
-    public bool savedStarVariability;
-    public bool savedStarBinary;
-    public double savedStarDistance;
-    public Vector3 savedStarSize;
+    // STAR DATA: start
+    public string starClassAsString;                                // class
+    public string starSystemName;                                   // name
+    public double starAge;                                          // age
+    public double starMass;                                         // mass
+    public double starRadius;                                       // radius
+    public double starLuminosity;                                   // luminosity
+    public double starTemperature;                                  // temperature
+    public double starRotation;                                     // rotation
+    public double starMagneticField;                                // magnetic field
+    public bool hasIntrinsicVariability;                            // is intrinsic?
+    public bool hasExtrinsicVariability;                            // is extrinsic?
+    public double starVariability;                                  // variability
+    public double starDistance;                                     // distance from Earth
+
+    public Vector3 starSize;                                        // scale
+    public Color starChromaticity;                                  // primary color (surface)
+    public Color starCellColor;                                     // secondary color (solar flare)
+
+    public SerializableDictionary<string, float> starMetallicity;   // metallicity
+    // STAR DATA: end
 }

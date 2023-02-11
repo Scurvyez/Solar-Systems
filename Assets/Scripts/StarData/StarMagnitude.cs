@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StarMagnitude : MonoBehaviour
 {
-    public StarDistance StarDistance;
+    public StarDistance starDistance;
 
     /// <summary>
     /// Generates a random apparent magnitude for a star.
@@ -61,7 +61,7 @@ public class StarMagnitude : MonoBehaviour
     public double CalculateAbsoluteMagnitude(double apparentMagnitude, double distance)
     {
         apparentMagnitude = GenerateRandomApparentMagnitudePDF();
-        distance = StarDistance.GenerateDistanceToStar();
+        distance = starDistance.GenerateDistanceToStar();
         // Use the formula M = m + 5 - 5 * log10(d/10)
         // where m is the apparent magnitude and d is the distance to the star in parsecs
 

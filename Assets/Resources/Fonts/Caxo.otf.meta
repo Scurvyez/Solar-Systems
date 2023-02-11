@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 451ca361a31c95547923e2475e797bce
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Caxo
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 532eae01a18a29544a90b07ff35b1f31, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

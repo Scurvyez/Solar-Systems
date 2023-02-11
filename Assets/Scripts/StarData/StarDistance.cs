@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StarDistance : MonoBehaviour
 {
-    private const double LYToMeters = 9.461e15;
+    //private const double LYToMeters = 9.461e15;
 
     /// <summary>
     /// Calls our random number generation method.
@@ -62,7 +62,6 @@ public class StarDistance : MonoBehaviour
     /// Where d = distance (in parsecs), and p = parallax angle (in arcsecs).
     /// Returns distance as a double.
     /// </summary>
-    /// <returns>distance to star, from Earth, in meters (double)</returns>
     public double GenerateDistanceToStar()
     {
         // Generate a random number for the star's parallax angle
