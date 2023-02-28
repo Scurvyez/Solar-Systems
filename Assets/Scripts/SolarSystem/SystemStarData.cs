@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class SystemStarData : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    private UpdateStarProperties UpdateStarProperties;
+    //private UpdateStarProperties UpdateStarProperties;
     public StarProperties StarProperties;
     public SaveManager SaveManager;
 

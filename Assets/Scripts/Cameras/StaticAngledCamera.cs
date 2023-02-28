@@ -11,18 +11,13 @@ public class StaticAngledCamera : MonoBehaviour
     public float ZoomMin;
     public float ZoomMax;
 
-    private const float SolRadii = 695700000.0f;
-    private double StarRadius;
-    private float RadiusAsSolarRadii;
-    private const float OClassBaseCameraSpeed = 400f;
-
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
         ZoomSpeed = 100.0f;
-        ZoomMin = RadiusAsSolarRadii;
+        ZoomMin = StarObject.transform.localScale.x + 20f;
         ZoomMax = 480000.0f;
     }
 
@@ -31,17 +26,11 @@ public class StaticAngledCamera : MonoBehaviour
         // Get the main camera component
         MainCamera = Camera.main;
 
-        // grab the generated radius for the star
-        StarRadius = SaveManager.instance.activeSave.starRadius;
-        RadiusAsSolarRadii = (float)StarRadius / SolRadii;
-        // apply that radius value to the x, y, and z planes
-        Vector3 sphereScale = new (RadiusAsSolarRadii, RadiusAsSolarRadii, RadiusAsSolarRadii);
-
-        print(sphereScale);
+        // Grab the star objects' size
+        Vector3 sphereScale = new (StarObject.transform.localScale.x, StarObject.transform.localScale.y, StarObject.transform.localScale.z);
 
         // Set the main camera's position based on the sphere object's scale
-        Vector3 cameraPos = new (StarObject.transform.position.x, StarObject.transform.position.y + (sphereScale.y * 20f), StarObject.transform.position.z - (sphereScale.z * 20f));
-
+        Vector3 cameraPos = new (StarObject.transform.position.x, StarObject.transform.position.y + (sphereScale.y * 20.5f), StarObject.transform.position.z - (sphereScale.z * 20.5f));
         MainCamera.transform.position = cameraPos;
 
         // Look at the center of the sphere object
@@ -64,21 +53,31 @@ public class StaticAngledCamera : MonoBehaviour
             }
         }
 
-        // Zoom in with the W key
+        // Zoom in/out with the W/S keys
         if (Input.GetKey(KeyCode.W))
         {
-            MainCamera.transform.position = MainCamera.transform.position + ScrollSpeedMultiplier() * Time.deltaTime * MainCamera.transform.forward;
+            MainCamera.transform.position += ZoomSpeed * Time.deltaTime * MainCamera.transform.forward;
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            MainCamera.transform.position -= ZoomSpeed * Time.deltaTime * MainCamera.transform.forward;
         }
 
-        // Zoom out with the S key
-        if (Input.GetKey(KeyCode.S))
+        // Swivel with the A and D keys
+        if (Input.GetKey(KeyCode.D))
         {
-            MainCamera.transform.position = MainCamera.transform.position - ScrollSpeedMultiplier() * Time.deltaTime * MainCamera.transform.forward;
+            MainCamera.transform.LookAt(StarObject.transform);
+            MainCamera.transform.Translate(Time.deltaTime * ZoomSpeed * Vector3.right);
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            MainCamera.transform.LookAt(StarObject.transform);
+            MainCamera.transform.Translate(Time.deltaTime * ZoomSpeed * Vector3.left);
         }
 
         // Zoom in and out with the mouse wheel
         float scroll = Input.GetAxis("Mouse ScrollWheel");
-        MainCamera.transform.position = MainCamera.transform.position + 100.0f * scroll * ScrollSpeedMultiplier() * Time.deltaTime * MainCamera.transform.forward;
+        MainCamera.transform.position = MainCamera.transform.position + 100.0f * scroll * ZoomSpeed * Time.deltaTime * MainCamera.transform.forward;
 
         // Ensure the camera is within the desired zoom range
         float distance = Vector3.Distance(MainCamera.transform.position, StarObject.transform.position);
@@ -90,31 +89,5 @@ public class StaticAngledCamera : MonoBehaviour
         {
             MainCamera.transform.position = StarObject.transform.position - (MainCamera.transform.forward * ZoomMax);
         }
-    }
-
-    private float ScrollSpeedMultiplier()
-    {
-        string starClass = SaveManager.instance.activeSave.starClassAsString;
-        float cameraSpeedFactor = (OClassBaseCameraSpeed * RadiusAsSolarRadii) / 3;
-
-        ZoomSpeed = starClass switch
-        {
-            "O" when RadiusAsSolarRadii >= 1250f && RadiusAsSolarRadii <= 1500f => cameraSpeedFactor,
-            "O" when RadiusAsSolarRadii >= 1000f && RadiusAsSolarRadii <= 1250f => cameraSpeedFactor,
-            "O" when RadiusAsSolarRadii >= 800f && RadiusAsSolarRadii <= 1000f => cameraSpeedFactor,
-            "O" when RadiusAsSolarRadii >= 500f && RadiusAsSolarRadii <= 800f => cameraSpeedFactor,
-            "O" when RadiusAsSolarRadii >= 100f && RadiusAsSolarRadii <= 500f => cameraSpeedFactor,
-            "O" when RadiusAsSolarRadii >= 30f && RadiusAsSolarRadii <= 100f => cameraSpeedFactor,
-            "O" when RadiusAsSolarRadii >= 10f && RadiusAsSolarRadii <= 30f => cameraSpeedFactor,
-            "O" when RadiusAsSolarRadii >= 6.6f && RadiusAsSolarRadii <= 10f => cameraSpeedFactor,
-            "B" => 300f,
-            "A" => 100f,
-            "F" => 50f,
-            "G" => 40f,
-            "K" => 30f,
-            "M" => 20f,
-            _ => 0f,
-        };
-        return ZoomSpeed;
     }
 }

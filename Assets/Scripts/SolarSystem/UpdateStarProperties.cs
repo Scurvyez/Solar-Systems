@@ -34,10 +34,10 @@ public class UpdateStarProperties : MonoBehaviour
         parentRigidBody.mass = (float)StarMass;
 
         // grab the generated radius for the star
-        StarRadius = SaveManager.instance.activeSave.starRadius;
-        float radiusAsSolarRadii = (float)StarRadius / SolRadii;
+        //StarRadius = SaveManager.instance.activeSave.starRadius;
+        //float radiusAsSolarRadii = (float)StarRadius / SolRadii;
         // apply that radius value to the x, y, and z planes
-        transform.localScale = new Vector3(radiusAsSolarRadii, radiusAsSolarRadii, radiusAsSolarRadii);
+        //transform.localScale = new Vector3(radiusAsSolarRadii, radiusAsSolarRadii, radiusAsSolarRadii);
 
         // grab the saved rotation (on own axis) value for our generated star
         StarRotation = SaveManager.instance.activeSave.starRotation;
