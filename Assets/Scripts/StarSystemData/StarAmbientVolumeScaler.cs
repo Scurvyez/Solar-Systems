@@ -21,12 +21,13 @@ public class StarAmbientVolumeScaler : MonoBehaviour
 
         StarRadius = SaveManager.instance.activeSave.starRadius;
         RadiusAsSolarRadii = (float)StarRadius / SolRadii;
-        scaleFactor = (RadiusAsSolarRadii) / 3;
+        scaleFactor = (RadiusAsSolarRadii) / 10;
     }
 
     private void Update()
     {
-        audioSource.maxDistance = originalMaxDistance + (scaleFactor * (transform.localScale.magnitude + screenSpace));
+        //audioSource.maxDistance = originalMaxDistance + (scaleFactor * (transform.localScale.magnitude + screenSpace));
+        //audioSource.maxDistance = audioSource.transform.localScale.magnitude + scaleFactor;
     }
 
     /// <summary>

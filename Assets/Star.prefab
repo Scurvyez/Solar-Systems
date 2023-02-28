@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 763773190704664864}
   - component: {fileID: 763773190704664865}
   - component: {fileID: 763773190704664866}
+  - component: {fileID: 9212112754303526579}
   m_Layer: 0
   m_Name: Star
   m_TagString: Untagged
@@ -245,3 +246,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scaleFactor: 1
+--- !u!114 &9212112754303526579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763773190704664922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a05ce0aa63185b49a9d057a02c210e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StarProperties: {fileID: 0}
+  SaveManager: {fileID: 0}
+  SystemNameText: {fileID: 0}
+  AgeText: {fileID: 0}
+  MassText: {fileID: 0}
+  RadiusText: {fileID: 0}
+  LuminosityText: {fileID: 0}
+  TemperatureText: {fileID: 0}
+  RotationText: {fileID: 0}
+  MagneticFieldText: {fileID: 0}
+  MetallicityText: {fileID: 0}
+  textElements: []

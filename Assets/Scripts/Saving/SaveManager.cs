@@ -12,7 +12,7 @@ using System;
 public class SaveManager : MonoBehaviour
 {
     public static SaveManager instance;
-    public StarSaveData activeSave;
+    public SystemSaveData activeSave;
     public Button resetButton = null;
     public bool hasLoaded;
     public bool hasBeenReset;
@@ -36,7 +36,7 @@ public class SaveManager : MonoBehaviour
         string dataPath = Application.persistentDataPath;
 
         // type of info we are saving
-        var serializer = new XmlSerializer(typeof(StarSaveData));
+        var serializer = new XmlSerializer(typeof(SystemSaveData));
 
         // where we are saving it to
         var stream = new FileStream(dataPath + "/" + activeSave.saveName + ".xml", FileMode.Create);
@@ -55,10 +55,10 @@ public class SaveManager : MonoBehaviour
 
         if (System.IO.File.Exists(dataPath + "/" + activeSave.saveName + ".xml"))
         {
-            var serializer = new XmlSerializer(typeof(StarSaveData));
+            var serializer = new XmlSerializer(typeof(SystemSaveData));
             var stream = new FileStream(dataPath + "/" + activeSave.saveName + ".xml", FileMode.Open);
 
-            activeSave = serializer.Deserialize(stream) as StarSaveData;
+            activeSave = serializer.Deserialize(stream) as SystemSaveData;
 
             stream.Close();
             //Debug.Log("Loaded.");
@@ -82,7 +82,7 @@ public class SaveManager : MonoBehaviour
 }
 
 [System.Serializable]
-public class StarSaveData
+public class SystemSaveData
 {
     public string saveName;
 
@@ -107,4 +107,8 @@ public class StarSaveData
 
     public SerializableDictionary<string, float> starMetallicity;   // metallicity
     // STAR DATA: end
+
+    // PLANET DATA: start
+
+    // PLANET DATA: end
 }

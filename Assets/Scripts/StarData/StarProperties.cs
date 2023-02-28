@@ -42,12 +42,14 @@ public class StarProperties : MonoBehaviour
     // Random number generator
     private System.Random nameGenRandom = new ();
 
+    /*
     public StarProperties instance;
 
     private void Awake()
     {
         instance = this;
     }
+    */
 
     void Start()
     {
@@ -168,8 +170,6 @@ public class StarProperties : MonoBehaviour
             SpectralType.M => Random.Range(0.08f, 0.7f),
             _ => Radius,
         } * SolRadiusM; // convert to solar radii
-
-        // units in Kelvin
         return Radius;
     }
 
@@ -209,7 +209,11 @@ public class StarProperties : MonoBehaviour
         return Luminosity;
     }
 
-    // FIX
+    /// <summary>
+    /// Generates a random yet realistic mass value for the star.
+    /// Calculated via the mass - luminosity relation.
+    /// Measured in solar masses.
+    /// </summary>
     public double GenerateMass(SpectralType spectralType)
     {
         double starLuminosity = GenerateLuminosity(spectralType);
@@ -309,7 +313,7 @@ public class StarProperties : MonoBehaviour
     {
         // the range, -/+ the chromaticity,
         // to be filtered through for r, g, and b values of our output Color
-        float rGBRange = 50;
+        float rGBRange = 255;
 
         CellColor = new(
             Chromaticity.r + Random.Range(-rGBRange, rGBRange),

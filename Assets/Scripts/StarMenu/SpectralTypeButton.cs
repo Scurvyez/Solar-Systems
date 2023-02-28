@@ -61,7 +61,7 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
     {
         Button.onClick.AddListener(PlaySound);
         Button.onClick.AddListener(GenerateStar);
-        StarProperties = StarProperties.instance;
+        //StarProperties = StarProperties.instance;
     }
 
     private void PlaySound()

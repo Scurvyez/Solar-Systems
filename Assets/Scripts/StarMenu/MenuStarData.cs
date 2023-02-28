@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class DisplayStarData : MonoBehaviour
+public class MenuStarData : MonoBehaviour
 {
     public StarProperties StarProperties;
     public SaveManager SaveManager;
@@ -23,7 +23,7 @@ public class DisplayStarData : MonoBehaviour
     // Start is called before the first frame update
     public void Start()
     {
-        StarProperties = StarProperties.instance;
+        //StarProperties = StarProperties.instance;
         SaveManager = SaveManager.instance;
     }
 
