@@ -6,9 +6,9 @@ using UnityEngine.EventSystems;
 
 public class SystemStarData : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    //private UpdateStarProperties UpdateStarProperties;
     public StarProperties StarProperties;
     public SaveManager SaveManager;
+    public Camera StaticCamera;
 
     public TextMeshProUGUI SystemNameText;
     public TextMeshProUGUI AgeText;
@@ -20,6 +20,7 @@ public class SystemStarData : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public TextMeshProUGUI MagneticFieldText;
     public TextMeshProUGUI VariabilityText;
     public TextMeshProUGUI MetallicityText;
+    public TextMeshProUGUI CameraPosition;
     public TextMeshProUGUI[] textElements;
     
     private const float SolRadii = 695700000.0f;
@@ -27,7 +28,6 @@ public class SystemStarData : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     // Start is called before the first frame update
     private void Start()
     {
-        //StarProperties = StarProperties.instance;
         SaveManager = SaveManager.instance;
         SetSavedStarValues();
         PopulateTextElementsArray();
@@ -36,12 +36,13 @@ public class SystemStarData : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     private void Update()
     {
         bool isSolarSystemScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "SolarSystem";
-        var parentMaterial = transform.GetComponent<Renderer>();
+        Renderer parentMaterial = transform.GetComponent<Renderer>();
 
         if (SaveManager.hasLoaded && isSolarSystemScene)
         {
             RotationText.text = "<color=#ff8f8f>Rotation:</color> " + string.Format("{0:0.00}", transform.rotation) + " km/h";
             VariabilityText.text = "<color=#ff8f8f>Variability:</color> " + parentMaterial.material.GetFloat("_SolarFlare");
+            CameraPosition.text = StaticCamera.transform.localPosition.normalized.ToString();
         }
     }
 
@@ -97,7 +98,8 @@ public class SystemStarData : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             RotationText, // 6
             MagneticFieldText, // 7
             VariabilityText, // 8
-            MetallicityText // 9
+            MetallicityText, // 9
+            CameraPosition // 10
         };
     }
 }

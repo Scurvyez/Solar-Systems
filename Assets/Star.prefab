@@ -8,7 +8,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 763773190704664926}
+  - component: {fileID: 6074907070679226087}
   - component: {fileID: 763773190704664925}
   - component: {fileID: 763773190704664924}
   - component: {fileID: 763773190704664923}
@@ -24,8 +24,8 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &763773190704664926
-Transform:
+--- !u!224 &6074907070679226087
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -39,6 +39,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!33 &763773190704664925
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -260,6 +265,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StarProperties: {fileID: 0}
   SaveManager: {fileID: 0}
+  StaticCamera: {fileID: 0}
   SystemNameText: {fileID: 0}
   AgeText: {fileID: 0}
   MassText: {fileID: 0}
@@ -268,5 +274,7 @@ MonoBehaviour:
   TemperatureText: {fileID: 0}
   RotationText: {fileID: 0}
   MagneticFieldText: {fileID: 0}
+  VariabilityText: {fileID: 0}
   MetallicityText: {fileID: 0}
+  CameraPosition: {fileID: 0}
   textElements: []
