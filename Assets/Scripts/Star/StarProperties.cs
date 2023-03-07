@@ -62,7 +62,7 @@ public class StarProperties : MonoBehaviour
     /// </summary>
     public string PickNamingMethodAndGenerate()
     {
-        if (nameGenRandom.Next(100) < 5)
+        if (nameGenRandom.Next(100) < 8)
         {
             SystemName = GenerateStarSystemNameSemiUnique();
         }

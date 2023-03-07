@@ -185,4 +185,9 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
         StarProperties.RandomCellColorGenerator();
         StarProperties.GenerateIntrinsicVariability(spectralType);
     }
+
+    private void GrabFinalizedPlanetData()
+    {
+
+    }
 }
