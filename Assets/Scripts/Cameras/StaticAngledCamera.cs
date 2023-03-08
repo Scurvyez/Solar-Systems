@@ -7,6 +7,7 @@ public class StaticAngledCamera : MonoBehaviour
     public GameObject StarObject;
     private Camera MainCamera;
 
+    public float SwivelSpeed;
     public float ZoomSpeed;
     public float ZoomMin;
     public float ZoomMax;
@@ -16,7 +17,8 @@ public class StaticAngledCamera : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        ZoomSpeed = 100.0f;
+        SwivelSpeed = 400f;
+        ZoomSpeed = 400.0f;
         ZoomMin = StarObject.transform.localScale.x + 20f;
         ZoomMax = 480000.0f;
     }
@@ -27,7 +29,7 @@ public class StaticAngledCamera : MonoBehaviour
         MainCamera = Camera.main;
 
         // Grab the star objects' size
-        Vector3 sphereScale = new (StarObject.transform.localScale.x, StarObject.transform.localScale.y, StarObject.transform.localScale.z);
+        Vector3 sphereScale = StarObject.transform.localScale;
 
         // Set the main camera's position based on the sphere object's scale
         Vector3 cameraPos = new (StarObject.transform.position.x, StarObject.transform.position.y + (sphereScale.y * 20.5f), StarObject.transform.position.z - (sphereScale.z * 20.5f));
@@ -67,13 +69,16 @@ public class StaticAngledCamera : MonoBehaviour
         if (Input.GetKey(KeyCode.D))
         {
             MainCamera.transform.LookAt(StarObject.transform);
-            MainCamera.transform.Translate(Time.deltaTime * ZoomSpeed * Vector3.right);
+            MainCamera.transform.Translate(Time.deltaTime * SwivelSpeed * Vector3.right);
         }
         else if (Input.GetKey(KeyCode.A))
         {
             MainCamera.transform.LookAt(StarObject.transform);
-            MainCamera.transform.Translate(Time.deltaTime * ZoomSpeed * Vector3.left);
+            MainCamera.transform.Translate(Time.deltaTime * SwivelSpeed * Vector3.left);
         }
+
+        // Limit rotation to y-axis only
+        MainCamera.transform.rotation = Quaternion.Euler(45f, MainCamera.transform.rotation.eulerAngles.y, MainCamera.transform.rotation.eulerAngles.z);
 
         // Zoom in and out with the mouse wheel
         float scroll = Input.GetAxis("Mouse ScrollWheel");

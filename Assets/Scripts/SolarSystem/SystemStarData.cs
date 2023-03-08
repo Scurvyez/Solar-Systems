@@ -4,11 +4,10 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.EventSystems;
 
-public class SystemStarData : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class SystemStarData : MonoBehaviour
 {
     public StarProperties StarProperties;
     public SaveManager SaveManager;
-    public Camera StaticCamera;
 
     public TextMeshProUGUI SystemNameText;
     public TextMeshProUGUI AgeText;
@@ -20,17 +19,19 @@ public class SystemStarData : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public TextMeshProUGUI MagneticFieldText;
     public TextMeshProUGUI VariabilityText;
     public TextMeshProUGUI MetallicityText;
-    public TextMeshProUGUI CameraPosition;
-    public TextMeshProUGUI[] textElements;
+    private TextMeshProUGUI[] textElements;
     
     private const float SolRadii = 695700000.0f;
-
+    
     // Start is called before the first frame update
     private void Start()
     {
         SaveManager = SaveManager.instance;
         SetSavedStarValues();
         PopulateTextElementsArray();
+        //SelectionRing.transform.localRotation = Quaternion.Euler(newX, SelectionRing.transform.localRotation.y, SelectionRing.transform.localRotation.z);
+        //var sP = transform.localScale;
+        //SelectionRing.transform.localScale = new Vector3(sP.x * 2.5f, sP.y * 2.5f, sP.z * 2.5f);
     }
 
     private void Update()
@@ -42,23 +43,6 @@ public class SystemStarData : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         {
             RotationText.text = "<color=#ff8f8f>Rotation:</color> " + string.Format("{0:0.00}", transform.rotation) + " km/h";
             VariabilityText.text = "<color=#ff8f8f>Variability:</color> " + parentMaterial.material.GetFloat("_SolarFlare");
-            CameraPosition.text = StaticCamera.transform.localPosition.normalized.ToString();
-        }
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        foreach (var textElement in textElements)
-        {
-            textElement.gameObject.SetActive(true);
-        }
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        foreach (var textElement in textElements)
-        {
-            textElement.gameObject.SetActive(false);
         }
     }
 
@@ -98,8 +82,7 @@ public class SystemStarData : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             RotationText, // 6
             MagneticFieldText, // 7
             VariabilityText, // 8
-            MetallicityText, // 9
-            CameraPosition // 10
+            MetallicityText // 9
         };
     }
 }

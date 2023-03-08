@@ -34,10 +34,7 @@ public class UpdateStarProperties : MonoBehaviour
         parentRigidBody.mass = (float)StarMass;
 
         // grab the generated radius for the star
-        //StarRadius = SaveManager.instance.activeSave.starRadius;
-        //float radiusAsSolarRadii = (float)StarRadius / SolRadii;
-        // apply that radius value to the x, y, and z planes
-        //transform.localScale = new Vector3(radiusAsSolarRadii, radiusAsSolarRadii, radiusAsSolarRadii);
+        StarRadius = SaveManager.instance.activeSave.starRadius / SolRadii;
 
         // grab the saved rotation (on own axis) value for our generated star
         StarRotation = SaveManager.instance.activeSave.starRotation;
@@ -59,9 +56,9 @@ public class UpdateStarProperties : MonoBehaviour
         _endVariability = (float)variability;
 
         // set the stars' volume fallOff distance
-        var parentAudioSource = transform.GetComponent<AudioSource>();
-        parentAudioSource.minDistance = 1f;
-        parentAudioSource.maxDistance = transform.localScale.x + (transform.localScale.x * 0.75f);
+        //var parentAudioSource = transform.GetComponent<AudioSource>();
+        //parentAudioSource.minDistance = 1f;
+        //parentAudioSource.maxDistance = transform.localScale.x + (transform.localScale.x * 0.75f);
     }
 
     private void Update()
@@ -69,7 +66,7 @@ public class UpdateStarProperties : MonoBehaviour
         // grab the objects' material
         var parentMaterial = transform.GetComponent<Renderer>();
         // apply rotation every frame
-        transform.Rotate(((float)StarRotation * (float)starMagneticField) * Time.deltaTime * Vector3.up);
+        transform.Rotate(((float)StarRotation * (float)starMagneticField) * Vector3.up);
 
         _timer += Time.deltaTime;
         float t = _timer;
@@ -81,7 +78,6 @@ public class UpdateStarProperties : MonoBehaviour
         }
         else if (SaveManager.instance.activeSave.hasIntrinsicVariability)
         {
-            //currentVariability = Random.Range(_startVariability, _endVariability);
             currentVariability = Mathf.Lerp(Random.Range(_startVariability, _endVariability), Random.Range(_startVariability, _endVariability), t);
             parentMaterial.material.SetFloat("_SolarFlare", currentVariability);
         }
