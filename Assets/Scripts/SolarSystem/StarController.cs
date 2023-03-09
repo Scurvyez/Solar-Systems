@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UpdateStarProperties : MonoBehaviour
+public class StarController : MonoBehaviour
 {
     public SaveManager SaveManager;
 
@@ -17,7 +17,7 @@ public class UpdateStarProperties : MonoBehaviour
     private float _endVariability;
     private const float SolRadii = 695700000.0f;
 
-    public UpdateStarProperties instance;
+    public StarController instance;
 
     private void Awake()
     {

@@ -109,6 +109,6 @@ public class SystemSaveData
     // STAR DATA: end
 
     // PLANET DATA: start
-
+    public List<RockyPlanet> rockyPlanets;
     // PLANET DATA: end
 }

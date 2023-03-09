@@ -21,47 +21,22 @@ public class Planet
     public float Albedo { get; set; }
     public float SolarDay { get; set; }
     public float MagneticFieldStrength { get; set; }
-    public List<Moon> Moons { get; set; }
+    //public List<Moon> Moons { get; set; }
 
     public const float GravConstant = 6.674e-11f;
 
-    public Planet(string name, float mass, float radius, float orbitalPeriod, float rotationPeriod,
-        float axialTilt, float surfaceTemperature, bool hasAtmosphere, bool isHabitable,
-        bool hasRings, float meanDensity, float surfacePressure, float surfaceGravity, float escapeVelocity,
-        float albedo, float solarDay, float magneticFieldStrength, List<Moon> moons)
-    {
-        Name = name; // name of the planet
-        Mass = GenerateMass(); // mass of the planet (measured in Earth masses)
-        Radius = GenerateRadius(); // radius of the planet (measured in Earth radii)
-        OrbitalPeriod = GenerateOrbitalPeriod(); // time it takes for the planet to complete one orbit around its star (measured in Earth days)
-        RotationPeriod = GenerateRotationPeriod(); // time it takes for the planet to complete one rotation around its axis (measured in Earth days)
-        AxialTilt = GenerateAxialTilt(); // angle between the planet's rotational axis and the plane of its orbit (measured in degrees)
-        SurfaceTemperature = GenerateSurfaceTemperature(); // average temperature on the planet's surface (measured in Kelvin)
-        HasAtmosphere = HasRandomAtmosphere(); // boolean value indicating whether the planet has an atmosphere or not
-        IsHabitable = IsRandomlyHabitable(); // boolean value indicating whether the planet is habitable or not (i.e., can support life)
-        HasRings = HasRandomRings(); // boolean value indicating whether the planet has rings or not
-        MeanDensity = GenerateMeanDensity(); // average density of the planet (measured in grams per cubic centimeter)
-        SurfacePressure = GenerateSurfacePressure(); // 
-        SurfaceGravity = GenerateSurfaceGravity(); // acceleration due to gravity on the planet's surface (measured in meters per second squared)
-        EscapeVelocity = GenerateEscapeVelocity(); // minimum velocity an object needs to escape the planet's gravitational pull (measured in kilometers per second)
-        Albedo = GenerateAlbedo(); // fraction of sunlight reflected by the planet's surface (measured as a percentage)
-        SolarDay = GenerateSolarDay(); // time it takes for the planet to complete one rotation relative to its star (measured in Earth days)
-        MagneticFieldStrength = GenerateMagneticFieldStrength(); // strength of the planet's magnetic field (measured in Gauss)
-        Moons = GenerateMoons(); // list of moons orbiting the planet
-    }
-
-    protected virtual float AtmosphereHeight()
+    public virtual float AtmosphereHeight()
     {
         if (!HasAtmosphere) return 0f; // if no atmosphere, no value
         return Radius * 2.5f; // set height of atmosphere, above planet's surface
     }
 
-    protected virtual Color GetColor()
+    public virtual Color GetColor()
     {
         return Color.white; // default base color of all planets
     }
 
-    protected virtual bool HasLiquidWater()
+    public virtual bool HasLiquidWater()
     {
         // check if the planet's surface temperature is within the habitable range
         if (SurfaceTemperature >= 273 && SurfaceTemperature <= 373)
@@ -79,92 +54,107 @@ public class Planet
         return false; // planet does not have liquid water
     }
 
-    protected virtual float GenerateMass()
+    public virtual float GenerateMass()
     {
         // Generate a random mass between 0.1 and 10 Earth masses
-        return Random.Range(0.1f, 10f);
+        Mass = Random.Range(0.1f, 10f);
+        return Mass;
     }
 
-    protected virtual float GenerateRadius()
+    public virtual float GenerateRadius()
     {
         // Generate a random radius between 0.5 and 2.5 Earth radii
-        return Random.Range(0.5f, 2.5f);
+        Radius = Random.Range(0.5f, 2.5f);
+        return Radius;
     }
 
-    protected virtual float GenerateOrbitalPeriod()
+    public virtual float GenerateOrbitalPeriod()
     {
-        return Random.Range(0.1f, 1000f); // Measured in Earth days
+        OrbitalPeriod = Random.Range(0.1f, 1000f); // Measured in Earth days
+        return OrbitalPeriod;
     }
 
-    protected virtual float GenerateRotationPeriod()
+    public virtual float GenerateRotationPeriod()
     {
-        return Random.Range(0.1f, 1000f); // Measured in Earth days
+        RotationPeriod = Random.Range(0.1f, 1000f); // Measured in Earth days
+        return RotationPeriod;
     }
 
-    protected virtual float GenerateAxialTilt()
+    public virtual float GenerateAxialTilt()
     {
-        return Random.Range(0f, 90f); // Measured in degrees
+        AxialTilt = Random.Range(0f, 90f); // Measured in degrees
+        return AxialTilt;
     }
 
-    protected virtual float GenerateSurfaceTemperature()
+    public virtual float GenerateSurfaceTemperature()
     {
-        return Random.Range(50f, 500f); // Measured in Kelvin
+        SurfaceTemperature = Random.Range(50f, 500f); // Measured in Kelvin
+        return SurfaceTemperature;
     }
 
-    protected virtual bool HasRandomAtmosphere()
+    public virtual bool HasRandomAtmosphere()
     {
-        return Random.value < 0.5f; // 50% chance of having an atmosphere
+        HasAtmosphere = Random.value < 0.5f; // 50% chance of having an atmosphere
+        return HasAtmosphere;
     }
 
-    protected virtual bool IsRandomlyHabitable()
+    public virtual bool IsRandomlyHabitable()
     {
-        return Random.value < 0.2f; // 20% chance of being habitable
-    }
-    
-    protected virtual bool HasRandomRings()
-    {
-        return Random.value < 0.1f; // 10% chance of having rings
+        IsHabitable = Random.value < 0.2f; // 20% chance of being habitable
+        return IsHabitable;
     }
 
-    protected virtual float GenerateMeanDensity()
+    public virtual bool HasRandomRings()
     {
-        return Random.Range(0.5f, 10f); // Measured in grams per cubic centimeter
+        HasRings = Random.value < 0.1f; // 10% chance of having rings
+        return HasRings;
     }
 
-    protected virtual float GenerateSurfacePressure()
+    public virtual float GenerateMeanDensity()
     {
-        return Random.Range(0.01f, 100f); // Measured in atmospheres
+        MeanDensity = Random.Range(0.5f, 10f); // Measured in grams per cubic centimeter
+        return MeanDensity;
     }
 
-    protected virtual float GenerateSurfaceGravity()
+    public virtual float GenerateSurfacePressure()
     {
-        return GravConstant * Mass / (Radius * Radius); // Measured in meters per second squared
+        SurfacePressure = Random.Range(0.01f, 100f); // Measured in atmospheres
+        return SurfacePressure;
     }
 
-    protected virtual float GenerateEscapeVelocity()
+    public virtual float GenerateSurfaceGravity()
     {
-        return Mathf.Sqrt((2f * GravConstant * Mass) / Radius) * Random.Range(1.1f, 1.3f); // Measured in kilometers per second
+        SurfaceGravity = GravConstant * Mass / (Radius * Radius); // Measured in meters per second squared
+        return SurfaceGravity;
     }
 
-    protected virtual float GenerateAlbedo()
+    public virtual float GenerateEscapeVelocity()
     {
-        return UnityEngine.Random.Range(0.1f, 0.9f); // a random value between 0.1 and 0.9
+        EscapeVelocity = Mathf.Sqrt((2f * GravConstant * Mass) / Radius) * Random.Range(1.1f, 1.3f); // Measured in kilometers per second
+        return EscapeVelocity;
     }
 
-    protected virtual float GenerateSolarDay()
+    public virtual float GenerateAlbedo()
     {
-        return UnityEngine.Random.Range(1f, 365f); // a random value between 1 and 365 Earth days
+        Albedo = UnityEngine.Random.Range(0.1f, 0.9f); // a random value between 0.1 and 0.9
+        return Albedo;
     }
 
-    protected virtual float GenerateMagneticFieldStrength()
+    public virtual float GenerateSolarDay()
     {
-        return UnityEngine.Random.Range(0f, 100f); // a random value between 0 and 100 Gauss
+        SolarDay = UnityEngine.Random.Range(1f, 365f); // a random value between 1 and 365 Earth days
+        return SolarDay;
     }
 
+    public virtual float GenerateMagneticFieldStrength()
+    {
+        MagneticFieldStrength = UnityEngine.Random.Range(0f, 100f); // a random value between 0 and 100 Gauss
+        return MagneticFieldStrength;
+    }
+
+    /*
     protected virtual List<Moon> GenerateMoons()
     {
-        List<Moon> moons = new List<Moon>();
-
         // generate a random number of moons between 0 and 10
         int numMoons = Random.Range(0, 11);
 
@@ -187,9 +177,10 @@ public class Planet
 
             Moon moon = new Moon(name, mass, radius, orbitalPeriod, rotationPeriod, axialTilt, surfaceTemperature,
                                  hasAtmosphere, isHabitable, meanDensity, surfaceGravity, escapeVelocity, albedo);
-            moons.Add(moon);
+            Moons.Add(moon);
         }
 
-        return moons;
+        return Moons;
     }
+    */
 }

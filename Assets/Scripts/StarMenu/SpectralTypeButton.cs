@@ -6,11 +6,13 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using System;
+using Random = UnityEngine.Random;
 
 public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public StarDistance StarDistance;
     public StarProperties StarProperties;
+    public RockyPlanet RockyPlanet;
     public StarDescriptions StarDescriptions;
     public int Index;
     public Button Button;
@@ -20,6 +22,9 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
     private bool IsMouseOver = false;
     private float ScaleLerpSpeed = 0.025f;
     public string starClass;
+
+    // Create a list to store all the generated rocky planets
+    public List<RockyPlanet> planets = new ();
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -61,6 +66,7 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
     {
         Button.onClick.AddListener(PlaySound);
         Button.onClick.AddListener(GenerateStar);
+        Button.onClick.AddListener(GeneratePlanets);
         //StarProperties = StarProperties.instance;
     }
 
@@ -136,6 +142,23 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
         //Debug.Log("Star size: " + string.Format("{0:0,0.00}", StarProperties.GenerateStarSize()) + " (km).");
     }
 
+    private void GeneratePlanets()
+    {
+        GrabFinalizedPlanetData();
+
+        if (SaveManager.instance.hasLoaded)
+        {
+            for (int i = 0; i < SaveManager.instance.activeSave.rockyPlanets.Count; i++)
+            {
+                planets = SaveManager.instance.activeSave.rockyPlanets;
+            }
+        }
+        else
+        {
+            SaveManager.instance.activeSave.rockyPlanets = planets;
+        }
+    }
+
     private string DetermineStarClass()
     {
         StarProperties.SpectralType spectralType = StarProperties.SpectralClass;
@@ -188,6 +211,29 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     private void GrabFinalizedPlanetData()
     {
+        int numPlanets = Random.Range(1, 11); // generate a random number of planets between 1 and 10
 
+        for (int i = 0; i < numPlanets; i++)
+        {
+            // create a new rocky planet object
+            RockyPlanet p = new();
+            p.GenerateMass();
+            p.GenerateRadius();
+            p.GenerateOrbitalPeriod();
+            p.GenerateRotationPeriod();
+            p.GenerateAxialTilt();
+            p.GenerateSurfaceTemperature();
+            p.HasRandomAtmosphere();
+            p.IsRandomlyHabitable();
+            p.HasRandomRings();
+            p.GenerateMeanDensity();
+            p.GenerateSurfacePressure();
+            p.GenerateSurfaceGravity();
+            p.GenerateEscapeVelocity();
+            p.GenerateAlbedo();
+            p.GenerateSolarDay();
+            p.GenerateMagneticFieldStrength();
+            planets.Add(p);
+        }
     }
 }
