@@ -35,7 +35,7 @@ public class StaticAngledCamera : MonoBehaviour
         SwivelAcceleration = 100.0f;
         currentSpeed = SwivelSpeed;
 
-        RotateSpeed = 2.0f;
+        RotateSpeed = 50.0f;
     }
 
     private void Awake()
@@ -56,6 +56,17 @@ public class StaticAngledCamera : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = MainCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                GameObject selectedObject = hit.collider.gameObject;
+                SetFocus(selectedObject);
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (Cursor.lockState == CursorLockMode.Locked)
@@ -97,6 +108,7 @@ public class StaticAngledCamera : MonoBehaviour
         if (Input.GetMouseButtonDown(2))
         {
             isRotating = true;
+            Cursor.lockState = CursorLockMode.None;
             lastMousePosition = Input.mousePosition;
         }
         else if (Input.GetMouseButtonUp(2))
@@ -107,8 +119,8 @@ public class StaticAngledCamera : MonoBehaviour
         if (isRotating)
         {
             Vector3 delta = Input.mousePosition - lastMousePosition;
-            MainCamera.transform.RotateAround(StarObject.transform.position, Vector3.up, delta.x * RotateSpeed);
-            MainCamera.transform.RotateAround(StarObject.transform.position, MainCamera.transform.right, -delta.y * RotateSpeed);
+            MainCamera.transform.RotateAround(StarObject.transform.position, Vector3.up, delta.x * (RotateSpeed * Time.deltaTime));
+            MainCamera.transform.RotateAround(StarObject.transform.position, MainCamera.transform.right, -delta.y * (RotateSpeed * Time.deltaTime));
             MainCamera.transform.LookAt(StarObject.transform.position);
             lastMousePosition = Input.mousePosition;
         }
@@ -134,5 +146,16 @@ public class StaticAngledCamera : MonoBehaviour
         {
             MainCamera.transform.position = StarObject.transform.position - (MainCamera.transform.forward * ZoomMax);
         }
+    }
+
+    public void SetFocus(GameObject focusObject)
+    {
+        StarObject = focusObject;
+
+        // Update the camera position and rotation to focus on the new object
+        Vector3 sphereScale = StarObject.transform.localScale;
+        Vector3 cameraPos = new(StarObject.transform.position.x, StarObject.transform.position.y + (sphereScale.y * 100.0f), StarObject.transform.position.z - (sphereScale.z * 100.0f));
+        MainCamera.transform.position = cameraPos;
+        MainCamera.transform.LookAt(StarObject.transform.position);
     }
 }
