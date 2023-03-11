@@ -7,20 +7,35 @@ public class StaticAngledCamera : MonoBehaviour
     public GameObject StarObject;
     private Camera MainCamera;
 
-    public float SwivelSpeed;
     public float ZoomSpeed;
     public float ZoomMin;
     public float ZoomMax;
+
+    public float SwivelSpeed;
+    public float MaxSwivelSpeed;
+    public float SwivelAcceleration;
+
+    public float currentSpeed;
+
+    public float RotateSpeed;
+    public bool isRotating = false;
+    public Vector3 lastMousePosition;
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        SwivelSpeed = 400f;
-        ZoomSpeed = 400.0f;
-        ZoomMin = StarObject.transform.localScale.x + 20f;
+        ZoomSpeed = 1000.0f;
+        ZoomMin = StarObject.transform.localScale.x + 100.0f;
         ZoomMax = 480000.0f;
+
+        SwivelSpeed = 100.0f;
+        MaxSwivelSpeed = 2000.0f;
+        SwivelAcceleration = 100.0f;
+        currentSpeed = SwivelSpeed;
+
+        RotateSpeed = 2.0f;
     }
 
     private void Awake()
@@ -32,7 +47,7 @@ public class StaticAngledCamera : MonoBehaviour
         Vector3 sphereScale = StarObject.transform.localScale;
 
         // Set the main camera's position based on the sphere object's scale
-        Vector3 cameraPos = new (StarObject.transform.position.x, StarObject.transform.position.y + (sphereScale.y * 20.5f), StarObject.transform.position.z - (sphereScale.z * 20.5f));
+        Vector3 cameraPos = new (StarObject.transform.position.x, StarObject.transform.position.y + (sphereScale.y * 100.0f), StarObject.transform.position.z - (sphereScale.z * 100.0f));
         MainCamera.transform.position = cameraPos;
 
         // Look at the center of the sphere object
@@ -56,33 +71,58 @@ public class StaticAngledCamera : MonoBehaviour
         }
 
         // Zoom in/out with the W/S keys
-        if (Input.GetKey(KeyCode.W))
-        {
-            MainCamera.transform.position += ZoomSpeed * Time.deltaTime * MainCamera.transform.forward;
-        }
-        else if (Input.GetKey(KeyCode.S))
-        {
-            MainCamera.transform.position -= ZoomSpeed * Time.deltaTime * MainCamera.transform.forward;
-        }
+        float zoomDirection = Input.GetKey(KeyCode.W) ? 1.0f : (Input.GetKey(KeyCode.S) ? -1.0f : 0.0f);
+        float zoomMultiplier = Input.GetKey(KeyCode.LeftShift) ? 3.0f : 1.0f;
+        MainCamera.transform.position += zoomDirection * ZoomSpeed * zoomMultiplier * Time.deltaTime * MainCamera.transform.forward;
 
         // Swivel with the A and D keys
         if (Input.GetKey(KeyCode.D))
         {
             MainCamera.transform.LookAt(StarObject.transform);
-            MainCamera.transform.Translate(Time.deltaTime * SwivelSpeed * Vector3.right);
+            MainCamera.transform.Translate(Time.deltaTime * currentSpeed * Vector3.right);
+            currentSpeed = Mathf.Min(currentSpeed + Time.deltaTime * SwivelAcceleration, MaxSwivelSpeed);
         }
         else if (Input.GetKey(KeyCode.A))
         {
             MainCamera.transform.LookAt(StarObject.transform);
-            MainCamera.transform.Translate(Time.deltaTime * SwivelSpeed * Vector3.left);
+            MainCamera.transform.Translate(Time.deltaTime * currentSpeed * Vector3.left);
+            currentSpeed = Mathf.Min(currentSpeed + Time.deltaTime * SwivelAcceleration, MaxSwivelSpeed);
+        }
+        else
+        {
+            currentSpeed = SwivelSpeed;
+        }
+
+        // Rotate freely with the mouse wheel button
+        if (Input.GetMouseButtonDown(2))
+        {
+            isRotating = true;
+            lastMousePosition = Input.mousePosition;
+        }
+        else if (Input.GetMouseButtonUp(2))
+        {
+            isRotating = false;
+        }
+
+        if (isRotating)
+        {
+            Vector3 delta = Input.mousePosition - lastMousePosition;
+            MainCamera.transform.RotateAround(StarObject.transform.position, Vector3.up, delta.x * RotateSpeed);
+            MainCamera.transform.RotateAround(StarObject.transform.position, MainCamera.transform.right, -delta.y * RotateSpeed);
+            MainCamera.transform.LookAt(StarObject.transform.position);
+            lastMousePosition = Input.mousePosition;
+        }
+        else
+        {
+            MainCamera.transform.LookAt(StarObject.transform.position);
         }
 
         // Limit rotation to y-axis only
-        MainCamera.transform.rotation = Quaternion.Euler(45f, MainCamera.transform.rotation.eulerAngles.y, MainCamera.transform.rotation.eulerAngles.z);
+        MainCamera.transform.rotation = Quaternion.Euler(MainCamera.transform.rotation.eulerAngles.x, MainCamera.transform.rotation.eulerAngles.y, MainCamera.transform.rotation.eulerAngles.z);
 
         // Zoom in and out with the mouse wheel
         float scroll = Input.GetAxis("Mouse ScrollWheel");
-        MainCamera.transform.position = MainCamera.transform.position + 100.0f * scroll * ZoomSpeed * Time.deltaTime * MainCamera.transform.forward;
+        MainCamera.transform.position += 100.0f * scroll * Time.deltaTime * ZoomSpeed * MainCamera.transform.forward;
 
         // Ensure the camera is within the desired zoom range
         float distance = Vector3.Distance(MainCamera.transform.position, StarObject.transform.position);

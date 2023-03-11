@@ -231,7 +231,6 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
             p.GenerateSurfaceGravity();
             p.GenerateEscapeVelocity();
             p.GenerateAlbedo();
-            p.GenerateSolarDay();
             p.GenerateMagneticFieldStrength();
             planets.Add(p);
         }

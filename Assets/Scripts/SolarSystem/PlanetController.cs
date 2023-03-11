@@ -7,36 +7,62 @@ public class PlanetController : MonoBehaviour
     public SaveManager SaveManager;
     public GameObject starPrefab;
 
-    public float orbitalPeriodFactor;
-    public float rotationPeriodFactor;
+    public float OrbitalPeriod;
+    public float RotationPeriod;
+    public float AxialTilt;
+    public float SurfaceTemperature;
+    public float MeanDensity;
+    public float SurfacePressure;
+    public float SurfaceGravity;
+    public float EscapeVelocity;
+    public float Albedo;
+    public float MagneticFieldStrength;
+    public bool HasAtmosphere;
+    public bool HasRings;
+    public bool IsHabitable;
 
-    private void Start()
+    public float SolarDay;
+    public float SolarYear;
+
+    public GameObject axialTiltMarkerPrefab; // Reference to the axial tilt marker prefab
+    private GameObject axialTiltMarker; // Reference to the instantiated axial tilt marker game object
+
+    public GameObject spinDirectionMarkerPrefab; // Reference to the spin direction marker prefab
+    private GameObject spinDirectionMarker; // Reference to the instantiated spin direction marker game object
+
+    public void Start()
     {
-        // instantiate the rocky planet prefab and set its properties
-        transform.localScale = Vector3.one * 2f;
-        transform.localPosition = Quaternion.Euler(0, Random.Range(0, 360), 0) * new Vector3(0, 0, Random.Range(100f, 1000f));
+        // Calculate one solar day
+        SolarDay = 1000 - RotationPeriod;
 
-        GetComponent<Renderer>().material.color = Color.red;
+        // Calculate one solar year
+        SolarYear = 11000 - OrbitalPeriod;
 
-        //orbitalPeriodFactor = planet.OrbitalPeriod;
-        //rotationPeriodFactor = planet.RotationPeriod;
+        transform.Rotate(Vector3.right, AxialTilt);
 
-        // add a Trail Renderer to the planet
-        TrailRenderer tR = GetComponent<TrailRenderer>();
-        tR.startWidth = 1.0f;
-        tR.endWidth = 0.0f;
-        tR.time = 7.0f;
-        tR.material = new Material(Shader.Find("Sprites/Default"));
-        tR.startColor = Color.white;
-        tR.endColor = Color.clear;
+        // Create the axial tilt marker object
+        axialTiltMarker = Instantiate(axialTiltMarkerPrefab, transform.position, Quaternion.identity);
+        axialTiltMarker.transform.parent = transform;
+        axialTiltMarker.transform.localPosition = Vector3.zero;
+        axialTiltMarker.transform.localScale = new Vector3(5.5f, 5.5f, 0.0f);
+        axialTiltMarker.transform.localRotation = Quaternion.Euler(-AxialTilt, 0f, 0f);
+
+        // Create the spin direction marker object
+        spinDirectionMarker = Instantiate(spinDirectionMarkerPrefab, transform.position, Quaternion.identity);
+        spinDirectionMarker.transform.parent = transform;
+        spinDirectionMarker.transform.localPosition = Vector3.zero;
+        spinDirectionMarker.transform.localScale = new Vector3(5.5f, 5.5f, 0.0f);
+        spinDirectionMarker.transform.localRotation = Quaternion.Euler(0f, 0f, 0f); // Set the initial rotation to zero
     }
 
-    private void Update()
+    public void Update()
     {
         // Rotate the planet around its own axis
-        transform.Rotate(Vector3.up, Time.deltaTime * 10f);
+        // Offset RotationPeriod by 99.5%
+        transform.Rotate(Vector3.up, Time.deltaTime * RotationPeriod);
 
         // Rotate the planet around the star
-        transform.RotateAround(starPrefab.transform.position, Vector3.up, Time.deltaTime * 20f);
+        // Offset OrbitalPeriod by 99.5%
+        transform.RotateAround(starPrefab.transform.position, Vector3.up, Time.deltaTime * (OrbitalPeriod * 0.005f));
     }
 }

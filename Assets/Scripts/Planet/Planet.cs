@@ -19,7 +19,6 @@ public class Planet
     public float SurfaceGravity { get; set; }
     public float EscapeVelocity { get; set; }
     public float Albedo { get; set; }
-    public float SolarDay { get; set; }
     public float MagneticFieldStrength { get; set; }
     //public List<Moon> Moons { get; set; }
 
@@ -68,9 +67,11 @@ public class Planet
         return Radius;
     }
 
+    //private const double SolRadiusM = 6.96342E8; // in m
     public virtual float GenerateOrbitalPeriod()
     {
-        OrbitalPeriod = Random.Range(0.1f, 1000f); // Measured in Earth days
+        //float minDist = (float)(SaveManager.instance.activeSave.starRadius / SolRadiusM);
+        OrbitalPeriod = Random.Range(25.0f, 10000f); // Measured in Earth days
         return OrbitalPeriod;
     }
 
@@ -138,12 +139,6 @@ public class Planet
     {
         Albedo = UnityEngine.Random.Range(0.1f, 0.9f); // a random value between 0.1 and 0.9
         return Albedo;
-    }
-
-    public virtual float GenerateSolarDay()
-    {
-        SolarDay = UnityEngine.Random.Range(1f, 365f); // a random value between 1 and 365 Earth days
-        return SolarDay;
     }
 
     public virtual float GenerateMagneticFieldStrength()
