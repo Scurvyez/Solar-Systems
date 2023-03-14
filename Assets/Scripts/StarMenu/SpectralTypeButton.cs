@@ -26,6 +26,9 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
     // Create a list to store all the generated rocky planets
     public List<RockyPlanet> planets = new ();
 
+    // Create a list to store all the generated moons
+    public List<Moon> moons = new();
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         IsMouseOver = true;
@@ -67,7 +70,7 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
         Button.onClick.AddListener(PlaySound);
         Button.onClick.AddListener(GenerateStar);
         Button.onClick.AddListener(GeneratePlanets);
-        //StarProperties = StarProperties.instance;
+        Button.onClick.AddListener(GenerateMoons);
     }
 
     private void PlaySound()
@@ -159,6 +162,23 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
         }
     }
 
+    private void GenerateMoons()
+    {
+        GrabFinalizedMoonData();
+
+        if (SaveManager.instance.hasLoaded)
+        {
+            for (int i = 0; i < SaveManager.instance.activeSave.moons.Count; i++)
+            {
+                moons = SaveManager.instance.activeSave.moons;
+            }
+        }
+        else
+        {
+            SaveManager.instance.activeSave.moons = moons;
+        }
+    }
+
     private string DetermineStarClass()
     {
         StarProperties.SpectralType spectralType = StarProperties.SpectralClass;
@@ -233,6 +253,31 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
             p.GenerateAlbedo();
             p.GenerateMagneticFieldStrength();
             planets.Add(p);
+        }
+    }
+
+    private void GrabFinalizedMoonData()
+    {
+        // generate a random number of moons between 0 and 5
+        int numMoons = Random.Range(0, 5);
+
+        for (int i = 0; i < numMoons; i++)
+        {
+            Moon m = new();
+            m.GenerateRandomName();
+            m.GenerateMass();
+            m.GenerateRadius();
+            m.GenerateOrbitalPeriod();
+            m.GenerateRotationPeriod();
+            m.GenerateAxialTilt();
+            m.GenerateSurfaceTemperature();
+            m.HasRandomAtmosphere();
+            m.IsRandomlyHabitable();
+            m.GenerateMeanDensity();
+            m.GenerateSurfaceGravity();
+            m.GenerateEscapeVelocity();
+            m.GenerateAlbedo();
+            moons.Add(m);
         }
     }
 }

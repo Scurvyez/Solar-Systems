@@ -2,27 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlanetController : MonoBehaviour
+public class MoonController : MonoBehaviour
 {
     public SaveManager SaveManager;
-    public GameObject starPrefab;
+    //public GameObject planetPrefab;
 
     public float OrbitalPeriod;
     public float RotationPeriod;
     public float AxialTilt;
     public float SurfaceTemperature;
     public float MeanDensity;
-    public float SurfacePressure;
     public float SurfaceGravity;
     public float EscapeVelocity;
     public float Albedo;
-    public float MagneticFieldStrength;
     public bool HasAtmosphere;
-    public bool HasRings;
     public bool IsHabitable;
-
-    public float SolarDay;
-    public float SolarYear;
 
     public GameObject axialTiltMarkerPrefab; // Reference to the axial tilt marker prefab
     private GameObject axialTiltMarker; // Reference to the instantiated axial tilt marker game object
@@ -30,14 +24,9 @@ public class PlanetController : MonoBehaviour
     public GameObject spinDirectionMarkerPrefab; // Reference to the spin direction marker prefab
     private GameObject spinDirectionMarker; // Reference to the instantiated spin direction marker game object
 
-    public void Start()
+    // Start is called before the first frame update
+    void Start()
     {
-        // Calculate one solar day
-        SolarDay = 1000 - RotationPeriod;
-
-        // Calculate one solar year
-        SolarYear = 11000 - OrbitalPeriod;
-
         transform.Rotate(Vector3.right, AxialTilt);
 
         // Create the axial tilt marker object
@@ -55,13 +44,15 @@ public class PlanetController : MonoBehaviour
         spinDirectionMarker.transform.localRotation = Quaternion.Euler(0f, 0f, 0f); // Set the initial rotation to zero
     }
 
-    public void Update()
+    // Update is called once per frame
+    void Update()
     {
         // Rotate the planet around its own axis
+        // Offset RotationPeriod by 99.5%
         transform.Rotate(Vector3.up, Time.deltaTime * RotationPeriod);
 
         // Rotate the planet around the star
         // Offset OrbitalPeriod by 99.5%
-        transform.RotateAround(starPrefab.transform.position, Vector3.up, Time.deltaTime * (OrbitalPeriod * 0.005f));
+        //transform.RotateAround(planetPrefab.transform.position, Vector3.up, Time.deltaTime * (OrbitalPeriod * 0.005f));
     }
 }

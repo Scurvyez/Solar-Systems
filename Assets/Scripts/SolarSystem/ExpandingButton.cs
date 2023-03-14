@@ -1,19 +1,13 @@
-using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
-public class MenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class ExpandingButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Button Button;
-    public TextMeshProUGUI ButtonText = null;
-
-    public Color TextDefaultColor = new (185, 141, 255);
-    public Color TextHighlightColor = new ();
-
     public Vector3 DefaultScale = new(1f, 1f, 1f);
     public Vector3 HighlightScale = new(2.0f, 2.0f, 2.0f);
 
@@ -23,13 +17,11 @@ public class MenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnPointerEnter(PointerEventData eventData)
     {
         IsMouseOver = true;
-        ButtonText.color = TextHighlightColor;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         IsMouseOver = false;
-        ButtonText.color = TextDefaultColor;
     }
 
     private IEnumerator ScaleButton(Transform button, Vector3 startScale, Vector3 endScale, float duration)

@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class StaticAngledCamera : MonoBehaviour
 {
@@ -21,25 +24,28 @@ public class StaticAngledCamera : MonoBehaviour
     public bool isRotating = false;
     public Vector3 lastMousePosition;
 
+    [SerializeField]
+    private GameObject selectedObject;
+    private float zoomDirection = 1.0f;
+    private float zoomMultiplier = 1.0f;
+
     private void Start()
     {
+        selectedObject = StarObject;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
         ZoomSpeed = 1000.0f;
-        ZoomMin = StarObject.transform.localScale.x + 100.0f;
-        ZoomMax = 480000.0f;
+        ZoomMin = selectedObject.transform.localScale.x + 100.0f;
+        ZoomMax = 20000.0f;
 
         SwivelSpeed = 100.0f;
         MaxSwivelSpeed = 2000.0f;
         SwivelAcceleration = 100.0f;
         currentSpeed = SwivelSpeed;
 
-        RotateSpeed = 50.0f;
-    }
+        RotateSpeed = 100.0f;
 
-    private void Awake()
-    {
         // Get the main camera component
         MainCamera = Camera.main;
 
@@ -47,7 +53,7 @@ public class StaticAngledCamera : MonoBehaviour
         Vector3 sphereScale = StarObject.transform.localScale;
 
         // Set the main camera's position based on the sphere object's scale
-        Vector3 cameraPos = new (StarObject.transform.position.x, StarObject.transform.position.y + (sphereScale.y * 100.0f), StarObject.transform.position.z - (sphereScale.z * 100.0f));
+        Vector3 cameraPos = new(StarObject.transform.position.x, StarObject.transform.position.y + (sphereScale.y * 100.0f), StarObject.transform.position.z - (sphereScale.z * 100.0f));
         MainCamera.transform.position = cameraPos;
 
         // Look at the center of the sphere object
@@ -56,17 +62,7 @@ public class StaticAngledCamera : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = MainCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
-            {
-                GameObject selectedObject = hit.collider.gameObject;
-                SetFocus(selectedObject);
-            }
-        }
-
+        // camera locking & cursor visibility
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (Cursor.lockState == CursorLockMode.Locked)
@@ -81,22 +77,19 @@ public class StaticAngledCamera : MonoBehaviour
             }
         }
 
+        MainCamera.transform.LookAt(selectedObject.transform.position);
+
         // Zoom in/out with the W/S keys
-        float zoomDirection = Input.GetKey(KeyCode.W) ? 1.0f : (Input.GetKey(KeyCode.S) ? -1.0f : 0.0f);
-        float zoomMultiplier = Input.GetKey(KeyCode.LeftShift) ? 3.0f : 1.0f;
+        zoomDirection = Input.GetKey(KeyCode.W) ? 1.0f : (Input.GetKey(KeyCode.S) ? -1.0f : 0.0f);
+        zoomMultiplier = Input.GetKey(KeyCode.LeftShift) ? 3.0f : 1.0f;
         MainCamera.transform.position += zoomDirection * ZoomSpeed * zoomMultiplier * Time.deltaTime * MainCamera.transform.forward;
 
         // Swivel with the A and D keys
-        if (Input.GetKey(KeyCode.D))
+        float direction = Input.GetKey(KeyCode.D) ? 1f : Input.GetKey(KeyCode.A) ? -1f : 0f;
+        if (direction != 0f)
         {
-            MainCamera.transform.LookAt(StarObject.transform);
-            MainCamera.transform.Translate(Time.deltaTime * currentSpeed * Vector3.right);
-            currentSpeed = Mathf.Min(currentSpeed + Time.deltaTime * SwivelAcceleration, MaxSwivelSpeed);
-        }
-        else if (Input.GetKey(KeyCode.A))
-        {
-            MainCamera.transform.LookAt(StarObject.transform);
-            MainCamera.transform.Translate(Time.deltaTime * currentSpeed * Vector3.left);
+            MainCamera.transform.LookAt(selectedObject.transform);
+            MainCamera.transform.Translate(Time.deltaTime * currentSpeed * direction * Vector3.right);
             currentSpeed = Mathf.Min(currentSpeed + Time.deltaTime * SwivelAcceleration, MaxSwivelSpeed);
         }
         else
@@ -119,17 +112,17 @@ public class StaticAngledCamera : MonoBehaviour
         if (isRotating)
         {
             Vector3 delta = Input.mousePosition - lastMousePosition;
-            MainCamera.transform.RotateAround(StarObject.transform.position, Vector3.up, delta.x * (RotateSpeed * Time.deltaTime));
-            MainCamera.transform.RotateAround(StarObject.transform.position, MainCamera.transform.right, -delta.y * (RotateSpeed * Time.deltaTime));
-            MainCamera.transform.LookAt(StarObject.transform.position);
+            MainCamera.transform.RotateAround(selectedObject.transform.position, Vector3.up, delta.x * (RotateSpeed * Time.deltaTime));
+            MainCamera.transform.RotateAround(selectedObject.transform.position, MainCamera.transform.right, -delta.y * (RotateSpeed * Time.deltaTime));
+            MainCamera.transform.LookAt(selectedObject.transform.position);
             lastMousePosition = Input.mousePosition;
         }
         else
         {
-            MainCamera.transform.LookAt(StarObject.transform.position);
+            MainCamera.transform.LookAt(selectedObject.transform.position);
         }
 
-        // Limit rotation to y-axis only
+        // Allow free rotation on all axes
         MainCamera.transform.rotation = Quaternion.Euler(MainCamera.transform.rotation.eulerAngles.x, MainCamera.transform.rotation.eulerAngles.y, MainCamera.transform.rotation.eulerAngles.z);
 
         // Zoom in and out with the mouse wheel
@@ -137,25 +130,16 @@ public class StaticAngledCamera : MonoBehaviour
         MainCamera.transform.position += 100.0f * scroll * Time.deltaTime * ZoomSpeed * MainCamera.transform.forward;
 
         // Ensure the camera is within the desired zoom range
-        float distance = Vector3.Distance(MainCamera.transform.position, StarObject.transform.position);
-        if (distance < ZoomMin)
+        float distance = Vector3.Distance(MainCamera.transform.position, selectedObject.transform.position);
+        Vector3 targetPosition = selectedObject.transform.position - (MainCamera.transform.forward * Mathf.Clamp(distance, ZoomMin, ZoomMax));
+        if (targetPosition != MainCamera.transform.position)
         {
-            MainCamera.transform.position = StarObject.transform.position - (MainCamera.transform.forward * ZoomMin);
-        }
-        else if (distance > ZoomMax)
-        {
-            MainCamera.transform.position = StarObject.transform.position - (MainCamera.transform.forward * ZoomMax);
+            MainCamera.transform.position = targetPosition;
         }
     }
 
     public void SetFocus(GameObject focusObject)
     {
-        StarObject = focusObject;
-
-        // Update the camera position and rotation to focus on the new object
-        Vector3 sphereScale = StarObject.transform.localScale;
-        Vector3 cameraPos = new(StarObject.transform.position.x, StarObject.transform.position.y + (sphereScale.y * 100.0f), StarObject.transform.position.z - (sphereScale.z * 100.0f));
-        MainCamera.transform.position = cameraPos;
-        MainCamera.transform.LookAt(StarObject.transform.position);
+        selectedObject = focusObject;
     }
 }

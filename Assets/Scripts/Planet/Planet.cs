@@ -89,7 +89,7 @@ public class Planet
 
     public virtual float GenerateSurfaceTemperature()
     {
-        SurfaceTemperature = Random.Range(50f, 500f); // Measured in Kelvin
+        SurfaceTemperature = Random.Range(-500f, 500f); // Measured in Kelvin
         return SurfaceTemperature;
     }
 
@@ -148,30 +148,27 @@ public class Planet
     }
 
     /*
-    protected virtual List<Moon> GenerateMoons()
+    public virtual List<Moon> GenerateMoons()
     {
-        // generate a random number of moons between 0 and 10
-        int numMoons = Random.Range(0, 11);
+        // generate a random number of moons between 0 and 5
+        int numMoons = Random.Range(0, 5);
 
         for (int i = 0; i < numMoons; i++)
         {
-            // generate random properties for the moon within some reasonable ranges
-            string name = "Moon " + i;
-            float mass = Random.Range(1e20f, 1e23f);
-            float radius = Random.Range(100f, 1000f);
-            float orbitalPeriod = Random.Range(1f, 100f);
-            float rotationPeriod = Random.Range(1f, 100f);
-            float axialTilt = Random.Range(0f, 180f);
-            float surfaceTemperature = Random.Range(50f, 300f);
-            bool hasAtmosphere = Random.value < 0.5f;
-            bool isHabitable = Random.value < 0.1f;
-            float meanDensity = Random.Range(1f, 5f);
-            float surfaceGravity = Random.Range(0.1f, 2f);
-            float escapeVelocity = Random.Range(1f, 10f);
-            float albedo = Random.Range(0.1f, 0.9f);
-
-            Moon moon = new Moon(name, mass, radius, orbitalPeriod, rotationPeriod, axialTilt, surfaceTemperature,
-                                 hasAtmosphere, isHabitable, meanDensity, surfaceGravity, escapeVelocity, albedo);
+            Moon moon = new ();
+            moon.GenerateRandomName();
+            moon.GenerateMass();
+            moon.GenerateRadius();
+            moon.GenerateOrbitalPeriod();
+            moon.GenerateRotationPeriod();
+            moon.GenerateAxialTilt();
+            moon.GenerateSurfaceTemperature();
+            moon.HasRandomAtmosphere();
+            moon.IsRandomlyHabitable();
+            moon.GenerateMeanDensity();
+            moon.GenerateSurfaceGravity();
+            moon.GenerateEscapeVelocity();
+            moon.GenerateAlbedo();
             Moons.Add(moon);
         }
 
