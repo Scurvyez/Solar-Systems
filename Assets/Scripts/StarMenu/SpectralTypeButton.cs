@@ -219,7 +219,7 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     private void GrabFinalizedPlanetData()
     {
-        int numPlanets = Random.Range(1, 11); // generate a random number of planets between 1 and 10
+        int numPlanets = Random.Range(1, 20); // generate a random number of planets between 1 and 10
 
         for (int i = 0; i < numPlanets; i++)
         {
@@ -235,9 +235,7 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
             p.GenerateSemiMinorAxis();
             p.GenerateRotationPeriod();
             p.GenerateAxialTilt();
-            p.GenerateSurfaceTemperature();
             p.HasRandomAtmosphere();
-            p.IsRandomlyHabitable();
             p.HasRandomRings();
             p.GenerateMeanDensity();
             p.GenerateSurfacePressure();
@@ -246,6 +244,9 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
             p.GenerateAlbedo();
             p.GenerateMagneticFieldStrength();
             p.GenerateAtmosphereComposition();
+            p.GenerateSurfaceTemperature();
+            p.HasLiquidWater();
+            p.IsRandomlyHabitable();
             p.GenerateMoons();
             planets.Add(p);
         }

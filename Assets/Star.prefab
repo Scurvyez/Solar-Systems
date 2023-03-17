@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 763773190704664923}
   - component: {fileID: 763773190704664927}
   - component: {fileID: 9212112754303526579}
-  - component: {fileID: 4598275422522620068}
   m_Layer: 0
   m_Name: Star
   m_TagString: Untagged
@@ -135,8 +134,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SaveManager: {fileID: 0}
+  StarClass: 
   StarMass: 0
   StarRadius: 0
+  newStarRadius: 0
   StarRotation: 0
   starMagneticField: 0
   variability: 0
@@ -165,16 +166,3 @@ MonoBehaviour:
   MagneticFieldText: {fileID: 0}
   VariabilityText: {fileID: 0}
   MetallicityText: {fileID: 0}
---- !u!114 &4598275422522620068
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 763773190704664922}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ad0289c5990392438832912b08eed69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SelectionRing: {fileID: 0}

@@ -29,6 +29,12 @@ public class Planet
 
     public const float GravConstant = 6.674e-11f;
 
+    public virtual bool HasRandomAtmosphere()
+    {
+        HasAtmosphere = Random.value < 0.2f; // 20% chance of having an atmosphere
+        return HasAtmosphere;
+    }
+
     public virtual float AtmosphereHeight()
     {
         if (!HasAtmosphere) return 0f; // if no atmosphere, no value
@@ -40,34 +46,16 @@ public class Planet
         return Color.white; // default base color of all planets
     }
 
-    public virtual bool HasLiquidWater()
-    {
-        // check if the planet's surface temperature is within the habitable range
-        if (SurfaceTemperature >= 273 && SurfaceTemperature <= 373)
-        {
-            // check if the planet has an atmosphere
-            if (HasAtmosphere)
-            {
-                // check if the atmospheric pressure is within the range required for liquid water
-                if (SurfacePressure >= 0.1f && SurfacePressure <= 100f)
-                {
-                    return true; // planet has liquid water
-                }
-            }
-        }
-        return false; // planet does not have liquid water
-    }
-
     public virtual float GenerateRadius()
     {
-        // Generate a random radius between 0.5 and 2.5 Earth radii
+        // Generate a random radius between 0.25 and 5.0 Earth radii
         Radius = Random.Range(0.25f, 5.0f);
         return Radius;
     }
 
     public virtual float GenerateOrbitalPeriod()
     {
-        OrbitalPeriod = Random.Range(0.5f, 1000f); // Measured in Earth days
+        OrbitalPeriod = Random.Range(50.0f, 1000f); // Measured in Earth days
         return OrbitalPeriod;
     }
 
@@ -86,7 +74,7 @@ public class Planet
         FocusPoint = new Vector3(x, 0f, 0f);
         FocusPoint *= 1000;
 
-        return FocusPoint;
+        return FocusPoint / 2;
     }
 
     public virtual float GenerateMass()
@@ -150,21 +138,37 @@ public class Planet
 
     public virtual float GenerateSurfaceTemperature()
     {
-        // account for semi-major axis (average distance planet is from it's host star)
-        // account for rotational period, faster spin = more even surface temps
-        // account for host star luminosity, higer = warmer planet temps
-        // account for planets' albedo (reflectivity), higher = cooler surface temps
-        // account for planets' atmopshere
-        // 
+        // Calculate the greenhouse effect of the atmosphere
+        float greenhouseEffect = 1f;
+        if (HasAtmosphere)
+        {
+            float pressureFactor = Mathf.Clamp01((SurfacePressure - 0.1f) / 99.9f);
+            greenhouseEffect = Mathf.Lerp(1f, 1.5f, pressureFactor);
+        }
 
-        SurfaceTemperature = Random.Range(-500f, 500f); // Measured in Kelvin
+        // Calculate the temperature based on the distance from the star
+        float temperature = (float)SaveManager.instance.activeSave.starTemperature * Mathf.Sqrt(1f / SemiMajorAxis);
+
+        // Calculate the temperature based on the luminosity of the star
+        temperature *= Mathf.Sqrt((float)SaveManager.instance.activeSave.starLuminosity);
+
+        // Calculate the temperature based on the albedo of the planet
+        temperature *= Mathf.Pow(1f - Albedo, 0.25f);
+
+        // Calculate the temperature based on the greenhouse effect of the atmosphere
+        temperature *= greenhouseEffect;
+
+        // Account for the planet's rotational period
+        float dayLengthFactor = Mathf.Lerp(1.2f, 0.8f, Mathf.Clamp01((RotationPeriod - 1f) / 23f));
+        temperature *= dayLengthFactor;
+
+        // Account for the eccentricity of the orbit
+        float eccentricityFactor = Mathf.Lerp(1f, 1.4f, Eccentricity);
+        temperature *= eccentricityFactor;
+
+        SurfaceTemperature = temperature; // Kelvin
+
         return SurfaceTemperature;
-    }
-
-    public virtual bool HasRandomAtmosphere()
-    {
-        HasAtmosphere = Random.value < 0.2f; // 20% chance of having an atmosphere
-        return HasAtmosphere;
     }
 
     public virtual SerializableDictionary<string, float> GenerateAtmosphereComposition()
@@ -221,8 +225,17 @@ public class Planet
 
     public virtual bool IsRandomlyHabitable()
     {
-        IsHabitable = Random.value < 0.2f; // 20% chance of being habitable
-        return IsHabitable;
+        if (HasLiquidWater() == true)
+        {
+            float innerHabZone = SaveManager.instance.activeSave.habitableRangeInner;
+            float outerHabZone = SaveManager.instance.activeSave.habitableRangeOuter;
+
+            if (FocusPoint.x > innerHabZone - (FocusPoint.x * 1 / 2) && FocusPoint.x < outerHabZone + (FocusPoint.x * 1 / 2))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public virtual bool HasRandomRings()
@@ -233,7 +246,9 @@ public class Planet
 
     public virtual float GenerateMeanDensity()
     {
-        MeanDensity = Random.Range(0.5f, 10f); // Measured in grams per cubic centimeter
+        float volume = (4 / 3) * Mathf.PI * Mathf.Pow(Radius, 3);
+        MeanDensity = Mass / volume; // (kg/m³)
+
         return MeanDensity;
     }
 
@@ -241,6 +256,24 @@ public class Planet
     {
         SurfacePressure = Random.Range(0.01f, 100f); // Measured in atmospheres
         return SurfacePressure;
+    }
+
+    public virtual bool HasLiquidWater()
+    {
+        // check if the planet's surface temperature is within the habitable range
+        if (SurfaceTemperature >= 273 && SurfaceTemperature <= 373)
+        {
+            // check if the planet has an atmosphere
+            if (HasAtmosphere)
+            {
+                // check if the atmospheric pressure is within the range required for liquid water
+                if (SurfacePressure >= 0.1f && SurfacePressure <= 100f)
+                {
+                    return true; // planet has liquid water
+                }
+            }
+        }
+        return false; // planet does not have liquid water
     }
 
     public virtual float GenerateSurfaceGravity()

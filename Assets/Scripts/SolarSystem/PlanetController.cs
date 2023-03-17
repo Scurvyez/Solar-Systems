@@ -14,6 +14,7 @@ public class PlanetController : MonoBehaviour
     public float Eccentricity;
     public float SemiMinorAxis;
     public float AxialTilt;
+    public bool IsHabitable;
 
     private float semiMinorAxis;
     private float timeElapsed;

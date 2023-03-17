@@ -25,6 +25,7 @@ public class CelestialGen : MonoBehaviour
 
     public Color starUIColor;
     public Color planetUIColor;
+    public Color planetUIColorHabitable;
     public Color moonUIColor;
 
     public List<GameObject> stars = new();
@@ -80,6 +81,7 @@ public class CelestialGen : MonoBehaviour
             Vector3 pFocusPoint = SaveManager.instance.activeSave.rockyPlanets[i].FocusPoint;
             float pSemiMinorAxis = SaveManager.instance.activeSave.rockyPlanets[i].SemiMinorAxis;
             float pAxialTilt = SaveManager.instance.activeSave.rockyPlanets[i].AxialTilt;
+            bool pIsHabitable = SaveManager.instance.activeSave.rockyPlanets[i].IsHabitable;
             List<Moon> pMoons = SaveManager.instance.activeSave.rockyPlanets[i].Moons;
 
             // Make a rocky planet prefab and set its comps and props
@@ -107,6 +109,7 @@ public class CelestialGen : MonoBehaviour
             planet.GetComponent<PlanetController>().Eccentricity = pEccentricity;
             planet.GetComponent<PlanetController>().SemiMinorAxis = pSemiMinorAxis;
             planet.GetComponent<PlanetController>().AxialTilt = pAxialTilt;
+            planet.GetComponent<PlanetController>().IsHabitable = pIsHabitable;
             planet.GetComponent<PlanetController>().axialTiltMarkerPrefab = axialTiltMarkerPrefab;
             planet.GetComponent<PlanetController>().spinDirectionMarkerPrefab = spinDirectionMarkerPrefab;
 
@@ -115,7 +118,14 @@ public class CelestialGen : MonoBehaviour
             planet.GetComponent<TrailRenderer>().endWidth = 0.0f;
             planet.GetComponent<TrailRenderer>().time = 100.0f;
             planet.GetComponent<TrailRenderer>().material = testMat;
-            planet.GetComponent<TrailRenderer>().startColor = planetUIColor;
+            if (planet.GetComponent<PlanetController>().IsHabitable)
+            {
+                planet.GetComponent<TrailRenderer>().startColor = planetUIColorHabitable;
+            }
+            else
+            {
+                planet.GetComponent<TrailRenderer>().startColor = planetUIColor;
+            }
             planet.GetComponent<TrailRenderer>().endColor = Color.clear;
 
             planets.Add(planet);
@@ -130,7 +140,14 @@ public class CelestialGen : MonoBehaviour
             planetButton.GetComponentInChildren<TextMeshProUGUI>().text = planets[i].name;
             planetButton.GetComponentInChildren<TextMeshProUGUI>().rectTransform.anchoredPosition = new Vector2(0.0f, -25.0f);
             planetButton.GetComponentInChildren<TextMeshProUGUI>().fontSize = 12.0f;
-            planetButton.GetComponentInChildren<TextMeshProUGUI>().color = planetUIColor;
+            if (planets[i].GetComponent<PlanetController>().IsHabitable == true)
+            {
+                planetButton.GetComponentInChildren<TextMeshProUGUI>().color = planetUIColorHabitable;
+            }
+            else
+            {
+                planetButton.GetComponentInChildren<TextMeshProUGUI>().color = planetUIColor;
+            }
 
             planetButton.onClick.AddListener(() => StaticAngledCamera.SetFocus(planetObject));
         }
