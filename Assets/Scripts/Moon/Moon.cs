@@ -21,12 +21,6 @@ public class Moon
 
     public const float GravConstant = 6.674e-11f;
 
-    public virtual string GenerateRandomName()
-    {
-        Name = "Moon " + UnityEngine.Random.Range(1, 1000);
-        return Name;
-    }
-
     public virtual float GenerateMass()
     {
         // Generate a random mass between 0.1 and 10 Earth masses

@@ -7,8 +7,12 @@ public class Planet
     public string Name { get; set; }
     public float Mass { get; set; }
     public float Radius { get; set; }
-    public float OrbitalPeriod { get; set; }
     public float RotationPeriod { get; set; }
+    public float OrbitalPeriod { get; set; }
+    public float SemiMajorAxis { get; set; }
+    public Vector3 FocusPoint { get; set; }
+    public float Eccentricity { get; set; }
+    public float SemiMinorAxis { get; set; }
     public float AxialTilt { get; set; }
     public float SurfaceTemperature { get; set; }
     public bool HasAtmosphere { get; set; }
@@ -20,7 +24,8 @@ public class Planet
     public float EscapeVelocity { get; set; }
     public float Albedo { get; set; }
     public float MagneticFieldStrength { get; set; }
-    //public List<Moon> Moons { get; set; }
+    public SerializableDictionary<string, float> AtmosphereComposition { get; set; }
+    public List<Moon> Moons { get; set; }
 
     public const float GravConstant = 6.674e-11f;
 
@@ -53,26 +58,82 @@ public class Planet
         return false; // planet does not have liquid water
     }
 
-    public virtual float GenerateMass()
-    {
-        // Generate a random mass between 0.1 and 10 Earth masses
-        Mass = Random.Range(0.1f, 10f);
-        return Mass;
-    }
-
     public virtual float GenerateRadius()
     {
         // Generate a random radius between 0.5 and 2.5 Earth radii
-        Radius = Random.Range(0.5f, 2.5f);
+        Radius = Random.Range(0.25f, 5.0f);
         return Radius;
     }
 
-    //private const double SolRadiusM = 6.96342E8; // in m
     public virtual float GenerateOrbitalPeriod()
     {
-        //float minDist = (float)(SaveManager.instance.activeSave.starRadius / SolRadiusM);
-        OrbitalPeriod = Random.Range(25.0f, 10000f); // Measured in Earth days
+        OrbitalPeriod = Random.Range(0.5f, 1000f); // Measured in Earth days
         return OrbitalPeriod;
+    }
+
+    public virtual Vector3 GenerateFocusPoint()
+    {
+        // Define a range of x-coordinates for the second focus point
+        float minDistanceKm = 1000000f; // 1 million km
+        float maxDistanceKm = 500000000f; // 500 million km
+        float minX = minDistanceKm / 149597870.7f; // convert to AU
+        float maxX = maxDistanceKm / 149597870.7f; // convert to AU
+
+        // Generate a random x-coordinate within the range
+        float x = Random.Range(minX, maxX);
+
+        // Construct the second focus point vector
+        FocusPoint = new Vector3(x, 0f, 0f);
+        FocusPoint *= 1000;
+
+        return FocusPoint;
+    }
+
+    public virtual float GenerateMass()
+    {
+        float G = 6.67430e-11f; // gravitational constant
+        float starMass = (float)SaveManager.instance.activeSave.starMass; // solar masses
+
+        // Calculate the mass using the third law of Kepler
+        Mass = 4f * Mathf.Pow(Mathf.PI, 2f) * Mathf.Pow(FocusPoint.x, 3f) / (G * Mathf.Pow(OrbitalPeriod, 2f) * starMass);
+
+        return Mass;
+    }
+
+    public virtual float GenerateSemiMajorAxis()
+    {
+        float G = 6.67430e-11f; // gravitational constant
+        float starMass = (float)SaveManager.instance.activeSave.starMass * (1.98847f * Mathf.Pow(10f, 30f)); // kg
+        float P = OrbitalPeriod * 86400f; // seconds
+        float planetMass = Mass * (1.98847f * Mathf.Pow(10f, 30f)); // kg
+
+        float M = starMass + planetMass; // kg
+        float x = (Mathf.Pow(P, 2) * G * M) / 4 * Mathf.Pow(Mathf.PI, 2);
+        float cubeRoot = Mathf.Pow(x, 1f / 3f);
+        SemiMajorAxis = cubeRoot;
+        SemiMajorAxis /= 149597870700; // convert to AU
+        SemiMajorAxis *= 1000; // world-space factor
+
+        return SemiMajorAxis;
+    }
+
+    public virtual float GenerateEccentricity()
+    {
+        // Get the position of the two foci
+        Vector3 f1 = new Vector3(0f, 0f, 0f);
+        Vector3 f2 = FocusPoint;
+
+        float fociDistance = Vector3.Distance(f1, f2);
+        Eccentricity = fociDistance / (2f * SemiMajorAxis);
+
+        return Eccentricity;
+    }
+
+    public virtual float GenerateSemiMinorAxis()
+    {
+        SemiMinorAxis = SemiMajorAxis * Mathf.Sqrt(1 - Mathf.Pow(Eccentricity, 2));
+
+        return SemiMinorAxis;
     }
 
     public virtual float GenerateRotationPeriod()
@@ -89,14 +150,73 @@ public class Planet
 
     public virtual float GenerateSurfaceTemperature()
     {
+        // account for semi-major axis (average distance planet is from it's host star)
+        // account for rotational period, faster spin = more even surface temps
+        // account for host star luminosity, higer = warmer planet temps
+        // account for planets' albedo (reflectivity), higher = cooler surface temps
+        // account for planets' atmopshere
+        // 
+
         SurfaceTemperature = Random.Range(-500f, 500f); // Measured in Kelvin
         return SurfaceTemperature;
     }
 
     public virtual bool HasRandomAtmosphere()
     {
-        HasAtmosphere = Random.value < 0.5f; // 50% chance of having an atmosphere
+        HasAtmosphere = Random.value < 0.2f; // 20% chance of having an atmosphere
         return HasAtmosphere;
+    }
+
+    public virtual SerializableDictionary<string, float> GenerateAtmosphereComposition()
+    {
+        // initialize the Dict
+        AtmosphereComposition = new ();
+        if (!HasAtmosphere)
+        {
+            return AtmosphereComposition;
+        }
+
+        float total = 0f;
+        float minDistance = SaveManager.instance.activeSave.habitableRangeInner;
+        float maxDistance = SaveManager.instance.activeSave.habitableRangeOuter;
+        float distanceFactor = Mathf.Clamp01(((SemiMajorAxis / 1000f) - minDistance) / (maxDistance - minDistance));
+
+        // Define the probabilities of each element
+        // based on planets' surface temperature, distance from host star
+        float oxygenProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (100f * distanceFactor)));
+        float nitrogenProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (200f * distanceFactor)));
+        float carbonDioxideProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (100f * distanceFactor)));
+        float methaneProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (150f * distanceFactor)));
+        float hydrogenProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (200f * distanceFactor)));
+        float heliumProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (150f * distanceFactor)));
+        float neonProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (200f * distanceFactor)));
+        float argonProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (100f * distanceFactor)));
+        float kryptonProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (200f * distanceFactor)));
+        float xenonProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (300f * distanceFactor)));
+        float sulfurDioxideProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (100f * distanceFactor)));
+        float nitrogenOxidesProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (150f * distanceFactor)));
+        float ozoneProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (150f * distanceFactor)));
+        float waterVaporProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (100f * distanceFactor)));
+
+        total = oxygenProb + nitrogenProb + carbonDioxideProb + methaneProb + hydrogenProb + heliumProb + neonProb + 
+            argonProb + kryptonProb + xenonProb + sulfurDioxideProb + nitrogenOxidesProb + ozoneProb + waterVaporProb;
+
+        AtmosphereComposition.Add("Oxygen", oxygenProb / total);
+        AtmosphereComposition.Add("Nitrogen", nitrogenProb / total);
+        AtmosphereComposition.Add("Carbon Dioxide", carbonDioxideProb / total);
+        AtmosphereComposition.Add("Methane", methaneProb / total);
+        AtmosphereComposition.Add("Hydrogen", hydrogenProb / total);
+        AtmosphereComposition.Add("Helium", heliumProb / total);
+        AtmosphereComposition.Add("Neon", neonProb / total);
+        AtmosphereComposition.Add("Argon", argonProb / total);
+        AtmosphereComposition.Add("Krypton", kryptonProb / total);
+        AtmosphereComposition.Add("Xenon", xenonProb / total);
+        AtmosphereComposition.Add("Sulfur Dioxide", sulfurDioxideProb / total);
+        AtmosphereComposition.Add("Nitrogen Oxides", nitrogenOxidesProb / total);
+        AtmosphereComposition.Add("Ozone", ozoneProb / total);
+        AtmosphereComposition.Add("Water Vapor", waterVaporProb / total);
+
+        return AtmosphereComposition;
     }
 
     public virtual bool IsRandomlyHabitable()
@@ -137,26 +257,28 @@ public class Planet
 
     public virtual float GenerateAlbedo()
     {
-        Albedo = UnityEngine.Random.Range(0.1f, 0.9f); // a random value between 0.1 and 0.9
+        Albedo = Random.Range(0.1f, 0.9f); // a random value between 0.1 and 0.9
         return Albedo;
     }
 
     public virtual float GenerateMagneticFieldStrength()
     {
-        MagneticFieldStrength = UnityEngine.Random.Range(0f, 100f); // a random value between 0 and 100 Gauss
+        MagneticFieldStrength = Random.Range(0f, 100f); // a random value between 0 and 100 Gauss
         return MagneticFieldStrength;
     }
 
-    /*
     public virtual List<Moon> GenerateMoons()
     {
+        // Initialize the Moons list
+        Moons = new ();
+
         // generate a random number of moons between 0 and 5
         int numMoons = Random.Range(0, 5);
 
         for (int i = 0; i < numMoons; i++)
         {
             Moon moon = new ();
-            moon.GenerateRandomName();
+            moon.Name = Name;
             moon.GenerateMass();
             moon.GenerateRadius();
             moon.GenerateOrbitalPeriod();
@@ -174,5 +296,4 @@ public class Planet
 
         return Moons;
     }
-    */
 }

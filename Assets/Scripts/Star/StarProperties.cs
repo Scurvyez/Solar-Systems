@@ -20,11 +20,15 @@ public class StarProperties : MonoBehaviour
     public Color CellColor { get; set; }
     public double Variability { get; set; }
     public Vector3 Size { get; set; }
+    public float HabitableRangeInner { get; set; }
+    public float HabitableRangeOuter { get; set; }
 
     private const double SolLuminosity = 3.846e26; // in watts
     private const double SolMassKG = 1.9881e30; // in kg
     private const double SolRadiusM = 6.96342E8; // in m
     private const double StefanBoltzmannConstant = 5.670373E-8;
+    private const float solLuminosity = 3.828f;
+    private const float solEffTemperature = 5780.0f;
 
     public bool ExtrinsicVariability;
     public bool IntrinsicVariability;
@@ -41,20 +45,6 @@ public class StarProperties : MonoBehaviour
 
     // Random number generator
     private System.Random nameGenRandom = new ();
-
-    /*
-    public StarProperties instance;
-
-    private void Awake()
-    {
-        instance = this;
-    }
-    */
-
-    void Start()
-    {
-        
-    }
 
     /// <summary>
     /// Chooses between 2 available naming methods.
@@ -322,7 +312,7 @@ public class StarProperties : MonoBehaviour
             Chromaticity.a);
         return CellColor;
     }
-    
+
     /// <summary>
     /// Generates variability values for the star.
     /// Rolls to see if star will have variability at all.
@@ -442,5 +432,45 @@ public class StarProperties : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    public float GenerateHabitableRangeInner(SpectralType spectralType)
+    {
+        float zoneInner = spectralType switch
+        {
+            SpectralType.O => 0.0f,
+            SpectralType.B => 2.2f,
+            SpectralType.A => 1.6f,
+            SpectralType.F => 1.1f,
+            SpectralType.G => 0.95f,
+            SpectralType.K => 0.37f,
+            SpectralType.M => 0.08f,
+            _ => 0.0f,
+        };
+
+        // Calculate the inner habitable zone boundary
+        HabitableRangeInner = Mathf.Sqrt((float)Luminosity / solLuminosity) * Mathf.Sqrt(solEffTemperature / (float)Temperature) * (zoneInner * 1000.0f);
+
+        return HabitableRangeInner;
+    }
+
+    public float GenerateHabitableRangeOuter(SpectralType spectralType)
+    {
+        float zoneOuter = spectralType switch
+        {
+            SpectralType.O => 0.0f,
+            SpectralType.B => 15.0f,
+            SpectralType.A => 3.0f,
+            SpectralType.F => 1.5f,
+            SpectralType.G => 1.4f,
+            SpectralType.K => 0.73f,
+            SpectralType.M => 0.24f,
+            _ => 0.0f,
+        };
+
+        // Calculate the outer habitable zone boundary
+        HabitableRangeOuter = Mathf.Sqrt((float)Luminosity / solLuminosity) * Mathf.Sqrt(solEffTemperature / (float)Temperature) * (zoneOuter * 1000.0f);
+
+        return HabitableRangeOuter;
     }
 }

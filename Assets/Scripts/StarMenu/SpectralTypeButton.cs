@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using System;
+using System.Text;
 using Random = UnityEngine.Random;
 
 public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
@@ -22,12 +23,10 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
     private bool IsMouseOver = false;
     private float ScaleLerpSpeed = 0.025f;
     public string starClass;
+    private RomanNumConverter romanNumConverter;
 
     // Create a list to store all the generated rocky planets
     public List<RockyPlanet> planets = new ();
-
-    // Create a list to store all the generated moons
-    public List<Moon> moons = new();
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -67,10 +66,10 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     public void Start()
     {
+        romanNumConverter = new ();
         Button.onClick.AddListener(PlaySound);
         Button.onClick.AddListener(GenerateStar);
         Button.onClick.AddListener(GeneratePlanets);
-        Button.onClick.AddListener(GenerateMoons);
     }
 
     private void PlaySound()
@@ -111,6 +110,8 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
             StarProperties.IntrinsicVariability = SaveManager.instance.activeSave.hasIntrinsicVariability;
             StarProperties.Variability = SaveManager.instance.activeSave.starVariability;
             distanceToStarFromEarth = SaveManager.instance.activeSave.starDistance;
+            StarProperties.HabitableRangeInner = SaveManager.instance.activeSave.habitableRangeInner;
+            StarProperties.HabitableRangeOuter = SaveManager.instance.activeSave.habitableRangeOuter;
 
             StarProperties.Metallicity = SaveManager.instance.activeSave.starMetallicity;
         }
@@ -133,6 +134,8 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
             SaveManager.instance.activeSave.hasIntrinsicVariability = StarProperties.IntrinsicVariability;
             SaveManager.instance.activeSave.starVariability = StarProperties.Variability;
             SaveManager.instance.activeSave.starDistance = distanceToStarFromEarth;
+            SaveManager.instance.activeSave.habitableRangeInner = StarProperties.HabitableRangeInner;
+            SaveManager.instance.activeSave.habitableRangeOuter = StarProperties.HabitableRangeOuter;
 
             SaveManager.instance.activeSave.starMetallicity = StarProperties.Metallicity;
         }
@@ -159,23 +162,6 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
         else
         {
             SaveManager.instance.activeSave.rockyPlanets = planets;
-        }
-    }
-
-    private void GenerateMoons()
-    {
-        GrabFinalizedMoonData();
-
-        if (SaveManager.instance.hasLoaded)
-        {
-            for (int i = 0; i < SaveManager.instance.activeSave.moons.Count; i++)
-            {
-                moons = SaveManager.instance.activeSave.moons;
-            }
-        }
-        else
-        {
-            SaveManager.instance.activeSave.moons = moons;
         }
     }
 
@@ -227,6 +213,8 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
         StarProperties.GenerateChromaticity(spectralType);
         StarProperties.RandomCellColorGenerator();
         StarProperties.GenerateIntrinsicVariability(spectralType);
+        StarProperties.GenerateHabitableRangeInner(spectralType);
+        StarProperties.GenerateHabitableRangeOuter(spectralType);
     }
 
     private void GrabFinalizedPlanetData()
@@ -237,9 +225,14 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
         {
             // create a new rocky planet object
             RockyPlanet p = new();
+            p.Name = StarProperties.SystemName + "-" + romanNumConverter.ToRomanNumeral(i + 1);
+            p.GenerateOrbitalPeriod();
+            p.GenerateFocusPoint();
             p.GenerateMass();
             p.GenerateRadius();
-            p.GenerateOrbitalPeriod();
+            p.GenerateSemiMajorAxis();
+            p.GenerateEccentricity();
+            p.GenerateSemiMinorAxis();
             p.GenerateRotationPeriod();
             p.GenerateAxialTilt();
             p.GenerateSurfaceTemperature();
@@ -252,32 +245,9 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
             p.GenerateEscapeVelocity();
             p.GenerateAlbedo();
             p.GenerateMagneticFieldStrength();
+            p.GenerateAtmosphereComposition();
+            p.GenerateMoons();
             planets.Add(p);
-        }
-    }
-
-    private void GrabFinalizedMoonData()
-    {
-        // generate a random number of moons between 0 and 5
-        int numMoons = Random.Range(0, 5);
-
-        for (int i = 0; i < numMoons; i++)
-        {
-            Moon m = new();
-            m.GenerateRandomName();
-            m.GenerateMass();
-            m.GenerateRadius();
-            m.GenerateOrbitalPeriod();
-            m.GenerateRotationPeriod();
-            m.GenerateAxialTilt();
-            m.GenerateSurfaceTemperature();
-            m.HasRandomAtmosphere();
-            m.IsRandomlyHabitable();
-            m.GenerateMeanDensity();
-            m.GenerateSurfaceGravity();
-            m.GenerateEscapeVelocity();
-            m.GenerateAlbedo();
-            moons.Add(m);
         }
     }
 }

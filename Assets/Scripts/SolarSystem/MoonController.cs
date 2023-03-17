@@ -47,12 +47,8 @@ public class MoonController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Rotate the planet around its own axis
+        // Rotate the moon around its own axis
         // Offset RotationPeriod by 99.5%
         transform.Rotate(Vector3.up, Time.deltaTime * RotationPeriod);
-
-        // Rotate the planet around the star
-        // Offset OrbitalPeriod by 99.5%
-        //transform.RotateAround(planetPrefab.transform.position, Vector3.up, Time.deltaTime * (OrbitalPeriod * 0.005f));
     }
 }

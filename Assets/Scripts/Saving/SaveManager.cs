@@ -100,6 +100,8 @@ public class SystemSaveData
     public bool hasExtrinsicVariability;                            // is extrinsic?
     public double starVariability;                                  // variability
     public double starDistance;                                     // distance from Earth
+    public float habitableRangeInner;                               // inner hab zone boundary
+    public float habitableRangeOuter;                               // outer hab zone boundary
 
     public Vector3 starSize;                                        // scale
     public Color starChromaticity;                                  // primary color (surface)
@@ -111,8 +113,4 @@ public class SystemSaveData
     // PLANET DATA: start
     public List<RockyPlanet> rockyPlanets;
     // PLANET DATA: end
-
-    // MOON DATA: start
-    public List<Moon> moons;
-    // MOON DATA: end
 }

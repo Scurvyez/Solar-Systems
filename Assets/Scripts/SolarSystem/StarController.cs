@@ -6,8 +6,10 @@ public class StarController : MonoBehaviour
 {
     public SaveManager SaveManager;
 
+    public string StarClass;
     public double StarMass;
     public double StarRadius;
+    public float newStarRadius;
     public double StarRotation;
     public double starMagneticField;
     public double variability;
@@ -26,6 +28,9 @@ public class StarController : MonoBehaviour
 
     void Start()
     {
+        // grab the stars' class
+        StarClass = SaveManager.instance.activeSave.starClassAsString;
+
         // grab the saved mass value of our generated star
         StarMass = SaveManager.instance.activeSave.starMass;
         // grab the objects' RigidBody component
@@ -35,6 +40,8 @@ public class StarController : MonoBehaviour
 
         // grab the generated radius for the star
         StarRadius = SaveManager.instance.activeSave.starRadius / SolRadii;
+        newStarRadius = SetStarScale(StarClass);
+        transform.localScale = new Vector3(newStarRadius, newStarRadius, newStarRadius);
 
         // grab the saved rotation (on own axis) value for our generated star
         StarRotation = SaveManager.instance.activeSave.starRotation;
@@ -89,5 +96,21 @@ public class StarController : MonoBehaviour
             _startVariability = _endVariability;
             _endVariability = temp;
         }
+    }
+
+    public float SetStarScale(string StarClass)
+    {
+        newStarRadius = StarClass switch
+        {
+            "O" => 100.0f,
+            "B" => 85.0f,
+            "A" => 56.0f,
+            "F" => 55.0f,
+            "G" => 45.0f,
+            "K" => 35.0f,
+            "M" => 25.0f,
+            _ => newStarRadius,
+        };
+        return newStarRadius;
     }
 }

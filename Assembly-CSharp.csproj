@@ -65,10 +65,13 @@
     <Compile Include="Assets\Scripts\Star\StarDistance.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
+    <Compile Include="Assets\Scripts\SolarSystem\GameSpeedController.cs" />
+    <Compile Include="Assets\Scripts\Utils\RomanNumConverter.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
     <Compile Include="Assets\Scripts\SolarSystem\CelestialGen.cs" />
     <Compile Include="Assets\Scripts\Star\StarFlux.cs" />
+    <Compile Include="Assets\Scripts\SolarSystem\ExpandingButton.cs" />
     <Compile Include="Assets\Scripts\SolarSystem\HabitableZoneDisplay.cs" />
     <Compile Include="Assets\Scripts\MainMenu\MenuButton.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
@@ -103,6 +106,7 @@
     <Compile Include="Assets\Scripts\Star\StarMass.cs" />
     <Compile Include="Assets\Scripts\MainMenu\MainMenu.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
+    <Compile Include="Assets\Scripts\SolarSystem\MoonController.cs" />
     <Compile Include="Assets\Scripts\SolarSystem\SelectableObject.cs" />
     <Compile Include="Assets\Scripts\SolarSystem\PlanetController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
@@ -110,6 +114,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
     <Compile Include="Assets\Scripts\Star\StarMagnitude.cs" />
+    <Compile Include="Assets\Scripts\SolarSystem\EllipseCalculator.cs" />
     <Compile Include="Assets\Scripts\StarSystemData\StarAmbientVolumeScaler.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
     <Compile Include="Assets\Scripts\Cameras\MouseLook.cs" />
@@ -120,9 +125,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\Scripts\SolarSystem\SystemStarData.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
-    <Compile Include="Assets\Scripts\SolarSystem\GameSpeedController.cs" />
-    <Compile Include="Assets\Scripts\SolarSystem\MoonController.cs" />
-    <Compile Include="Assets\Scripts\SolarSystem\ExpandingButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
