@@ -48,7 +48,9 @@ public class MoonController : MonoBehaviour
     void Update()
     {
         // Rotate the moon around its own axis
-        // Offset RotationPeriod by 99.5%
         transform.Rotate(Vector3.up, Time.deltaTime * RotationPeriod);
+
+        // Rotate around the parent planet
+        //transform.RotateAround(transform.parent.position, Vector3.up, Time.deltaTime * OrbitalPeriod);
     }
 }

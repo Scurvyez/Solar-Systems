@@ -20,8 +20,8 @@ public class CelestialGen : MonoBehaviour
     public Button planetButtonPrefab;
     public Button moonButtonPrefab;
 
-    private float minDistance = 1.0f;
-    private float maxDistance = 5.75f;
+    private float minDistance = 2.75f;
+    private float maxDistance = 9.25f;
 
     public Color starUIColor;
     public Color planetUIColor;
@@ -114,7 +114,7 @@ public class CelestialGen : MonoBehaviour
             planet.GetComponent<PlanetController>().spinDirectionMarkerPrefab = spinDirectionMarkerPrefab;
 
             // Trail Renderer
-            planet.GetComponent<TrailRenderer>().startWidth = 30.0f;
+            planet.GetComponent<TrailRenderer>().startWidth = 15.0f;
             planet.GetComponent<TrailRenderer>().endWidth = 0.0f;
             planet.GetComponent<TrailRenderer>().time = 100.0f;
             planet.GetComponent<TrailRenderer>().material = testMat;

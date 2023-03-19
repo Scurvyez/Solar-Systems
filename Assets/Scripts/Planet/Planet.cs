@@ -24,9 +24,10 @@ public class Planet
     public float EscapeVelocity { get; set; }
     public float Albedo { get; set; }
     public float MagneticFieldStrength { get; set; }
+    public SerializableDictionary<string, float> Composition { get; set; }
     public SerializableDictionary<string, float> AtmosphereComposition { get; set; }
     public List<Moon> Moons { get; set; }
-
+    
     public const float GravConstant = 6.674e-11f;
 
     public virtual bool HasRandomAtmosphere()
@@ -62,7 +63,7 @@ public class Planet
     public virtual Vector3 GenerateFocusPoint()
     {
         // Define a range of x-coordinates for the second focus point
-        float minDistanceKm = 1000000f; // 1 million km
+        float minDistanceKm = 800000f; // 800 K km
         float maxDistanceKm = 500000000f; // 500 million km
         float minX = minDistanceKm / 149597870.7f; // convert to AU
         float maxX = maxDistanceKm / 149597870.7f; // convert to AU
@@ -79,28 +80,41 @@ public class Planet
 
     public virtual float GenerateMass()
     {
-        float G = 6.67430e-11f; // gravitational constant
         float starMass = (float)SaveManager.instance.activeSave.starMass; // solar masses
 
         // Calculate the mass using the third law of Kepler
-        Mass = 4f * Mathf.Pow(Mathf.PI, 2f) * Mathf.Pow(FocusPoint.x, 3f) / (G * Mathf.Pow(OrbitalPeriod, 2f) * starMass);
+        Mass = 4f * Mathf.Pow(Mathf.PI, 2f) * Mathf.Pow(FocusPoint.x, 3f) / (GravConstant * Mathf.Pow(OrbitalPeriod, 2f) * starMass);
 
         return Mass;
     }
 
     public virtual float GenerateSemiMajorAxis()
     {
-        float G = 6.67430e-11f; // gravitational constant
+        string starClass = SaveManager.instance.activeSave.starClassAsString;
         float starMass = (float)SaveManager.instance.activeSave.starMass * (1.98847f * Mathf.Pow(10f, 30f)); // kg
         float P = OrbitalPeriod * 86400f; // seconds
-        float planetMass = Mass * (1.98847f * Mathf.Pow(10f, 30f)); // kg
+        float planetMass = Mass; // kg
 
         float M = starMass + planetMass; // kg
-        float x = (Mathf.Pow(P, 2) * G * M) / 4 * Mathf.Pow(Mathf.PI, 2);
+        M /= 1.9885e+30f;
+        float x = (Mathf.Pow(P, 2) * GravConstant * M) / 4 * Mathf.Pow(Mathf.PI, 2);
         float cubeRoot = Mathf.Pow(x, 1f / 3f);
         SemiMajorAxis = cubeRoot;
-        SemiMajorAxis /= 149597870700; // convert to AU
-        SemiMajorAxis *= 1000; // world-space factor
+
+        float scalingFactor = 0;
+        scalingFactor = starClass switch
+        {
+            "O" => 2,
+            "B" => 25,
+            "A" => 50,
+            "F" => 100,
+            "G" => 100,
+            "K" => 100,
+            "M" => 100,
+            _ => scalingFactor,
+        };
+
+        SemiMajorAxis *= scalingFactor; // world-space factor
 
         return SemiMajorAxis;
     }
@@ -113,6 +127,10 @@ public class Planet
 
         float fociDistance = Vector3.Distance(f1, f2);
         Eccentricity = fociDistance / (2f * SemiMajorAxis);
+        if (Eccentricity > 0.99f)
+        {
+            Eccentricity = 0.99f;
+        }
 
         return Eccentricity;
     }
@@ -169,6 +187,13 @@ public class Planet
         SurfaceTemperature = temperature; // Kelvin
 
         return SurfaceTemperature;
+    }
+
+    public virtual SerializableDictionary<string, float> GenerateComposition()
+    {
+        // initialize the Dict
+        Composition = new ();
+        return Composition;
     }
 
     public virtual SerializableDictionary<string, float> GenerateAtmosphereComposition()

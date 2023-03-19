@@ -81,6 +81,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
     <Compile Include="Assets\Scripts\Saving\SerializableDictionary.cs" />
+    <Compile Include="Assets\Scripts\Utils\AtomicMass.cs" />
     <Compile Include="Assets\Scripts\StarMenu\SpectralTypeButton.cs" />
     <Compile Include="Assets\Scripts\Moon\Moon.cs" />
     <Compile Include="Assets\Scripts\Star\StarLuminosity.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Assets\Scripts\Planet\Planet.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
+    <Compile Include="Assets\Scripts\Planet\GasGiant.cs" />
     <Compile Include="Assets\Scripts\SolarSystem\StarController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
     <Compile Include="Assets\Scripts\SolarSystem\Gravity.cs" />
@@ -124,7 +126,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\Scripts\SolarSystem\SystemStarData.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
-    <Compile Include="Assets\Scripts\Planet\GasGiant.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

@@ -227,9 +227,11 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
             RockyPlanet p = new();
             p.Name = StarProperties.SystemName + "-" + romanNumConverter.ToRomanNumeral(i + 1);
             p.GenerateOrbitalPeriod();
-            p.GenerateFocusPoint();
-            p.GenerateMass();
             p.GenerateRadius();
+            p.GenerateFocusPoint();
+            p.GenerateComposition();
+            p.GenerateMeanDensity();
+            p.GenerateMass();
             p.GenerateSemiMajorAxis();
             p.GenerateEccentricity();
             p.GenerateSemiMinorAxis();
@@ -237,7 +239,6 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
             p.GenerateAxialTilt();
             p.HasRandomAtmosphere();
             p.HasRandomRings();
-            p.GenerateMeanDensity();
             p.GenerateSurfacePressure();
             p.GenerateSurfaceGravity();
             p.GenerateEscapeVelocity();

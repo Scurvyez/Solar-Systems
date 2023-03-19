@@ -18,7 +18,7 @@ public class GameSpeedController : MonoBehaviour
             "Normal" => 1f,
             "Fast" => 1.5f,
             "Double" => 2f,
-            "Warp Speed" => 10.0f,
+            "Warp Speed" => 50.0f,
             _ => throw new System.ArgumentException($"Unknown speed name '{button.name}'")
         };
         Time.timeScale = speed;

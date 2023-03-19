@@ -368,72 +368,75 @@ public class StarProperties : MonoBehaviour
         switch (spectralType)
         {
             case SpectralType.O:
-                Metallicity.Add("Hydrogen", Random.Range(74f, 76f));
-                Metallicity.Add("Helium", Random.Range(24f, 26f));
+                Metallicity.Add("H", Random.Range(74f, 76f));
+                Metallicity.Add("He", Random.Range(24f, 26f));
                 break;
             case SpectralType.B:
-                Metallicity.Add("Hydrogen", Random.Range(58f, 70f));
-                Metallicity.Add("Helium", Random.Range(28f, 42f));
-                Metallicity.Add("Carbon", Random.Range(0.1f, 2f));
-                Metallicity.Add("Nitrogen", Random.Range(0.1f, 2f));
-                Metallicity.Add("Oxygen", Random.Range(0.1f, 2f));
+                Metallicity.Add("H", Random.Range(58f, 70f));
+                Metallicity.Add("He", Random.Range(28f, 42f));
+                Metallicity.Add("C", Random.Range(0.1f, 2f));
+                Metallicity.Add("N", Random.Range(0.1f, 2f));
+                Metallicity.Add("O", Random.Range(0.1f, 2f));
                 break;
             case SpectralType.A:
-                Metallicity.Add("Hydrogen", Random.Range(71f, 74f));
-                Metallicity.Add("Helium", Random.Range(25f, 28f));
-                Metallicity.Add("Carbon", Random.Range(0.1f, 2f));
-                Metallicity.Add("Nitrogen", Random.Range(0.1f, 2f));
-                Metallicity.Add("Oxygen", Random.Range(0.1f, 2f));
-                Metallicity.Add("Neon", Random.Range(0.1f, 2f));
+                Metallicity.Add("H", Random.Range(71f, 74f));
+                Metallicity.Add("He", Random.Range(25f, 28f));
+                Metallicity.Add("C", Random.Range(0.1f, 2f));
+                Metallicity.Add("N", Random.Range(0.1f, 2f));
+                Metallicity.Add("O", Random.Range(0.1f, 2f));
+                Metallicity.Add("Ne", Random.Range(0.1f, 2f));
                 break;
             case SpectralType.F:
-                Metallicity.Add("Hydrogen", Random.Range(54f, 64f));
-                Metallicity.Add("Helium", Random.Range(35f, 45f));
-                Metallicity.Add("Carbon", Random.Range(0.1f, 2f));
-                Metallicity.Add("Nitrogen", Random.Range(0.1f, 2f));
-                Metallicity.Add("Oxygen", Random.Range(0.1f, 2f));
-                Metallicity.Add("Neon", Random.Range(0.1f, 2f));
-                Metallicity.Add("Iron", Random.Range(0.1f, 2f));
+                Metallicity.Add("H", Random.Range(54f, 64f));
+                Metallicity.Add("He", Random.Range(35f, 45f));
+                Metallicity.Add("C", Random.Range(0.1f, 2f));
+                Metallicity.Add("N", Random.Range(0.1f, 2f));
+                Metallicity.Add("O", Random.Range(0.1f, 2f));
+                Metallicity.Add("Ne", Random.Range(0.1f, 2f));
+                Metallicity.Add("Fe", Random.Range(0.1f, 2f));
                 break;
             case SpectralType.G:
-                Metallicity.Add("Hydrogen", Random.Range(74f, 84f));
-                Metallicity.Add("Helium", Random.Range(14f, 24f));
-                Metallicity.Add("Carbon", Random.Range(0.1f, 2f));
-                Metallicity.Add("Nitrogen", Random.Range(0.1f, 2f));
-                Metallicity.Add("Oxygen", Random.Range(0.1f, 2f));
-                Metallicity.Add("Neon", Random.Range(0.1f, 2f));
-                Metallicity.Add("Iron", Random.Range(0.1f, 2f));
+                Metallicity.Add("H", Random.Range(74f, 84f));
+                Metallicity.Add("He", Random.Range(14f, 24f));
+                Metallicity.Add("C", Random.Range(0.1f, 2f));
+                Metallicity.Add("N", Random.Range(0.1f, 2f));
+                Metallicity.Add("O", Random.Range(0.1f, 2f));
+                Metallicity.Add("Ne", Random.Range(0.1f, 2f));
+                Metallicity.Add("Fe", Random.Range(0.1f, 2f));
                 break;
             case SpectralType.K:
-                Metallicity.Add("Hydrogen", Random.Range(56f, 64f));
-                Metallicity.Add("Helium", Random.Range(36f, 44f));
-                Metallicity.Add("Carbon", Random.Range(0.1f, 2f));
-                Metallicity.Add("Nitrogen", Random.Range(0.1f, 2f));
-                Metallicity.Add("Oxygen", Random.Range(0.1f, 2f));
-                Metallicity.Add("Neon", Random.Range(0.1f, 2f));
-                Metallicity.Add("Iron", Random.Range(0.1f, 2f));
-                Metallicity.Add("Silicon", Random.Range(0.1f, 2f));
-                Metallicity.Add("Magnesium", Random.Range(0.1f, 2f));
+                Metallicity.Add("H", Random.Range(56f, 64f));
+                Metallicity.Add("He", Random.Range(36f, 44f));
+                Metallicity.Add("C", Random.Range(0.1f, 2f));
+                Metallicity.Add("N", Random.Range(0.1f, 2f));
+                Metallicity.Add("O", Random.Range(0.1f, 2f));
+                Metallicity.Add("Ne", Random.Range(0.1f, 2f));
+                Metallicity.Add("Fe", Random.Range(0.1f, 2f));
+                Metallicity.Add("Si", Random.Range(0.1f, 2f));
+                Metallicity.Add("Mg", Random.Range(0.1f, 2f));
                 break;
             case SpectralType.M:
-                Metallicity.Add("Hydrogen", Random.Range(36f, 56f));
-                Metallicity.Add("Helium", Random.Range(44f, 64f));
-                Metallicity.Add("Carbon", Random.Range(0.1f, 2f));
-                Metallicity.Add("Nitrogen", Random.Range(0.1f, 2f));
-                Metallicity.Add("Oxygen", Random.Range(0.1f, 2f));
-                Metallicity.Add("Neon", Random.Range(0.1f, 2f));
-                Metallicity.Add("Iron", Random.Range(0.1f, 2f));
-                Metallicity.Add("Silicon", Random.Range(0.1f, 2f));
-                Metallicity.Add("Magnesium", Random.Range(0.1f, 2f));
-                Metallicity.Add("Sulfur", Random.Range(0.1f, 2f));
-                Metallicity.Add("Chlorine", Random.Range(0.1f, 2f));
-                Metallicity.Add("Potassium", Random.Range(0.1f, 2f));
+                Metallicity.Add("H", Random.Range(36f, 56f));
+                Metallicity.Add("He", Random.Range(44f, 64f));
+                Metallicity.Add("C", Random.Range(0.1f, 2f));
+                Metallicity.Add("N", Random.Range(0.1f, 2f));
+                Metallicity.Add("O", Random.Range(0.1f, 2f));
+                Metallicity.Add("Ne", Random.Range(0.1f, 2f));
+                Metallicity.Add("Fe", Random.Range(0.1f, 2f));
+                Metallicity.Add("Si", Random.Range(0.1f, 2f));
+                Metallicity.Add("Mg", Random.Range(0.1f, 2f));
+                Metallicity.Add("S", Random.Range(0.1f, 2f));
+                Metallicity.Add("Cl", Random.Range(0.1f, 2f));
+                Metallicity.Add("K", Random.Range(0.1f, 2f));
                 break;
             default:
                 break;
         }
     }
 
+    /// <summary>
+    /// Generates the inner boundary for a stars' habitable zone.
+    /// </summary>
     public float GenerateHabitableRangeInner(SpectralType spectralType)
     {
         float zoneInner = spectralType switch
@@ -454,6 +457,9 @@ public class StarProperties : MonoBehaviour
         return HabitableRangeInner;
     }
 
+    /// <summary>
+    /// Generates the outer boundary for a stars' habitable zone.
+    /// </summary>
     public float GenerateHabitableRangeOuter(SpectralType spectralType)
     {
         float zoneOuter = spectralType switch
