@@ -219,36 +219,36 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     private void GrabFinalizedPlanetData()
     {
-        int numPlanets = Random.Range(1, 20); // generate a random number of planets between 1 and 10
+        int numPlanets = Random.Range(1, 13); // generate a random number of planets between 1 and 10
 
         for (int i = 0; i < numPlanets; i++)
         {
             // create a new rocky planet object
             RockyPlanet p = new();
             p.Name = StarProperties.SystemName + "-" + romanNumConverter.ToRomanNumeral(i + 1);
-            p.GenerateOrbitalPeriod();
-            p.GenerateRadius();
-            p.GenerateFocusPoint();
-            p.GenerateComposition();
-            p.GenerateMeanDensity();
-            p.GenerateMass();
-            p.GenerateSemiMajorAxis();
-            p.GenerateEccentricity();
-            p.GenerateSemiMinorAxis();
-            p.GenerateRotationPeriod();
-            p.GenerateAxialTilt();
-            p.HasRandomAtmosphere();
-            p.HasRandomRings();
-            p.GenerateSurfacePressure();
-            p.GenerateSurfaceGravity();
-            p.GenerateEscapeVelocity();
-            p.GenerateAlbedo();
-            p.GenerateMagneticFieldStrength();
-            p.GenerateAtmosphereComposition();
-            p.GenerateSurfaceTemperature();
-            p.HasLiquidWater();
-            p.IsRandomlyHabitable();
-            p.GenerateMoons();
+            p.GenerateOrbitalPeriod();          // no args
+            p.GenerateRadius();                 // no args
+            p.GenerateFocusPoint();             // no args
+            p.GenerateComposition();            // no args
+            p.GenerateAlbedo();                 // no args
+            p.GenerateMagneticFieldStrength();  // no args
+            p.GenerateRotationPeriod();         // no args
+            p.GenerateAxialTilt();              // no args
+            p.HasRandomAtmosphere();            // no args
+            p.HasRandomRings();                 // no args
+            p.GenerateSurfacePressure();        // no args
+            p.GenerateMeanDensity();            // Composition, Radius
+            p.GenerateMass();                   // MeanDensity, Radius
+            p.GenerateSemiMajorAxis();          // OrbitalPeriod, Mass
+            p.GenerateEccentricity();           // FocusPoint, SemiMajorAxis
+            p.GenerateSemiMinorAxis();          // SemiMajorAxis, Eccentricity
+            p.GenerateSurfaceGravity();         // Mass, Radius
+            p.GenerateEscapeVelocity();         // Mass, Radius
+            p.GenerateSurfaceTemperature();     // HasAtmosphere, SurfacePressure, SemiMajorAxis, Albedo, RotationPeriod, Eccentricity
+            p.HasLiquidWater();                 // SurfaceTemperature, HasAtmosphere, SurfacePressure
+            p.GenerateAtmosphereComposition();  // HasAtmosphere, SemiMajorAxis, SurfaceTemperature
+            p.IsRandomlyHabitable();            // FocusPoint, HasLiquidWater()
+            p.GenerateMoons();                  // no args
             planets.Add(p);
         }
     }

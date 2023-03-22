@@ -73,7 +73,7 @@ public class Planet
 
         // Construct the second focus point vector
         FocusPoint = new Vector3(x, 0f, 0f);
-        FocusPoint *= 1000;
+        FocusPoint *= 1000; // world-space factor
 
         return FocusPoint / 2;
     }
@@ -230,20 +230,20 @@ public class Planet
         total = oxygenProb + nitrogenProb + carbonDioxideProb + methaneProb + hydrogenProb + heliumProb + neonProb + 
             argonProb + kryptonProb + xenonProb + sulfurDioxideProb + nitrogenOxidesProb + ozoneProb + waterVaporProb;
 
-        AtmosphereComposition.Add("Oxygen", oxygenProb / total);
-        AtmosphereComposition.Add("Nitrogen", nitrogenProb / total);
-        AtmosphereComposition.Add("Carbon Dioxide", carbonDioxideProb / total);
-        AtmosphereComposition.Add("Methane", methaneProb / total);
-        AtmosphereComposition.Add("Hydrogen", hydrogenProb / total);
-        AtmosphereComposition.Add("Helium", heliumProb / total);
-        AtmosphereComposition.Add("Neon", neonProb / total);
-        AtmosphereComposition.Add("Argon", argonProb / total);
-        AtmosphereComposition.Add("Krypton", kryptonProb / total);
-        AtmosphereComposition.Add("Xenon", xenonProb / total);
-        AtmosphereComposition.Add("Sulfur Dioxide", sulfurDioxideProb / total);
-        AtmosphereComposition.Add("Nitrogen Oxides", nitrogenOxidesProb / total);
-        AtmosphereComposition.Add("Ozone", ozoneProb / total);
-        AtmosphereComposition.Add("Water Vapor", waterVaporProb / total);
+        AtmosphereComposition.Add("O", oxygenProb / total);
+        AtmosphereComposition.Add("N", nitrogenProb / total);
+        AtmosphereComposition.Add("CO2", carbonDioxideProb / total);
+        AtmosphereComposition.Add("CH4", methaneProb / total);
+        AtmosphereComposition.Add("H", hydrogenProb / total);
+        AtmosphereComposition.Add("He", heliumProb / total);
+        AtmosphereComposition.Add("Ne", neonProb / total);
+        AtmosphereComposition.Add("Ar", argonProb / total);
+        AtmosphereComposition.Add("Kr", kryptonProb / total);
+        AtmosphereComposition.Add("Xe", xenonProb / total);
+        AtmosphereComposition.Add("SO2", sulfurDioxideProb / total);
+        AtmosphereComposition.Add("NO", nitrogenOxidesProb / total);
+        AtmosphereComposition.Add("O3", ozoneProb / total);
+        AtmosphereComposition.Add("H2O", waterVaporProb / total);
 
         return AtmosphereComposition;
     }

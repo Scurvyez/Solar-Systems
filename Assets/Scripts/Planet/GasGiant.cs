@@ -8,7 +8,7 @@ public class GasGiant : Planet
     public override float GenerateMass()
     {
         float averageMass = 318f; // Earth masses, average mass of gas giants
-        Mass = averageMass * Mathf.Pow(Radius, 3f) / Mathf.Pow(SemiMajorAxis, 1.5f);
+        Mass = averageMass * Mathf.Pow(Radius * 6371f, 3f) / Mathf.Pow(SemiMajorAxis, 1.5f);
         return Mass;
     }
 
@@ -24,7 +24,7 @@ public class GasGiant : Planet
         }
 
         // Calculate the volume of the planet
-        float volume = (4f / 3f) * Mathf.PI * Mathf.Pow(Radius, 3f);
+        float volume = (4f / 3f) * Mathf.PI * Mathf.Pow(Radius * 6371f, 3f);
 
         // Calculate and set the mean density of the planet
         MeanDensity = totalMass / volume;

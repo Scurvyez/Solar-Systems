@@ -84,7 +84,7 @@ public class CelestialGen : MonoBehaviour
             bool pIsHabitable = SaveManager.instance.activeSave.rockyPlanets[i].IsHabitable;
             List<Moon> pMoons = SaveManager.instance.activeSave.rockyPlanets[i].Moons;
 
-            // Make a rocky planet prefab and set its comps and props
+            // Make a rocky planet and set its comps and props
             GameObject planet = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             planet.AddComponent<TrailRenderer>();
             planet.AddComponent<Rigidbody>();

@@ -31,7 +31,6 @@ public class PlanetController : MonoBehaviour
     {
         transform.Rotate(Vector3.right, AxialTilt);
 
-        semiMinorAxis = Mathf.Sqrt(SemiMajorAxis * SemiMajorAxis * (1 - Eccentricity * Eccentricity));
         transform.position = CalculatePosition(0);
 
         // Create the axial tilt marker object
@@ -87,8 +86,7 @@ public class PlanetController : MonoBehaviour
 
         // calculates the radius of the planet's position vector
         float radius = SemiMajorAxis * (1 - Eccentricity * Eccentricity) / (1 + Eccentricity * Mathf.Cos(trueAnomaly));
-        Vector3 position = new Vector3(radius * Mathf.Cos(trueAnomaly), 0f, radius * Mathf.Sin(trueAnomaly));
-        position += new Vector3(0f, 0f, 0f);
+        Vector3 position = new (radius * Mathf.Cos(trueAnomaly), 0f, radius * Mathf.Sin(trueAnomaly));
 
         return position;
     }

@@ -7,17 +7,12 @@ public class RockyPlanet : Planet
 {
     public override float GenerateMass()
     {
+        float radiusToKm = Radius * 6371f;
         float averageDensity = MeanDensity; // kg/m^3, average density of rocky planets
 
         // Calculate the volume of the planet
-        float volume = (4f / 3f) * Mathf.PI * Mathf.Pow(Radius, 3f);
-
+        float volume = (4f / 3f) * Mathf.PI * Mathf.Pow(radiusToKm, 3f);
         Mass = averageDensity * volume;
-
-        //Debug.Log("averageDensity: " + averageDensity);
-        //Debug.Log("volume: " + volume);
-        //Debug.Log("Radius: " + Radius);
-        //Debug.Log("Mass: " + Mass);
 
         return Mass;
     }
@@ -31,19 +26,17 @@ public class RockyPlanet : Planet
             var atomicMassHelper = new AtomicMass();
             float atomicMass = atomicMassHelper.GetAtomicMass(element.Key);
             totalMass += atomicMass * element.Value;
+            Debug.Log(element.Key.ToString() + "..." + element.Value);
         }
 
+        Debug.Log(totalMass.ToString() + "%");
+
         // Calculate the volume of the planet
-        float volume = (4f / 3f) * Mathf.PI * Mathf.Pow(Radius, 3f);
+        float radiusToKm = Radius * 6371f;
+        float volume = (4f / 3f) * Mathf.PI * Mathf.Pow(radiusToKm, 3f);
 
         // Calculate and set the mean density of the planet
         MeanDensity = totalMass / volume;
-        MeanDensity *= 1000f; // convert from g/cm³ to kg/m³
-
-        //Debug.Log("Radius: " + Radius);
-        //Debug.Log("totalMass: " + totalMass);
-        //Debug.Log("volume: " + volume);
-        //Debug.Log("MeanDensity: " + MeanDensity);
 
         return MeanDensity;
     }
