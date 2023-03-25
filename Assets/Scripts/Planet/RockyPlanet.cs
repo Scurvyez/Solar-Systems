@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [System.Serializable]
 public class RockyPlanet : Planet
@@ -26,10 +27,10 @@ public class RockyPlanet : Planet
             var atomicMassHelper = new AtomicMass();
             float atomicMass = atomicMassHelper.GetAtomicMass(element.Key);
             totalMass += atomicMass * element.Value;
-            Debug.Log(element.Key.ToString() + "..." + element.Value);
+            //Debug.Log(element.Key.ToString() + "..." + element.Value);
         }
 
-        Debug.Log(totalMass.ToString() + "%");
+        //Debug.Log(totalMass.ToString() + "%");
 
         // Calculate the volume of the planet
         float radiusToKm = Radius * 6371f;
@@ -49,44 +50,99 @@ public class RockyPlanet : Planet
 
     public override SerializableDictionary<string, float> GenerateComposition()
     {
-        Composition = new();
-        float total = 0f;
+        Composition = new SerializableDictionary<string, float>();
+        float total = 100f;
 
         // Define the probabilities of each element
-        float ironProb = Random.value;
-        float siliconProb = Random.value;
-        float magnesiumProb = Random.value;
-        float oxygenProb = Random.value;
-        float carbonProb = Random.value;
-        float nitrogenProb = Random.value;
-        float sulfurProb = Random.value;
-        float nickelProb = Random.value;
-        float calciumProb = Random.value;
-        float aluminumProb = Random.value;
-        float sodiumProb = Random.value;
-        float potassiumProb = Random.value;
-        float chlorineProb = Random.value;
-        float phosphorusProb = Random.value;
+        float iron;
+        float silicon;
+        float magnesium;
+        float oxygen;
+        float carbon;
+        float nitrogen;
+        float sulfur;
+        float nickel;
+        float calcium;
+        float aluminum;
+        float sodium;
+        float potassium;
+        float chlorine;
+        float phosphorus;
+
+        iron = Random.Range(0f, total);
+        Composition.Add("Fe", iron);
+
+        total -= iron;
+        silicon = Random.Range(0f, total);
+        Composition.Add("Si", silicon);
+
+        total -= silicon;
+        magnesium = Random.Range(0f, total);
+        Composition.Add("Mg", magnesium);
+
+        total -= magnesium;
+        oxygen = Random.Range(0f, total);
+        Composition.Add("O", oxygen);
+
+        total -= oxygen;
+        carbon = Random.Range(0f, total);
+        Composition.Add("C", carbon);
+
+        total -= carbon;
+        nitrogen = Random.Range(0f, total);
+        Composition.Add("N", nitrogen);
+
+        total -= nitrogen;
+        sulfur = Random.Range(0f, total);
+        Composition.Add("S", sulfur);
+
+        total -= sulfur;
+        nickel = Random.Range(0f, total);
+        Composition.Add("Ni", nickel);
+
+        total -= nickel;
+        calcium = Random.Range(0f, total);
+        Composition.Add("Ca", calcium);
+
+        total -= calcium;
+        aluminum = Random.Range(0f, total);
+        Composition.Add("Al", aluminum);
+
+        total -= aluminum;
+        sodium = Random.Range(0f, total);
+        Composition.Add("Na", sodium);
+
+        total -= sodium;
+        potassium = Random.Range(0f, total);
+        Composition.Add("K", potassium);
+
+        total -= potassium;
+        chlorine = Random.Range(0f, total);
+        Composition.Add("Cl", chlorine);
+
+        total -= chlorine;
+        phosphorus = total;
+        Composition.Add("P", phosphorus);
 
         // Calculate total probability
-        total = ironProb + siliconProb + magnesiumProb + oxygenProb + carbonProb + nitrogenProb + sulfurProb + nickelProb +
-                calciumProb + aluminumProb + sodiumProb + potassiumProb + chlorineProb + phosphorusProb;
+        var sum = iron + silicon + magnesium + oxygen + carbon + nitrogen + sulfur + nickel +
+                calcium + aluminum + sodium + potassium + chlorine + phosphorus;
 
-        // Add element probabilities to the dictionary
-        Composition.Add("Fe", ironProb / total);
-        Composition.Add("Si", siliconProb / total);
-        Composition.Add("Mg", magnesiumProb / total);
-        Composition.Add("O", oxygenProb / total);
-        Composition.Add("C", carbonProb / total);
-        Composition.Add("N", nitrogenProb / total);
-        Composition.Add("S", sulfurProb / total);
-        Composition.Add("Ni", nickelProb / total);
-        Composition.Add("Ca", calciumProb / total);
-        Composition.Add("Al", aluminumProb / total);
-        Composition.Add("Na", sodiumProb / total);
-        Composition.Add("K", potassiumProb / total);
-        Composition.Add("Cl", chlorineProb / total);
-        Composition.Add("P", phosphorusProb / total);
+        Debug.Log("Fe: " + iron);
+        Debug.Log("Si: " + silicon);
+        Debug.Log("Mg: " + magnesium);
+        Debug.Log("O: " + oxygen);
+        Debug.Log("C: " + carbon);
+        Debug.Log("N: " + nitrogen);
+        Debug.Log("S: " + sulfur);
+        Debug.Log("Ni: " + nickel);
+        Debug.Log("Ca: " + calcium);
+        Debug.Log("Al: " + aluminum);
+        Debug.Log("Na: " + sodium);
+        Debug.Log("K: " + potassium);
+        Debug.Log("Cl: " + chlorine);
+        Debug.Log("P: " + phosphorus);
+        Debug.Log("Total %: " + sum);
 
         return Composition;
     }

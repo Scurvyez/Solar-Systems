@@ -219,7 +219,7 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     private void GrabFinalizedPlanetData()
     {
-        int numPlanets = Random.Range(1, 13); // generate a random number of planets between 1 and 10
+        int numPlanets = Random.Range(1, 2); // generate a random number of planets between 1 and 10
 
         for (int i = 0; i < numPlanets; i++)
         {
