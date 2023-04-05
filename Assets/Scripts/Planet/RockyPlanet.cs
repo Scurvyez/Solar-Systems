@@ -8,43 +8,48 @@ public class RockyPlanet : Planet
 {
     public override float GenerateMass()
     {
-        float radiusToKm = Radius * 6371f;
-        float averageDensity = MeanDensity; // kg/m^3, average density of rocky planets
+        float starMass = (float)SaveManager.instance.activeSave.starMass; // solar masses
 
-        // Calculate the volume of the planet
-        float volume = (4f / 3f) * Mathf.PI * Mathf.Pow(radiusToKm, 3f);
-        Mass = averageDensity * volume;
+        // Convert FocusPoint to AU
+        Vector3 focusPointInAU = FocusPoint / 149597870700f;
+
+        // Convert OrbitalPeriod to Earth years
+        float periodInYears = OrbitalPeriod / 365.25f;
+
+
+        // Calculate the mass using the third law of Kepler
+        Mass = 4f * Mathf.Pow(Mathf.PI, 2f) * Mathf.Pow(focusPointInAU.x, 3f) / (GravConstant * Mathf.Pow(periodInYears, 2f) * starMass);
+
+        Debug.Log("focusPointInAU: " + "..." + focusPointInAU);
+        Debug.Log("GravConstant: " + "..." + GravConstant);
+        Debug.Log("periodInYears: " + "..." + periodInYears);
+        Debug.Log("starMass: " + "..." + starMass);
+        Debug.Log("Mass: " + "..." + Mass);
 
         return Mass;
     }
 
     public override float GenerateMeanDensity()
     {
-        // Get the total mass of all the elements in the planet's composition
-        float totalMass = 0f;
-        foreach (KeyValuePair<string, float> element in Composition)
-        {
-            var atomicMassHelper = new AtomicMass();
-            float atomicMass = atomicMassHelper.GetAtomicMass(element.Key);
-            totalMass += atomicMass * element.Value;
-            //Debug.Log(element.Key.ToString() + "..." + element.Value);
-        }
-
-        //Debug.Log(totalMass.ToString() + "%");
-
         // Calculate the volume of the planet
-        float radiusToKm = Radius * 6371f;
-        float volume = (4f / 3f) * Mathf.PI * Mathf.Pow(radiusToKm, 3f);
+        float radiusInKm = Radius * 6370.0f; // Earth radii to km
+
+        float volume = (4f / 3f) * Mathf.PI * Mathf.Pow(radiusInKm, 3f);
 
         // Calculate and set the mean density of the planet
-        MeanDensity = totalMass / volume;
+        MeanDensity = Mass / volume;
+
+        //Debug.Log("radiusInKm: " + "..." + radiusInKm);
+        //Debug.Log("volume: " + "..." + volume);
+        //Debug.Log("Mass: " + "..." + Mass);
+        //Debug.Log("MeanDensity: " + "..." + MeanDensity);
 
         return MeanDensity;
     }
 
     public override float GenerateRadius()
     {
-        Radius = Random.Range(0.8f, 6.25f);  // in AU
+        Radius = Random.Range(0.8f, 6.25f);  // in Earth radii
         return Radius;
     }
 
@@ -53,7 +58,6 @@ public class RockyPlanet : Planet
         Composition = new SerializableDictionary<string, float>();
         float total = 100f;
 
-        // Define the probabilities of each element
         float iron;
         float silicon;
         float magnesium;
@@ -123,26 +127,6 @@ public class RockyPlanet : Planet
         total -= chlorine;
         phosphorus = total;
         Composition.Add("P", phosphorus);
-
-        // Calculate total probability
-        var sum = iron + silicon + magnesium + oxygen + carbon + nitrogen + sulfur + nickel +
-                calcium + aluminum + sodium + potassium + chlorine + phosphorus;
-
-        Debug.Log("Fe: " + iron);
-        Debug.Log("Si: " + silicon);
-        Debug.Log("Mg: " + magnesium);
-        Debug.Log("O: " + oxygen);
-        Debug.Log("C: " + carbon);
-        Debug.Log("N: " + nitrogen);
-        Debug.Log("S: " + sulfur);
-        Debug.Log("Ni: " + nickel);
-        Debug.Log("Ca: " + calcium);
-        Debug.Log("Al: " + aluminum);
-        Debug.Log("Na: " + sodium);
-        Debug.Log("K: " + potassium);
-        Debug.Log("Cl: " + chlorine);
-        Debug.Log("P: " + phosphorus);
-        Debug.Log("Total %: " + sum);
 
         return Composition;
     }

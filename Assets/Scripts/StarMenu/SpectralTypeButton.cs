@@ -237,8 +237,8 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
             p.HasRandomAtmosphere();            // no args
             p.HasRandomRings();                 // no args
             p.GenerateSurfacePressure();        // no args
-            p.GenerateMeanDensity();            // Composition, Radius
             p.GenerateMass();                   // MeanDensity, Radius
+            p.GenerateMeanDensity();            // Mass, Radius
             p.GenerateSemiMajorAxis();          // OrbitalPeriod, Mass
             p.GenerateEccentricity();           // FocusPoint, SemiMajorAxis
             p.GenerateSemiMinorAxis();          // SemiMajorAxis, Eccentricity

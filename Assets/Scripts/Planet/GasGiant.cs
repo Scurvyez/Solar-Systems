@@ -41,25 +41,28 @@ public class GasGiant : Planet
 
     public override SerializableDictionary<string, float> GenerateComposition()
     {
-        Composition = new();
-        float total = 0f;
+        Composition = new SerializableDictionary<string, float>();
+        float total = 100f;
 
-        // Define the probabilities of each element
-        float hydrogenProb = Random.value;
-        float heliumProb = Random.value;
-        float carbonProb = Random.value;
-        float nitrogenProb = Random.value;
-        float neonProb = Random.value;
+        float hydrogen;
+        float helium;
+        float neon;
+        float nitrogen;
 
-        // Calculate total probability
-        total = hydrogenProb + heliumProb + carbonProb + nitrogenProb + neonProb;
+        hydrogen = Random.Range(0f, total);
+        Composition.Add("H", hydrogen);
 
-        // Add element probabilities to the dictionary
-        Composition.Add("Fe", hydrogenProb / total);
-        Composition.Add("Si", heliumProb / total);
-        Composition.Add("C", carbonProb / total);
-        Composition.Add("N", nitrogenProb / total);
-        Composition.Add("Ne", neonProb / total);
+        total -= hydrogen;
+        helium = Random.Range(0f, total);
+        Composition.Add("He", helium);
+
+        total -= helium;
+        neon = Random.Range(0f, total);
+        Composition.Add("Ne", neon);
+
+        total -= neon;
+        nitrogen = total;
+        Composition.Add("N", nitrogen);
 
         return Composition;
     }

@@ -78,6 +78,11 @@ public class Planet
         return FocusPoint / 2;
     }
 
+    /// <summary>
+    /// Generates a final mass value for the planet.
+    /// Calculated via the planets' focal point (AU), the gravitational constant (AU^3/MO/yr^2),
+    /// the planets' orbital period (years) and the host star(s) mass (solar masses).
+    /// </summary>
     public virtual float GenerateMass()
     {
         float starMass = (float)SaveManager.instance.activeSave.starMass; // solar masses
