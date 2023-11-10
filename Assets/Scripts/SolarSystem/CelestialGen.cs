@@ -116,7 +116,7 @@ public class CelestialGen : MonoBehaviour
             // Trail Renderer
             planet.GetComponent<TrailRenderer>().startWidth = 15.0f;
             planet.GetComponent<TrailRenderer>().endWidth = 0.0f;
-            planet.GetComponent<TrailRenderer>().time = 25.0f;
+            planet.GetComponent<TrailRenderer>().time = 4f;
             planet.GetComponent<TrailRenderer>().material = testMat;
             if (planet.GetComponent<PlanetController>().IsHabitable)
             {
@@ -212,7 +212,7 @@ public class CelestialGen : MonoBehaviour
                     // Trail Renderer
                     mObject.GetComponent<TrailRenderer>().startWidth = 1.0f;
                     mObject.GetComponent<TrailRenderer>().endWidth = 0.0f;
-                    mObject.GetComponent<TrailRenderer>().time = 7.5f;
+                    mObject.GetComponent<TrailRenderer>().time = 2f;
                     mObject.GetComponent<TrailRenderer>().material = new Material(Shader.Find("Sprites/Default"));
                     mObject.GetComponent<TrailRenderer>().startColor = moonUIColor;
                     mObject.GetComponent<TrailRenderer>().endColor = Color.clear;

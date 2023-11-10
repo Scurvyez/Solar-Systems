@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HabitableZoneDisplay : MonoBehaviour
@@ -9,7 +7,7 @@ public class HabitableZoneDisplay : MonoBehaviour
     public GameObject habitableZoneInnerPrefab;
     public float habitableRangeInner;
     public float habitableRangeOuter;
-    
+
     public void Start()
     {
         habitableRangeInner = SaveManager.instance.activeSave.habitableRangeInner;

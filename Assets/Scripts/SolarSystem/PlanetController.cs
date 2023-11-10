@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlanetController : MonoBehaviour
@@ -51,9 +49,9 @@ public class PlanetController : MonoBehaviour
     public void Update()
     {
         // Rotate the planet around its own axis
-        transform.Rotate(Vector3.up, Time.deltaTime * RotationPeriod);
+        transform.Rotate(Vector3.up, Time.deltaTime * RotationPeriod * GameSpeedController.Instance.curSpeed);
 
-        timeElapsed += Time.deltaTime;
+        timeElapsed += Time.deltaTime * GameSpeedController.Instance.curSpeed;
         if (!reverseOrbitDirection)
         {
             transform.position = CalculatePosition(timeElapsed);
