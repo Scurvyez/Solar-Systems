@@ -49,6 +49,7 @@ Material:
     m_Floats:
     - _CellDensity: 5
     - _CellSpeed: 0.5
+    - _Detail: 15
     - _QueueControl: 0
     - _QueueOffset: 0
     - _SolarFlare: 1

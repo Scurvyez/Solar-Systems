@@ -1,27 +1,22 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using TMPro;
 using System.Linq;
-using UnityEngine.Rendering.Universal;
 
 public class CelestialGen : MonoBehaviour
 {
     public GameObject starPrefab;
+    public GameObject planetPrefab;
+    public GameObject planetaryRingsPrefab;
     public GameObject axialTiltMarkerPrefab;
     public GameObject spinDirectionMarkerPrefab;
     public StaticAngledCamera StaticAngledCamera;
-
+    
     public Transform scrollViewContent;
     public Button starButtonPrefab;
     public Button planetButtonPrefab;
     public Button moonButtonPrefab;
-
-    private float minDistance = 2.75f;
-    private float maxDistance = 9.25f;
 
     public Color starUIColor;
     public Color planetUIColor;
@@ -31,6 +26,8 @@ public class CelestialGen : MonoBehaviour
     public List<GameObject> stars = new();
     public List<GameObject> planets = new();
     public List<GameObject> moons = new();
+
+    public float mOrbitalDistanceX;
 
     public void Start()
     {
@@ -68,73 +65,74 @@ public class CelestialGen : MonoBehaviour
         // DIFF TEXTURES FOR DIFF PLANET TYPES
         Material testMat = Resources.Load<Material>("Star");
 
-        for (int i = 0; i < SaveManager.instance.activeSave.rockyPlanets.Count; i++)
+        foreach (RockyPlanet rP in SaveManager.instance.activeSave.rockyPlanets)
         {
             // planet properties
-            string pName = SaveManager.instance.activeSave.rockyPlanets[i].Name;
-            float pMass = SaveManager.instance.activeSave.rockyPlanets[i].Mass;
-            float pRadius = SaveManager.instance.activeSave.rockyPlanets[i].Radius;
-            float pRotationPeriod = SaveManager.instance.activeSave.rockyPlanets[i].RotationPeriod;
-            float pOrbitalPeriod = SaveManager.instance.activeSave.rockyPlanets[i].OrbitalPeriod;
-            float pSemiMajorAxis = SaveManager.instance.activeSave.rockyPlanets[i].SemiMajorAxis;
-            float pEccentricity = SaveManager.instance.activeSave.rockyPlanets[i].Eccentricity;
-            Vector3 pFocusPoint = SaveManager.instance.activeSave.rockyPlanets[i].FocusPoint;
-            float pSemiMinorAxis = SaveManager.instance.activeSave.rockyPlanets[i].SemiMinorAxis;
-            float pAxialTilt = SaveManager.instance.activeSave.rockyPlanets[i].AxialTilt;
-            bool pIsHabitable = SaveManager.instance.activeSave.rockyPlanets[i].IsHabitable;
-            List<Moon> pMoons = SaveManager.instance.activeSave.rockyPlanets[i].Moons;
+            string pName = rP.Name;
+            float pMass = rP.Mass;
+            float pRadius = rP.Radius;
+            Vector3 pStartingPos = rP.StartingPosition;
+            float pOrbitalPeriod = rP.OrbitalPeriod;
+            float pRotationPeriod = rP.RotationPeriod;
+            float pAxialTilt = rP.AxialTilt;
+            float pSurfaceTemperature = rP.SurfaceTemperature;
+            float pMeanDensity = rP.MeanDensity;
+            float pSurfaceGravity = rP.SurfaceGravity;
+            float pEscapeVelocity = rP.EscapeVelocity;
+            float pAlbedo = rP.Albedo;
+            bool pHasAtmosphere = rP.HasAtmosphere;
+            bool pIsHabitable = rP.IsHabitable;
+            bool pHasRings = rP.HasRings;
+            float pInnerRingRadius = rP.InnerRingRadius;
+            float pOuterRingRadius = rP.OuterRingRadius;
 
-            // Make a rocky planet and set its comps and props
-            GameObject planet = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            planet.AddComponent<TrailRenderer>();
-            planet.AddComponent<Rigidbody>();
-            planet.AddComponent<PlanetController>();
+            // Make a planet prefab and set its comps and props
+            GameObject pObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            pObject.AddComponent<TrailRenderer>();
+            pObject.AddComponent<Rigidbody>();
+            pObject.AddComponent<PlanetController>();
 
             // Populate all components fields
-            planet.name = pName;
-            planet.transform.localScale = new Vector3(pRadius, pRadius, pRadius);
-            planet.transform.localPosition = pFocusPoint;
-            planet.GetComponent<MeshRenderer>().material = testMat;
-            planet.GetComponent<SphereCollider>().isTrigger = true;
-            planet.GetComponent<Rigidbody>().mass = pMass;
-            planet.GetComponent<Renderer>().material.color = Color.green;
-            planet.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
-            planet.GetComponent<Rigidbody>().useGravity = true;
-            planet.GetComponent<PlanetController>().SaveManager = SaveManager.instance;
-            planet.GetComponent<PlanetController>().starPrefab = starPrefab;
-            planet.GetComponent<PlanetController>().RotationPeriod = pRotationPeriod;
-            planet.GetComponent<PlanetController>().OrbitalPeriod = pOrbitalPeriod;
-            planet.GetComponent<PlanetController>().SemiMajorAxis = pSemiMajorAxis;
-            planet.GetComponent<PlanetController>().FocusPoint = pFocusPoint;
-            planet.GetComponent<PlanetController>().Eccentricity = pEccentricity;
-            planet.GetComponent<PlanetController>().SemiMinorAxis = pSemiMinorAxis;
-            planet.GetComponent<PlanetController>().AxialTilt = pAxialTilt;
-            planet.GetComponent<PlanetController>().IsHabitable = pIsHabitable;
-            planet.GetComponent<PlanetController>().axialTiltMarkerPrefab = axialTiltMarkerPrefab;
-            planet.GetComponent<PlanetController>().spinDirectionMarkerPrefab = spinDirectionMarkerPrefab;
+            pObject.name = pName;
+            pObject.transform.localScale = new Vector3(pRadius, pRadius, pRadius);
+            pObject.transform.localPosition = new Vector3(pStartingPos.x, pStartingPos.y, pStartingPos.z);
+            pObject.GetComponent<MeshRenderer>().material = testMat;
+            pObject.GetComponent<SphereCollider>().isTrigger = true;
+            pObject.GetComponent<Rigidbody>().mass = pMass;
+            pObject.GetComponent<Renderer>().material.color = Color.white;
+            pObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
+            pObject.GetComponent<Rigidbody>().useGravity = true;
+            pObject.GetComponent<PlanetController>().SaveManager = SaveManager.instance;
+            pObject.GetComponent<PlanetController>().starPrefab = starPrefab;
+            pObject.GetComponent<PlanetController>().planetaryRingsPrefab = planetaryRingsPrefab;
+            pObject.GetComponent<PlanetController>().Radius = pRadius;
+            pObject.GetComponent<PlanetController>().StartingPosition = pStartingPos;
+            pObject.GetComponent<PlanetController>().OrbitalPeriod = pOrbitalPeriod;
+            pObject.GetComponent<PlanetController>().RotationPeriod = pRotationPeriod;
+            pObject.GetComponent<PlanetController>().AxialTilt = pAxialTilt;
+            pObject.GetComponent<PlanetController>().IsHabitable = pIsHabitable;
+            pObject.GetComponent<PlanetController>().HasRings = pHasRings;
+            pObject.GetComponent<PlanetController>().InnerRingRadius = pInnerRingRadius;
+            pObject.GetComponent<PlanetController>().OuterRingRadius = pOuterRingRadius;
+            pObject.GetComponent<PlanetController>().axialTiltMarkerPrefab = axialTiltMarkerPrefab;
+            pObject.GetComponent<PlanetController>().spinDirectionMarkerPrefab = spinDirectionMarkerPrefab;
 
             // Trail Renderer
-            planet.GetComponent<TrailRenderer>().startWidth = 15.0f;
-            planet.GetComponent<TrailRenderer>().endWidth = 0.0f;
-            planet.GetComponent<TrailRenderer>().time = 4f;
-            planet.GetComponent<TrailRenderer>().material = testMat;
-            if (planet.GetComponent<PlanetController>().IsHabitable)
-            {
-                planet.GetComponent<TrailRenderer>().startColor = planetUIColorHabitable;
-            }
-            else
-            {
-                planet.GetComponent<TrailRenderer>().startColor = planetUIColor;
-            }
-            planet.GetComponent<TrailRenderer>().endColor = Color.clear;
+            pObject.GetComponent<TrailRenderer>().startWidth = 3.0f;
+            pObject.GetComponent<TrailRenderer>().endWidth = 0.0f;
+            pObject.GetComponent<TrailRenderer>().time = 10f;
+            pObject.GetComponent<TrailRenderer>().material = new Material(Shader.Find("Sprites/Default"));
+            pObject.GetComponent<TrailRenderer>().startColor = planetUIColor;
+            pObject.GetComponent<TrailRenderer>().endColor = Color.clear;
 
-            planets.Add(planet);
+            planets.Add(pObject);
         }
 
         for (int i = 0; i < planets.Count; i++)
         {
             // Store a reference to the planet game object
             GameObject planetObject = planets[i];
+            planetObject.transform.SetParent(starPrefab.transform);
 
             Button planetButton = Instantiate(planetButtonPrefab, scrollViewContent);
             planetButton.GetComponentInChildren<TextMeshProUGUI>().text = planets[i].name;
@@ -158,68 +156,64 @@ public class CelestialGen : MonoBehaviour
         // CHANGE THIS LATER
         Material testMat = Resources.Load<Material>("Star");
 
-        foreach (RockyPlanet rP in SaveManager.instance.activeSave.rockyPlanets)
+        foreach (Moon moon in SaveManager.instance.activeSave.moons)
         {
-            if (rP.Moons.Count > 0)
-            {
-                foreach (Moon moon in rP.Moons)
-                {
-                    // moon properties
-                    string pName = moon.Name;
-                    float mMass = moon.Mass;
-                    float mRadius = moon.Radius;
-                    float mOrbitalPeriod = moon.OrbitalPeriod;
-                    float mRotationPeriod = moon.RotationPeriod;
-                    float mAxialTilt = moon.AxialTilt;
-                    float mSurfaceTemperature = moon.SurfaceTemperature;
-                    float mMeanDensity = moon.MeanDensity;
-                    float mSurfaceGravity = moon.SurfaceGravity;
-                    float mEscapeVelocity = moon.EscapeVelocity;
-                    float mAlbedo = moon.Albedo;
-                    bool mHasAtmosphere = moon.HasAtmosphere;
-                    bool mIsHabitable = moon.IsHabitable;
+            // moon properties
+            string pName = moon.Name;
+            float mMass = moon.Mass;
+            float mRadius = moon.Radius;
+            float mOrbitalPeriod = moon.OrbitalPeriod;
+            float mRotationPeriod = moon.RotationPeriod;
+            float mAxialTilt = moon.AxialTilt;
+            float mSurfaceTemperature = moon.SurfaceTemperature;
+            float mMeanDensity = moon.MeanDensity;
+            float mSurfaceGravity = moon.SurfaceGravity;
+            float mEscapeVelocity = moon.EscapeVelocity;
+            float mAlbedo = moon.Albedo;
+            bool mHasAtmosphere = moon.HasAtmosphere;
+            bool mIsHabitable = moon.IsHabitable;
+            mOrbitalDistanceX = moon.OrbitalDistanceX;
 
-                    // Make a moon prefab and set its comps and props
-                    GameObject mObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                    mObject.AddComponent<TrailRenderer>();
-                    mObject.AddComponent<Rigidbody>();
-                    mObject.AddComponent<MoonController>();
+            // Make a moon prefab and set its comps and props
+            GameObject mObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            mObject.AddComponent<TrailRenderer>();
+            mObject.AddComponent<Rigidbody>();
+            mObject.AddComponent<MoonController>();
 
-                    // Populate all components fields
-                    mObject.name = pName;
-                    mObject.transform.localScale = new Vector3(mRadius, mRadius, mRadius);
-                    mObject.transform.localPosition = new Vector3(mOrbitalPeriod, 0, 0);
-                    mObject.GetComponent<MeshRenderer>().material = testMat;
-                    mObject.GetComponent<SphereCollider>().isTrigger = true;
-                    mObject.GetComponent<Rigidbody>().mass = mMass;
-                    mObject.GetComponent<Renderer>().material.color = Color.white;
-                    mObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
-                    mObject.GetComponent<Rigidbody>().useGravity = true;
-                    mObject.GetComponent<MoonController>().SaveManager = SaveManager.instance;
-                    mObject.GetComponent<MoonController>().OrbitalPeriod = mOrbitalPeriod;
-                    mObject.GetComponent<MoonController>().RotationPeriod = mRotationPeriod;
-                    mObject.GetComponent<MoonController>().AxialTilt = mAxialTilt;
-                    mObject.GetComponent<MoonController>().SurfaceTemperature = mSurfaceTemperature;
-                    mObject.GetComponent<MoonController>().MeanDensity = mMeanDensity;
-                    mObject.GetComponent<MoonController>().SurfaceGravity = mSurfaceGravity;
-                    mObject.GetComponent<MoonController>().EscapeVelocity = mEscapeVelocity;
-                    mObject.GetComponent<MoonController>().Albedo = mAlbedo;
-                    mObject.GetComponent<MoonController>().HasAtmosphere = mHasAtmosphere;
-                    mObject.GetComponent<MoonController>().IsHabitable = mIsHabitable;
-                    mObject.GetComponent<MoonController>().axialTiltMarkerPrefab = axialTiltMarkerPrefab;
-                    mObject.GetComponent<MoonController>().spinDirectionMarkerPrefab = spinDirectionMarkerPrefab;
+            // Populate all components fields
+            mObject.name = pName;
+            mObject.transform.localScale = new Vector3(mRadius, mRadius, mRadius);
+            mObject.GetComponent<MeshRenderer>().material = testMat;
+            mObject.GetComponent<SphereCollider>().isTrigger = true;
+            mObject.GetComponent<Rigidbody>().mass = mMass;
+            mObject.GetComponent<Renderer>().material.color = Color.white;
+            mObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
+            mObject.GetComponent<Rigidbody>().useGravity = true;
+            mObject.GetComponent<MoonController>().SaveManager = SaveManager.instance;
+            mObject.GetComponent<MoonController>().planetPrefab = planetPrefab;
+            mObject.GetComponent<MoonController>().OrbitalDistanceX = mOrbitalDistanceX;
+            mObject.GetComponent<MoonController>().OrbitalPeriod = mOrbitalPeriod;
+            mObject.GetComponent<MoonController>().RotationPeriod = mRotationPeriod;
+            mObject.GetComponent<MoonController>().AxialTilt = mAxialTilt;
+            mObject.GetComponent<MoonController>().SurfaceTemperature = mSurfaceTemperature;
+            mObject.GetComponent<MoonController>().MeanDensity = mMeanDensity;
+            mObject.GetComponent<MoonController>().SurfaceGravity = mSurfaceGravity;
+            mObject.GetComponent<MoonController>().EscapeVelocity = mEscapeVelocity;
+            mObject.GetComponent<MoonController>().Albedo = mAlbedo;
+            mObject.GetComponent<MoonController>().HasAtmosphere = mHasAtmosphere;
+            mObject.GetComponent<MoonController>().IsHabitable = mIsHabitable;
+            mObject.GetComponent<MoonController>().axialTiltMarkerPrefab = axialTiltMarkerPrefab;
+            mObject.GetComponent<MoonController>().spinDirectionMarkerPrefab = spinDirectionMarkerPrefab;
 
-                    // Trail Renderer
-                    mObject.GetComponent<TrailRenderer>().startWidth = 1.0f;
-                    mObject.GetComponent<TrailRenderer>().endWidth = 0.0f;
-                    mObject.GetComponent<TrailRenderer>().time = 2f;
-                    mObject.GetComponent<TrailRenderer>().material = new Material(Shader.Find("Sprites/Default"));
-                    mObject.GetComponent<TrailRenderer>().startColor = moonUIColor;
-                    mObject.GetComponent<TrailRenderer>().endColor = Color.clear;
+            // Trail Renderer
+            mObject.GetComponent<TrailRenderer>().startWidth = 1.0f;
+            mObject.GetComponent<TrailRenderer>().endWidth = 0.0f;
+            mObject.GetComponent<TrailRenderer>().time = 0.5f;
+            mObject.GetComponent<TrailRenderer>().material = new Material(Shader.Find("Sprites/Default"));
+            mObject.GetComponent<TrailRenderer>().startColor = moonUIColor;
+            mObject.GetComponent<TrailRenderer>().endColor = Color.clear;
 
-                    moons.Add(mObject);
-                }
-            }
+            moons.Add(mObject);
         }
 
         for (int i = 0; i < moons.Count; i++)
@@ -235,9 +229,6 @@ public class CelestialGen : MonoBehaviour
                 {
                     // Set the moon's parent to the planet object
                     moonObject.transform.SetParent(planetObject.transform);
-
-                    // Set the moon's position relative to its parent planet
-                    moonObject.transform.localPosition = new Vector3(Random.Range(minDistance, maxDistance), 0f, Random.Range(minDistance, maxDistance));
                 }
             }
 

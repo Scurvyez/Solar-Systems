@@ -19,8 +19,8 @@ public class HabitableZoneController : MonoBehaviour
 
         // Set the PolygonGenerator's properties
         polygonGenerator.polygonSides = ringSides;
-        polygonGenerator.centerRadius = innerRadius;
-        polygonGenerator.polygonRadius = outerRadius;
+        polygonGenerator.centerRadius = innerRadius / 1.5f; // 1.5f? Make a constant world factor at some point for scaling everything?
+        polygonGenerator.polygonRadius = outerRadius / 1.5f;
 
         // Call the appropriate method in PolygonGenerator based on your needs
         polygonGenerator.isFilled = false; // Set to false for a hollow ring

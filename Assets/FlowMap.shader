@@ -2,7 +2,7 @@ Shader "Unlit/FlowMap"
 {
     Properties
     {
-        _MainTex ("Sprite texture", 2D) = "white" {}
+        _MainTex ("Main texture", 2D) = "white" {}
         _Color ("Tint", Color) = (1,1,1,1)
         _FlowMap ("Flow map", 2D) = "white" {}
         _FlowSpeed ("Flow speed", float) = 0.05

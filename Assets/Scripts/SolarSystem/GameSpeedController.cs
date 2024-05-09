@@ -8,6 +8,15 @@ public class GameSpeedController : MonoBehaviour
     public Button[] buttons;
     public float curSpeed = 1f; // Initialize curSpeed to 1 by default
 
+    public float speed1 = 0f;
+    public float speed2 = 0.005f;
+    public float speed3 = 0.25f;
+    public float speed4 = 1f;
+    public float speed5 = 15f;
+    public float speed6 = 40f;
+    public float speed7 = 75f;
+    public float speed8 = 75f;
+
     public static GameSpeedController Instance
     {
         get
@@ -44,14 +53,14 @@ public class GameSpeedController : MonoBehaviour
     {
         float speed = button.name switch
         {
-            "Pause" => 0.0f,
-            "Slowww" => 0.005f,
-            "Quarter" => 0.25f,
-            "Half" => 0.5f,
-            "Normal" => 1f,
-            "Fast" => 1.5f,
-            "Double" => 2f,
-            "Warp Speed" => 50.0f,
+            "Pause" => speed1,
+            "Slowww" => speed2,
+            "Quarter" => speed3,
+            "Half" => speed4,
+            "Normal" => speed5,
+            "Fast" => speed6,
+            "Double" => speed7,
+            "Warp Speed" => speed8,
             _ => throw new System.ArgumentException($"Unknown speed name '{button.name}'")
         };
         return speed;

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Planet
@@ -7,6 +5,7 @@ public class Planet
     public string Name { get; set; }
     public float Mass { get; set; }
     public float Radius { get; set; }
+    public Vector3 StartingPosition { get; set; }
     public float RotationPeriod { get; set; }
     public float OrbitalPeriod { get; set; }
     public float SemiMajorAxis { get; set; }
@@ -18,6 +17,8 @@ public class Planet
     public bool HasAtmosphere { get; set; }
     public bool IsHabitable { get; set; }
     public bool HasRings { get; set; }
+    public float InnerRingRadius { get; set; }
+    public float OuterRingRadius { get; set; }
     public float MeanDensity { get; set; }
     public float SurfacePressure { get; set; }
     public float SurfaceGravity { get; set; }
@@ -26,7 +27,7 @@ public class Planet
     public float MagneticFieldStrength { get; set; }
     public SerializableDictionary<string, float> Composition { get; set; }
     public SerializableDictionary<string, float> AtmosphereComposition { get; set; }
-    public List<Moon> Moons { get; set; }
+    //public List<Moon> Moons { get; set; }
     
     public const float GravConstant = 6.674e-11f;
 
@@ -52,6 +53,25 @@ public class Planet
         // Generate a random radius between 0.25 and 5.0 Earth radii
         Radius = Random.Range(0.25f, 5.0f);
         return Radius;
+    }
+    
+    public virtual Vector3 GenerateStartingPosition()
+    {
+        // Define a range of x-coordinates for the starting position of the planet
+        float minX = 30f;
+        float maxX = 4000f;
+
+        float minZ = 50f;
+        float maxZ = 4000f;
+
+        // Generate a random x and y coordinate within the ranges
+        float x = Random.Range(minX, maxX);
+        float z = Random.Range(minZ, maxZ);
+
+        // Construct the second focus point vector
+        StartingPosition = new Vector3(x, 0f, z);
+
+        return StartingPosition;
     }
 
     public virtual float GenerateOrbitalPeriod()
@@ -270,8 +290,20 @@ public class Planet
 
     public virtual bool HasRandomRings()
     {
-        HasRings = Random.value < 0.1f; // 10% chance of having rings
+        HasRings = Random.value < 0.5f; // 10% chance of having rings
         return HasRings;
+    }
+
+    public virtual float GenerateInnerRingRadius()
+    {
+        InnerRingRadius = Radius + Random.Range(3f, 7.5f);
+        return InnerRingRadius;
+    }
+
+    public virtual float GenerateOuterRingRadius()
+    {
+        OuterRingRadius = InnerRingRadius + Random.Range(3f, 15.5f);
+        return OuterRingRadius;
     }
 
     public virtual float GenerateMeanDensity()
@@ -330,33 +362,21 @@ public class Planet
         return MagneticFieldStrength;
     }
 
+    /*
     public virtual List<Moon> GenerateMoons()
     {
         // Initialize the Moons list
         Moons = new ();
 
-        // generate a random number of moons between 0 and 5
-        int numMoons = Random.Range(0, 5);
+        // generate a random number of moons between 0 and 3
+        int numMoons = Random.Range(0, 3);
 
         for (int i = 0; i < numMoons; i++)
         {
             Moon moon = new ();
-            moon.Name = Name;
-            moon.GenerateMass();
-            moon.GenerateRadius();
-            moon.GenerateOrbitalPeriod();
-            moon.GenerateRotationPeriod();
-            moon.GenerateAxialTilt();
-            moon.GenerateSurfaceTemperature();
-            moon.HasRandomAtmosphere();
-            moon.IsRandomlyHabitable();
-            moon.GenerateMeanDensity();
-            moon.GenerateSurfaceGravity();
-            moon.GenerateEscapeVelocity();
-            moon.GenerateAlbedo();
             Moons.Add(moon);
         }
-
         return Moons;
     }
+    */
 }

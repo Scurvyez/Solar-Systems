@@ -113,4 +113,8 @@ public class SystemSaveData
     // PLANET DATA: start
     public List<RockyPlanet> rockyPlanets;
     // PLANET DATA: end
+
+    // PLANET DATA: start
+    public List<Moon> moons;
+    // PLANET DATA: end
 }

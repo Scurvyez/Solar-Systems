@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -8,6 +6,7 @@ public class Moon
     public string Name { get; set; }
     public float Mass { get; set; }
     public float Radius { get; set; }
+    public float OrbitalDistanceX { get; set; }
     public float OrbitalPeriod { get; set; }
     public float RotationPeriod { get; set; }
     public float AxialTilt { get; set; }
@@ -31,21 +30,27 @@ public class Moon
     public virtual float GenerateRadius()
     {
         // Generate a random radius between 0.5 and 2.5 Earth radii
-        Radius = Random.Range(0.5f, 2.0f);
+        Radius = Random.Range(0.5f, 3.0f);
         return Radius;
+    }
+
+    public virtual float GenerateOrbitalDistanceX()
+    {
+        OrbitalDistanceX = Random.Range(1f, 65f);
+        return OrbitalDistanceX;
     }
 
     //private const double SolRadiusM = 6.96342E8; // in m
     public virtual float GenerateOrbitalPeriod()
     {
         //float minDist = (float)(SaveManager.instance.activeSave.starRadius / SolRadiusM);
-        OrbitalPeriod = Random.Range(25.0f, 10000f); // Measured in Earth days
+        OrbitalPeriod = Random.Range(3.5f, 200f); // Measured in Earth days
         return OrbitalPeriod;
     }
 
     public virtual float GenerateRotationPeriod()
     {
-        RotationPeriod = Random.Range(0.1f, 1000f); // Measured in Earth days
+        RotationPeriod = Random.Range(5.75f, 75f); // Measured in Earth days
         return RotationPeriod;
     }
 

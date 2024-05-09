@@ -1,19 +1,16 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using System;
-using System.Text;
 using Random = UnityEngine.Random;
 
 public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public StarDistance StarDistance;
     public StarProperties StarProperties;
-    public RockyPlanet RockyPlanet;
+    //public RockyPlanet RockyPlanet;
     public StarDescriptions StarDescriptions;
     public int Index;
     public Button Button;
@@ -25,8 +22,8 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
     public string starClass;
     private RomanNumConverter romanNumConverter;
 
-    // Create a list to store all the generated rocky planets
     public List<RockyPlanet> planets = new ();
+    public List<Moon> moons = new ();
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -70,6 +67,7 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
         Button.onClick.AddListener(PlaySound);
         Button.onClick.AddListener(GenerateStar);
         Button.onClick.AddListener(GeneratePlanets);
+        Button.onClick.AddListener(GenerateMoons);
     }
 
     private void PlaySound()
@@ -165,6 +163,23 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
         }
     }
 
+    private void GenerateMoons()
+    {
+        GrabFinalizedMoonData();
+
+        if (SaveManager.instance.hasLoaded)
+        {
+            for (int i = 0; i < SaveManager.instance.activeSave.moons.Count; i++)
+            {
+                moons = SaveManager.instance.activeSave.moons;
+            }
+        }
+        else
+        {
+            SaveManager.instance.activeSave.moons = moons;
+        }
+    }
+
     private string DetermineStarClass()
     {
         StarProperties.SpectralType spectralType = StarProperties.SpectralClass;
@@ -219,13 +234,14 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     private void GrabFinalizedPlanetData()
     {
-        int numPlanets = Random.Range(1, 15); // generate a random number of planets between 1 and 10
+        int numPlanets = Random.Range(1, 13); // generate a random number of planets between 1 and 10
 
         for (int i = 0; i < numPlanets; i++)
         {
             // create a new rocky planet object
-            RockyPlanet p = new();
+            RockyPlanet p = new ();
             p.Name = StarProperties.SystemName + "-" + romanNumConverter.ToRomanNumeral(i + 1);
+            p.GenerateStartingPosition();       // no args
             p.GenerateOrbitalPeriod();          // no args
             p.GenerateRadius();                 // no args
             p.GenerateFocusPoint();             // no args
@@ -236,6 +252,8 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
             p.GenerateAxialTilt();              // no args
             p.HasRandomAtmosphere();            // no args
             p.HasRandomRings();                 // no args
+            p.GenerateInnerRingRadius();        // no args
+            p.GenerateOuterRingRadius();        // no args
             p.GenerateSurfacePressure();        // no args
             p.GenerateMass();                   // MeanDensity, Radius
             p.GenerateMeanDensity();            // Mass, Radius
@@ -248,8 +266,35 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
             p.HasLiquidWater();                 // SurfaceTemperature, HasAtmosphere, SurfacePressure
             p.GenerateAtmosphereComposition();  // HasAtmosphere, SemiMajorAxis, SurfaceTemperature
             p.IsRandomlyHabitable();            // FocusPoint, HasLiquidWater()
-            p.GenerateMoons();                  // no args
             planets.Add(p);
+        }
+    }
+
+    private void GrabFinalizedMoonData()
+    {
+        foreach (RockyPlanet planet in planets)
+        {
+            int numMoons = Random.Range(0, 4); // generate a random number of moons for each planet
+
+            for (int i = 0; i < numMoons; i++)
+            {
+                Moon m = new ();
+                m.Name = planet.Name;
+                m.GenerateMass();
+                m.GenerateRadius();
+                m.GenerateOrbitalPeriod();
+                m.GenerateOrbitalDistanceX();
+                m.GenerateRotationPeriod();
+                m.GenerateAxialTilt();
+                m.GenerateSurfaceTemperature();
+                m.HasRandomAtmosphere();
+                m.IsRandomlyHabitable();
+                m.GenerateMeanDensity();
+                m.GenerateSurfaceGravity();
+                m.GenerateEscapeVelocity();
+                m.GenerateAlbedo();
+                moons.Add(m);
+            }
         }
     }
 }

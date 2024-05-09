@@ -5,6 +5,8 @@ public class PlanetController : MonoBehaviour
     public SaveManager SaveManager;
     public GameObject starPrefab;
 
+    public float Radius;
+    public Vector3 StartingPosition;
     public float RotationPeriod;
     public float OrbitalPeriod;
     public float SemiMajorAxis;
@@ -13,9 +15,16 @@ public class PlanetController : MonoBehaviour
     public float SemiMinorAxis;
     public float AxialTilt;
     public bool IsHabitable;
+    public bool HasRings;
+    public float InnerRingRadius;
+    public float OuterRingRadius;
 
-    private float semiMinorAxis;
-    private float timeElapsed;
+    private float elapsedTime;
+
+    public GameObject planetaryRingsPrefab;
+    private GameObject planetaryRings;
+    public float innerRingsDistance;
+    public float outerRingsDistance;
 
     public GameObject axialTiltMarkerPrefab; // Reference to the axial tilt marker prefab
     private GameObject axialTiltMarker; // Reference to the instantiated axial tilt marker game object
@@ -28,9 +37,73 @@ public class PlanetController : MonoBehaviour
     public void Start()
     {
         transform.Rotate(Vector3.right, AxialTilt);
+        transform.position = StartingPosition;
+        InstantiateDebugVisuals();
 
-        transform.position = CalculatePosition(0);
+        if (HasRings)
+        {
+            InstantiatePlanetaryRings();
+        }
+    }
 
+    public void Update()
+    {
+        // Rotate the planet around its own axis
+        transform.Rotate(Vector3.up, Time.deltaTime * RotationPeriod * GameSpeedController.Instance.curSpeed);
+
+        // Orbit the star
+        elapsedTime += Time.deltaTime * GameSpeedController.Instance.curSpeed;
+
+        float orbitSpeed = 2 * Mathf.PI / OrbitalPeriod;
+
+        if (!reverseOrbitDirection)
+        {
+            Orbit(starPrefab.transform.position, -orbitSpeed);
+        }
+        else
+        {
+            Orbit(starPrefab.transform.position, orbitSpeed);
+        }
+    }
+
+    private void Orbit(Vector3 center, float speed)
+    {
+        Vector3 offset = StartingPosition - center;
+        float angle = elapsedTime * speed;
+        Vector3 newPosition = center + Quaternion.Euler(0, angle * Mathf.Rad2Deg, 0) * offset;
+
+        transform.position = newPosition;
+    }
+
+    public Color GenerateRandomRingsColor()
+    {
+        float r = Random.Range(0.8f, 1.0f);
+        float g = Random.Range(0.7f, 0.74f);
+        float b = Random.Range(0.53f, 0.57f);
+        return new Color(r, g, b);
+    }
+
+    public void InstantiatePlanetaryRings()
+    {
+        // Create planetary rings if planet has them
+        planetaryRings = Instantiate(planetaryRingsPrefab, transform.position, Quaternion.identity);
+        planetaryRings.transform.parent = transform;
+        planetaryRings.transform.localPosition = Vector3.zero;
+
+        // Remap innerRingsDistance to a value between 0 and 1
+        float minInner = Radius + 3f;
+        float maxInner = Radius + 7.5f;
+        InnerRingRadius = Mathf.InverseLerp(minInner, maxInner, InnerRingRadius);
+        InnerRingRadius = Mathf.Clamp(InnerRingRadius, 0.1f, 0.4f);
+        planetaryRings.transform.localScale = new Vector3(OuterRingRadius, 0f, OuterRingRadius);
+        planetaryRings.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+        planetaryRings.transform.GetComponent<MeshRenderer>().material.SetFloat("_InnerRadius", InnerRingRadius);
+        planetaryRings.transform.GetComponent<MeshRenderer>().material.SetColor("_RingColor", GenerateRandomRingsColor());
+        // add the rest of the stuff
+    }
+
+    public void InstantiateDebugVisuals()
+    {
         // Create the axial tilt marker object
         axialTiltMarker = Instantiate(axialTiltMarkerPrefab, transform.position, Quaternion.identity);
         axialTiltMarker.transform.parent = transform;
@@ -44,88 +117,5 @@ public class PlanetController : MonoBehaviour
         spinDirectionMarker.transform.localPosition = Vector3.zero;
         spinDirectionMarker.transform.localScale = new Vector3(5.5f, 5.5f, 0.0f);
         spinDirectionMarker.transform.localRotation = Quaternion.Euler(0f, 0f, 0f); // Set the initial rotation to zero
-    }
-
-    public void Update()
-    {
-        // Rotate the planet around its own axis
-        transform.Rotate(Vector3.up, Time.deltaTime * RotationPeriod * GameSpeedController.Instance.curSpeed);
-
-        timeElapsed += Time.deltaTime * GameSpeedController.Instance.curSpeed;
-        if (!reverseOrbitDirection)
-        {
-            transform.position = CalculatePosition(timeElapsed);
-        }
-        else
-        {
-            transform.position = CalculatePosition(OrbitalPeriod - timeElapsed);
-        }
-
-        if (timeElapsed >= OrbitalPeriod)
-        {
-            timeElapsed = 0f;
-        }
-    }
-
-    /// <summary>
-    /// Calculates the position of the planet based on its orbital parameters and the current time elapsed.
-    /// </summary>
-    private Vector3 CalculatePosition(float time)
-    {
-        // angle between the planet and the pericenter
-        // (the point in the orbit closest to the star), as seen from the focus of the ellipse
-        float meanAnomaly = 2 * Mathf.PI * (time / OrbitalPeriod);
-
-        // the angle between the pericenter and a hypothetical circle with the same radius as the semi - major axis
-        float eccentricAnomaly = CalculateEccentricAnomaly(meanAnomaly);
-
-        // angle between the pericenter and the planet as seen from the focus of the ellipse
-        float trueAnomaly = CalculateTrueAnomaly(eccentricAnomaly);
-
-        // calculates the radius of the planet's position vector
-        float radius = SemiMajorAxis * (1 - Eccentricity * Eccentricity) / (1 + Eccentricity * Mathf.Cos(trueAnomaly));
-        Vector3 position = new (radius * Mathf.Cos(trueAnomaly), 0f, radius * Mathf.Sin(trueAnomaly));
-
-        return position;
-    }
-
-    /// <summary>
-    /// Calculates the eccentric anomaly of the planet's orbit based on the mean anomaly
-    /// </summary>
-    private float CalculateEccentricAnomaly(float meanAnomaly)
-    {
-        float eccentricAnomaly = meanAnomaly;
-
-        // set to 10 iterations
-        // adjust to achieve a higher or lower degree of accuracy
-        for (int i = 0; i < 10; i++)
-        {
-            // applying Kepler's equation
-            eccentricAnomaly = meanAnomaly + Eccentricity * Mathf.Sin(eccentricAnomaly);
-        }
-
-        return eccentricAnomaly;
-    }
-
-    /// <summary>
-    /// Calculates the true anomaly of an orbiting body given its eccentric anomaly
-    /// Angle between the periapsis (the point of closest approach to the focus) of the orbit and the position of the orbiting body, 
-    /// as measured from the focus of the ellipse.
-    /// </summary>
-    private float CalculateTrueAnomaly(float eccentricAnomaly)
-    {
-        // derived from the equation of the ellipse in polar coordinates
-        // calculate the cosine of the true anomaly using the cosine of the eccentric anomaly and the eccentricity of the orbit
-        // calculate the true anomaly itself using the inverse cosine function
-        float trueAnomaly = Mathf.Acos((Mathf.Cos(eccentricAnomaly) - Eccentricity) / (1 - Eccentricity * Mathf.Cos(eccentricAnomaly)));
-
-        // if eccentric anomaly is greater than pi (180 degrees)...
-        // adjust the true anomaly by subtracting it from 2pi to ensure it is within the correct range of 0 to 2pi
-        if (eccentricAnomaly > Mathf.PI)
-        {
-            trueAnomaly = 2 * Mathf.PI - trueAnomaly;
-        }
-
-        return trueAnomaly;
     }
 }
