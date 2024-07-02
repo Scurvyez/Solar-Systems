@@ -20,7 +20,8 @@ public class SystemStarData : MonoBehaviour
     public TextMeshProUGUI VariabilityText;
     public TextMeshProUGUI MetallicityText;
     private TextMeshProUGUI[] textElements;
-    
+    private static readonly int _solarFlare = Shader.PropertyToID("_SolarFlare");
+
     private const float SolRadii = 695700000.0f;
     
     // Start is called before the first frame update
@@ -41,8 +42,8 @@ public class SystemStarData : MonoBehaviour
 
         if (SaveManager.hasLoaded && isSolarSystemScene)
         {
-            RotationText.text = "<color=#ff8f8f>Rotation:</color> " + string.Format("{0:0.00}", transform.rotation) + " km/h";
-            VariabilityText.text = "<color=#ff8f8f>Variability:</color> " + parentMaterial.material.GetFloat("_SolarFlare");
+            RotationText.text = "<color=#ff8f8f>Rotation:</color> " + $"{transform.rotation:0.00}" + " km/h";
+            VariabilityText.text = "<color=#ff8f8f>Variability:</color> " + parentMaterial.material.GetFloat(_solarFlare);
         }
     }
 
@@ -50,23 +51,21 @@ public class SystemStarData : MonoBehaviour
     {
         bool isSolarSystemScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "SolarSystem";
 
-        if (SaveManager.hasLoaded && isSolarSystemScene)
-        {
-            SystemNameText.text = "<color=#ff8f8f>System Name:</color> " + SaveManager.activeSave.starSystemName;
+        if (!SaveManager.hasLoaded || !isSolarSystemScene) return;
+        SystemNameText.text = "<color=#ff8f8f>System Name:</color> " + SaveManager.activeSave.starSystemName;
 
-            if (SaveManager.activeSave.starAge >= 1000000000)
-                AgeText.text = "<color=#ff8f8f>Age:</color> " + (SaveManager.activeSave.starAge / 1000000000f).ToString("0.00") + " billion years old";
-            else
-                AgeText.text = "<color=#ff8f8f>Age:</color> " + (SaveManager.activeSave.starAge / 1000000f).ToString("0.00") + " million years old";
+        if (SaveManager.activeSave.starAge >= 1000000000)
+            AgeText.text = "<color=#ff8f8f>Age:</color> " + (SaveManager.activeSave.starAge / 1000000000f).ToString("0.00") + " billion years old";
+        else
+            AgeText.text = "<color=#ff8f8f>Age:</color> " + (SaveManager.activeSave.starAge / 1000000f).ToString("0.00") + " million years old";
 
-            MassText.text = "<color=#ff8f8f>Mass:</color> " + string.Format("{0:0,0.00}", SaveManager.activeSave.starMass) + " M<sub>O</sub>";
-            RadiusText.text = "<color=#ff8f8f>Radius:</color> " + string.Format("{0:0,0.00}", SaveManager.activeSave.starRadius / SolRadii) + " R<sub>O</sub>";
-            LuminosityText.text = "<color=#ff8f8f>Luminosity:</color> " + string.Format("{0:0,0.00}", SaveManager.activeSave.starLuminosity) + " L<sub>O</sub>";
-            TemperatureText.text = "<color=#ff8f8f>Temperature:</color> " + string.Format("{0:0.00}", SaveManager.activeSave.starTemperature) + " K";
-            RotationText.text = "<color=#ff8f8f>Rotation:</color> " + string.Format("{0:0.00}", SaveManager.activeSave.starRotation) + " km/h";
-            MagneticFieldText.text = "<color=#ff8f8f>MagneticField:</color> " + string.Format("{0:0.000000}", SaveManager.activeSave.starMagneticField) + " teslas";
-            MetallicityText.text = "<color=#ff8f8f>Metallicity:</color> " + string.Join(", ", SaveManager.activeSave.starMetallicity);
-        }
+        MassText.text = "<color=#ff8f8f>Mass:</color> " + $"{SaveManager.activeSave.starMass:0,0.00}" + " M<sub>O</sub>";
+        RadiusText.text = "<color=#ff8f8f>Radius:</color> " + $"{SaveManager.activeSave.starRadius / SolRadii:0,0.00}" + " R<sub>O</sub>";
+        LuminosityText.text = "<color=#ff8f8f>Luminosity:</color> " + $"{SaveManager.activeSave.starLuminosity:0,0.00}" + " L<sub>O</sub>";
+        TemperatureText.text = "<color=#ff8f8f>Temperature:</color> " + $"{SaveManager.activeSave.starTemperature:0.00}" + " K";
+        RotationText.text = "<color=#ff8f8f>Rotation:</color> " + $"{SaveManager.activeSave.starRotation:0.00}" + " km/h";
+        MagneticFieldText.text = "<color=#ff8f8f>MagneticField:</color> " + $"{SaveManager.activeSave.starMagneticField:0.000000}" + " teslas";
+        MetallicityText.text = "<color=#ff8f8f>Metallicity:</color> " + string.Join(", ", SaveManager.activeSave.starMetallicity);
     }
 
     private void PopulateTextElementsArray()

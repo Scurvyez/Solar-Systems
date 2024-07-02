@@ -1,13 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.IO;
-using System.Xml;
 using System.Xml.Serialization;
-using System;
-
 
 public class SaveManager : MonoBehaviour
 {
@@ -18,7 +14,7 @@ public class SaveManager : MonoBehaviour
     public bool hasBeenReset;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         resetButton.onClick.AddListener(DeleteSaveData);
     }
@@ -36,10 +32,10 @@ public class SaveManager : MonoBehaviour
         string dataPath = Application.persistentDataPath;
 
         // type of info we are saving
-        var serializer = new XmlSerializer(typeof(SystemSaveData));
+        XmlSerializer serializer = new (typeof(SystemSaveData));
 
         // where we are saving it to
-        var stream = new FileStream(dataPath + "/" + activeSave.saveName + ".xml", FileMode.Create);
+        FileStream stream = new (dataPath + "/" + activeSave.saveName + ".xml", FileMode.Create);
 
         // object to save
         serializer.Serialize(stream, activeSave);
@@ -49,25 +45,20 @@ public class SaveManager : MonoBehaviour
         //Debug.Log(dataPath);
     }
 
-    public void Load()
+    private void Load()
     {
         string dataPath = Application.persistentDataPath;
 
-        if (System.IO.File.Exists(dataPath + "/" + activeSave.saveName + ".xml"))
-        {
-            var serializer = new XmlSerializer(typeof(SystemSaveData));
-            var stream = new FileStream(dataPath + "/" + activeSave.saveName + ".xml", FileMode.Open);
-
-            activeSave = serializer.Deserialize(stream) as SystemSaveData;
-
-            stream.Close();
-            //Debug.Log("Loaded.");
-
-            hasLoaded = true;
-        }
+        if (!File.Exists(dataPath + "/" + activeSave.saveName + ".xml")) return;
+        XmlSerializer serializer = new (typeof(SystemSaveData));
+        FileStream stream = new (dataPath + "/" + activeSave.saveName + ".xml", FileMode.Open);
+        activeSave = serializer.Deserialize(stream) as SystemSaveData;
+        stream.Close();
+        //Debug.Log("Loaded.");
+        hasLoaded = true;
     }
 
-    public void DeleteSaveData()
+    private void DeleteSaveData()
     {
         string dataPath = Application.persistentDataPath;
 
@@ -90,16 +81,17 @@ public class SystemSaveData
     public string starClassAsString;                                // class
     public string starSystemName;                                   // name
     public double starAge;                                          // age
-    public double starMass;                                         // mass
-    public double starRadius;                                       // radius
-    public double starLuminosity;                                   // luminosity
-    public double starTemperature;                                  // temperature
-    public double starRotation;                                     // rotation
-    public double starMagneticField;                                // magnetic field
+    public Vector3 starPosition;                                    // position
+    public float starMass;                                          // mass
+    public float starRadius;                                        // radius
+    public float starActualRadius;                                  // actual radius for gae object
+    public float starLuminosity;                                    // luminosity
+    public float starTemperature;                                   // temperature
+    public float starRotation;                                      // rotation
+    public float starMagneticField;                                 // magnetic field
     public bool hasIntrinsicVariability;                            // is intrinsic?
     public bool hasExtrinsicVariability;                            // is extrinsic?
-    public double starVariability;                                  // variability
-    public double starDistance;                                     // distance from Earth
+    public float starVariability;                                   // variability
     public float habitableRangeInner;                               // inner hab zone boundary
     public float habitableRangeOuter;                               // outer hab zone boundary
 

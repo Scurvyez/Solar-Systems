@@ -4,13 +4,12 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Utils;
 using Random = UnityEngine.Random;
 
 public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public StarDistance StarDistance;
     public StarProperties StarProperties;
-    //public RockyPlanet RockyPlanet;
     public StarDescriptions StarDescriptions;
     public int Index;
     public Button Button;
@@ -18,7 +17,7 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
 	public Vector3 DefaultScale = new (1f, 1f, 1f);
     public Vector3 HighlightScale = new (2.0f, 2.0f, 2.0f);
     private bool IsMouseOver = false;
-    private float ScaleLerpSpeed = 0.025f;
+    private const float SCALE_LERP_SPEED = 0.025f;
     public string starClass;
     private RomanNumConverter romanNumConverter;
 
@@ -51,26 +50,19 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     public void Update()
     {
-        if (IsMouseOver)
-        {
-            transform.localScale = Vector3.Lerp(transform.localScale, HighlightScale, ScaleLerpSpeed);
-        }
-        else
-        {
-            transform.localScale = Vector3.Lerp(transform.localScale, DefaultScale, ScaleLerpSpeed);
-        }
+        transform.localScale = Vector3.Lerp(transform.localScale, IsMouseOver ? HighlightScale : DefaultScale, SCALE_LERP_SPEED);
     }
 
     public void Start()
     {
-        romanNumConverter = new ();
+        romanNumConverter = new RomanNumConverter();
         Button.onClick.AddListener(PlaySound);
         Button.onClick.AddListener(GenerateStar);
         Button.onClick.AddListener(GeneratePlanets);
         Button.onClick.AddListener(GenerateMoons);
     }
 
-    private void PlaySound()
+    private static void PlaySound()
     {
         FindObjectOfType<AudioManager>().Play("MenuButtonClick");
     }
@@ -84,66 +76,59 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
         }
 
         GrabFinalizedStarData();
-        double distanceToStarFromEarth = StarDistance.GenerateDistanceToStar();
-
-        double size = StarProperties.Radius;
-        StarProperties.Size = new Vector3((float)size, (float)size, (float)size);
 
         if (SaveManager.instance.hasLoaded)
         {
-            StarProperties.SystemName = SaveManager.instance.activeSave.starSystemName;
+            SystemNamingUtil.Info_SystemName = SaveManager.instance.activeSave.starSystemName;
             starClass = SaveManager.instance.activeSave.starClassAsString;
 
-            StarProperties.Age = SaveManager.instance.activeSave.starAge;
-            StarProperties.Mass = SaveManager.instance.activeSave.starMass;
-            StarProperties.Radius = SaveManager.instance.activeSave.starRadius;
-            StarProperties.Luminosity = SaveManager.instance.activeSave.starLuminosity;
-            StarProperties.Temperature = SaveManager.instance.activeSave.starTemperature;
-            StarProperties.Rotation = SaveManager.instance.activeSave.starRotation;
-            StarProperties.MagneticField = SaveManager.instance.activeSave.starMagneticField;
-            StarProperties.Chromaticity = SaveManager.instance.activeSave.starChromaticity;
-            StarProperties.CellColor = SaveManager.instance.activeSave.starCellColor;
-            StarProperties.Size = SaveManager.instance.activeSave.starSize;
+            StarProperties.Info_Age = SaveManager.instance.activeSave.starAge;
+            StarProperties.Info_Radius = SaveManager.instance.activeSave.starRadius;
+            StarProperties.Info_Temperature = SaveManager.instance.activeSave.starTemperature;
+            StarProperties.Info_Rotation = SaveManager.instance.activeSave.starRotation;
+            StarProperties.Info_MagneticField = SaveManager.instance.activeSave.starMagneticField;
+            StarProperties.Info_Metallicity = SaveManager.instance.activeSave.starMetallicity;
+            StarProperties.Info_Variability = SaveManager.instance.activeSave.starVariability;
+            StarProperties.Info_Luminosity = SaveManager.instance.activeSave.starLuminosity;
+            StarProperties.Info_Mass = SaveManager.instance.activeSave.starMass;
+            
             StarProperties.ExtrinsicVariability = SaveManager.instance.activeSave.hasExtrinsicVariability;
             StarProperties.IntrinsicVariability = SaveManager.instance.activeSave.hasIntrinsicVariability;
-            StarProperties.Variability = SaveManager.instance.activeSave.starVariability;
-            distanceToStarFromEarth = SaveManager.instance.activeSave.starDistance;
-            StarProperties.HabitableRangeInner = SaveManager.instance.activeSave.habitableRangeInner;
-            StarProperties.HabitableRangeOuter = SaveManager.instance.activeSave.habitableRangeOuter;
-
-            StarProperties.Metallicity = SaveManager.instance.activeSave.starMetallicity;
+            
+            StarProperties.GO_Size = SaveManager.instance.activeSave.starSize;
+            StarProperties.GO_Position = SaveManager.instance.activeSave.starPosition;
+            StarProperties.GO_Radius = SaveManager.instance.activeSave.starActualRadius;
+            StarProperties.GO_Chromaticity = SaveManager.instance.activeSave.starChromaticity;
+            StarProperties.GO_CellColor = SaveManager.instance.activeSave.starCellColor;
+            StarProperties.GO_HabitableRangeInner = SaveManager.instance.activeSave.habitableRangeInner;
+            StarProperties.GO_HabitableRangeOuter = SaveManager.instance.activeSave.habitableRangeOuter;
         }
         else
         {
-            SaveManager.instance.activeSave.starSystemName = StarProperties.SystemName;
+            SaveManager.instance.activeSave.starSystemName = SystemNamingUtil.Info_SystemName;
             SaveManager.instance.activeSave.starClassAsString = DetermineStarClass();
 
-            SaveManager.instance.activeSave.starAge = StarProperties.Age;
-            SaveManager.instance.activeSave.starMass = StarProperties.Mass;
-            SaveManager.instance.activeSave.starRadius = StarProperties.Radius;
-            SaveManager.instance.activeSave.starLuminosity = StarProperties.Luminosity;
-            SaveManager.instance.activeSave.starTemperature = StarProperties.Temperature;
-            SaveManager.instance.activeSave.starRotation = StarProperties.Rotation;
-            SaveManager.instance.activeSave.starMagneticField = StarProperties.MagneticField;
-            SaveManager.instance.activeSave.starChromaticity = StarProperties.Chromaticity;
-            SaveManager.instance.activeSave.starCellColor = StarProperties.CellColor;
-            SaveManager.instance.activeSave.starSize = StarProperties.Size;
+            SaveManager.instance.activeSave.starAge = StarProperties.Info_Age;
+            SaveManager.instance.activeSave.starRadius = StarProperties.Info_Radius;
+            SaveManager.instance.activeSave.starTemperature = StarProperties.Info_Temperature;
+            SaveManager.instance.activeSave.starRotation = StarProperties.Info_Rotation;
+            SaveManager.instance.activeSave.starMagneticField = StarProperties.Info_MagneticField;
+            SaveManager.instance.activeSave.starMetallicity = StarProperties.Info_Metallicity;
+            SaveManager.instance.activeSave.starVariability = StarProperties.Info_Variability;
+            SaveManager.instance.activeSave.starLuminosity = StarProperties.Info_Luminosity;
+            SaveManager.instance.activeSave.starMass = StarProperties.Info_Mass;
+            
             SaveManager.instance.activeSave.hasExtrinsicVariability = StarProperties.ExtrinsicVariability;
             SaveManager.instance.activeSave.hasIntrinsicVariability = StarProperties.IntrinsicVariability;
-            SaveManager.instance.activeSave.starVariability = StarProperties.Variability;
-            SaveManager.instance.activeSave.starDistance = distanceToStarFromEarth;
-            SaveManager.instance.activeSave.habitableRangeInner = StarProperties.HabitableRangeInner;
-            SaveManager.instance.activeSave.habitableRangeOuter = StarProperties.HabitableRangeOuter;
-
-            SaveManager.instance.activeSave.starMetallicity = StarProperties.Metallicity;
+            
+            SaveManager.instance.activeSave.starSize = StarProperties.GO_Size;
+            SaveManager.instance.activeSave.starPosition = StarProperties.GO_Position;
+            SaveManager.instance.activeSave.starActualRadius = StarProperties.GO_Radius;
+            SaveManager.instance.activeSave.starChromaticity = StarProperties.GO_Chromaticity;
+            SaveManager.instance.activeSave.starCellColor = StarProperties.GO_CellColor;
+            SaveManager.instance.activeSave.habitableRangeInner = StarProperties.GO_HabitableRangeInner;
+            SaveManager.instance.activeSave.habitableRangeOuter = StarProperties.GO_HabitableRangeOuter;
         }
-
-        //Debug.Log("Distance from Earth to star: " + string.Format("{0:0,0.00}", StarDistance.GenerateDistanceToStar()) + " parsecs (pc).");
-        //Debug.Log("Distance from Earth to star: " + string.Format("{0:0,0.00}", StarDistance.GenerateDistanceToStar() * 3.26156) + " light years (ly).");
-        //Debug.Log("Distance from Earth to star: " + string.Format("{0:0,0.00}", StarDistance.GenerateDistanceToStar() * 3.086e16) + " meters (m).");
-        //Debug.Log(string.Format("Probability of the generated distance: {0:0.00}%", Mathf.Round((float)(StarDistance.DistanceToStarProbability() * 100 * 100)) / 100));
-
-        //Debug.Log("Star size: " + string.Format("{0:0,0.00}", StarProperties.GenerateStarSize()) + " (km).");
     }
 
     private void GeneratePlanets()
@@ -152,7 +137,7 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
 
         if (SaveManager.instance.hasLoaded)
         {
-            for (int i = 0; i < SaveManager.instance.activeSave.rockyPlanets.Count; i++)
+            foreach (RockyPlanet t in SaveManager.instance.activeSave.rockyPlanets)
             {
                 planets = SaveManager.instance.activeSave.rockyPlanets;
             }
@@ -169,7 +154,7 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
 
         if (SaveManager.instance.hasLoaded)
         {
-            for (int i = 0; i < SaveManager.instance.activeSave.moons.Count; i++)
+            foreach (Moon t in SaveManager.instance.activeSave.moons)
             {
                 moons = SaveManager.instance.activeSave.moons;
             }
@@ -183,30 +168,17 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
     private string DetermineStarClass()
     {
         StarProperties.SpectralType spectralType = StarProperties.SpectralClass;
-        switch (spectralType)
+        starClass = spectralType switch
         {
-            case StarProperties.SpectralType.O:
-                starClass = spectralType.ToString();
-                break;
-            case StarProperties.SpectralType.B:
-                starClass = spectralType.ToString();
-                break;
-            case StarProperties.SpectralType.A:
-                starClass = spectralType.ToString();
-                break;
-            case StarProperties.SpectralType.F:
-                starClass = spectralType.ToString();
-                break;
-            case StarProperties.SpectralType.G:
-                starClass = spectralType.ToString();
-                break;
-            case StarProperties.SpectralType.K:
-                starClass = spectralType.ToString();
-                break;
-            case StarProperties.SpectralType.M:
-                starClass = spectralType.ToString();
-                break;
-        }
+            StarProperties.SpectralType.O => spectralType.ToString(),
+            StarProperties.SpectralType.B => spectralType.ToString(),
+            StarProperties.SpectralType.A => spectralType.ToString(),
+            StarProperties.SpectralType.F => spectralType.ToString(),
+            StarProperties.SpectralType.G => spectralType.ToString(),
+            StarProperties.SpectralType.K => spectralType.ToString(),
+            StarProperties.SpectralType.M => spectralType.ToString(),
+            _ => starClass
+        };
         return starClass;
     }
 
@@ -215,58 +187,67 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
         StarProperties.SpectralType spectralType = (StarProperties.SpectralType)Index;
         StarProperties.SpectralClass = spectralType;
 
-        StarProperties.PickNamingMethodAndGenerate();
-        StarProperties.GenerateMass(spectralType);
-        StarProperties.GenerateRadius(spectralType);
-        StarProperties.GenerateLuminosity(spectralType);
-        StarProperties.GenerateTemperature(spectralType);
-        StarProperties.GenerateAge(spectralType);
-        StarProperties.GenerateRotation(spectralType);
-        StarProperties.GenerateMagneticField(spectralType);
-        StarProperties.Metallicity = new SerializableDictionary<string, float>();
-        StarProperties.GenerateComposition(spectralType);
-        StarProperties.GenerateChromaticity(spectralType);
-        StarProperties.RandomCellColorGenerator();
-        StarProperties.GenerateIntrinsicVariability(spectralType);
-        StarProperties.GenerateHabitableRangeInner(spectralType);
-        StarProperties.GenerateHabitableRangeOuter(spectralType);
+        SystemNamingUtil.PickNamingMethodAndGenerate();
+        
+        StarProperties.GenerateInfoAge(spectralType);
+        StarProperties.GenerateInfoRadius(spectralType);
+        StarProperties.GenerateInfoTemperature(spectralType);
+        StarProperties.GenerateInfoRotation(spectralType);
+        StarProperties.GenerateInfoMagneticField(spectralType);
+        StarProperties.Info_Metallicity = new SerializableDictionary<string, float>();
+        StarProperties.GenerateInfoMetallicity(spectralType);
+        StarProperties.GenerateInfoIntrinsicVariability(spectralType);
+        StarProperties.GenerateInfoLuminosity(StarProperties.Info_Radius, StarProperties.Info_Temperature);
+        StarProperties.GenerateInfoMass(StarProperties.Info_Luminosity);
+        
+        StarProperties.GenerateGOStartingPosition();
+        StarProperties.GenerateGORadius();
+        StarProperties.GenerateGOChromaticity(spectralType);
+        StarProperties.GenerateGOCellColor();
+        StarProperties.GenerateGOHabitableRangeInner(spectralType);
+        StarProperties.GenerateGOHabitableRangeOuter(spectralType);
     }
 
     private void GrabFinalizedPlanetData()
     {
-        int numPlanets = Random.Range(1, 13); // generate a random number of planets between 1 and 10
+        SystemSaveData saveData = SaveManager.instance.activeSave;
+        int numPlanets = Random.Range(1, 13); // generate a random number of planets between 1 and 12
 
         for (int i = 0; i < numPlanets; i++)
         {
             // create a new rocky planet object
-            RockyPlanet p = new ();
-            p.Name = StarProperties.SystemName + "-" + romanNumConverter.ToRomanNumeral(i + 1);
-            p.GenerateStartingPosition();       // no args
-            p.GenerateOrbitalPeriod();          // no args
-            p.GenerateRadius();                 // no args
-            p.GenerateFocusPoint();             // no args
-            p.GenerateComposition();            // no args
-            p.GenerateAlbedo();                 // no args
-            p.GenerateMagneticFieldStrength();  // no args
-            p.GenerateRotationPeriod();         // no args
-            p.GenerateAxialTilt();              // no args
-            p.HasRandomAtmosphere();            // no args
-            p.HasRandomRings();                 // no args
-            p.GenerateInnerRingRadius();        // no args
-            p.GenerateOuterRingRadius();        // no args
-            p.GenerateSurfacePressure();        // no args
-            p.GenerateMass();                   // MeanDensity, Radius
-            p.GenerateMeanDensity();            // Mass, Radius
-            p.GenerateSemiMajorAxis();          // OrbitalPeriod, Mass
-            p.GenerateEccentricity();           // FocusPoint, SemiMajorAxis
-            p.GenerateSemiMinorAxis();          // SemiMajorAxis, Eccentricity
-            p.GenerateSurfaceGravity();         // Mass, Radius
-            p.GenerateEscapeVelocity();         // Mass, Radius
-            p.GenerateSurfaceTemperature();     // HasAtmosphere, SurfacePressure, SemiMajorAxis, Albedo, RotationPeriod, Eccentricity
-            p.HasLiquidWater();                 // SurfaceTemperature, HasAtmosphere, SurfacePressure
-            p.GenerateAtmosphereComposition();  // HasAtmosphere, SemiMajorAxis, SurfaceTemperature
-            p.IsRandomlyHabitable();            // FocusPoint, HasLiquidWater()
-            planets.Add(p);
+            RockyPlanet rP = new ()
+            {
+                Name = SystemNamingUtil.Info_SystemName + "-" + RomanNumConverter.ToRomanNumeral(i + 1)
+            };
+            
+            rP.GenerateGORadius();
+            
+            rP.HasRandomRings();
+            rP.HasRandomAtmosphere();
+            rP.AtmosphereHeight(rP.HasAtmosphere, rP.Radius);
+            rP.GenerateMagneticFieldStrength();
+            rP.GetColor();
+            rP.GenerateAlbedo();
+            rP.GenerateOrbitalPeriod();
+            rP.GenerateFocusPoint();
+            rP.GenerateRotationalPeriod();
+            rP.GenerateAxialTilt();
+            rP.GenerateSurfacePressure();
+            rP.GenerateMass(saveData.starMass, rP.FocusPoint, rP.OrbitalPeriod);
+            rP.GenerateSurfaceGravity(rP.Mass, rP.Radius);
+            rP.GenerateEscapeVelocity(rP.Mass, rP.Radius);
+            rP.GenerateSurfaceTemperature();
+            rP.HasLiquidWater(rP.SurfaceTemperature, rP.SurfacePressure, rP.HasAtmosphere);
+            rP.IsRandomlyHabitable(saveData.habitableRangeInner, saveData.habitableRangeOuter, rP.FocusPoint);
+            rP.GenerateAtmosphereComposition(rP.HasAtmosphere, saveData.habitableRangeInner, saveData.habitableRangeOuter, rP.SurfaceTemperature);
+            rP.GenerateComposition();
+            rP.GenerateMeanDensity(rP.Composition);
+            
+            rP.GenerateInnerRingRadius();
+            rP.GenerateOuterRingRadius();
+            
+            planets.Add(rP);
         }
     }
 
@@ -278,8 +259,10 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
 
             for (int i = 0; i < numMoons; i++)
             {
-                Moon m = new ();
-                m.Name = planet.Name;
+                Moon m = new ()
+                {
+                    Name = planet.Name
+                };
                 m.GenerateMass();
                 m.GenerateRadius();
                 m.GenerateOrbitalPeriod();

@@ -1,156 +1,54 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
-using System.Linq;
+using Random = UnityEngine.Random;
 
 public class StarProperties : MonoBehaviour
 {
     public enum SpectralType { O, B, A, F, G, K, M, Unknown }
     public SpectralType SpectralClass { get; set; }
-    public string SystemName { get; set; }
-    public double Age { get; set; }
-    public double Mass { get; set; }
-    public double Radius { get; set; }
-    public double Luminosity { get; set; }
-    public double Temperature { get; set; }
-    public double Rotation { get; set; }
-    public double MagneticField { get; set; }
-    public SerializableDictionary<string, float> Metallicity { get; set; }
-    public Color Chromaticity { get; set; }
-    public Color CellColor { get; set; }
-    public double Variability { get; set; }
-    public Vector3 Size { get; set; }
-    public float HabitableRangeInner { get; set; }
-    public float HabitableRangeOuter { get; set; }
-
-    private const double SolLuminosity = 3.846e26; // in watts
-    private const double SolMassKG = 1.9881e30; // in kg
-    private const double SolRadiusM = 6.96342E8; // in m
-    private const double StefanBoltzmannConstant = 5.670373E-8;
-    private const float solLuminosity = 3.828f;
-    private const float solEffTemperature = 5780.0f;
-
+    public double Info_Age { get; set; }
+    public float Info_Radius { get; set; }
+    public float Info_Temperature { get; set; }
+    public float Info_Rotation { get; set; }
+    public float Info_MagneticField { get; set; }
+    public SerializableDictionary<string, float> Info_Metallicity { get; set; }
+    public float Info_Variability { get; set; }
+    public float Info_Luminosity { get; set; }
+    public float Info_Mass { get; set; }
     public bool ExtrinsicVariability;
     public bool IntrinsicVariability;
+    public Vector3 GO_Size { get; set; }
+    public Vector3 GO_Position { get; set; }
+    public float GO_Radius { get; set; }
+    public Color GO_Chromaticity { get; set; }
+    public Color GO_CellColor { get; set; }
+    public float GO_HabitableRangeInner { get; set; }
+    public float GO_HabitableRangeOuter { get; set; }
 
-    private string Letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private string Numbers = "0123456789";
-
-    // Arrays to store the consonants and vowels
-    private char[] Consonants = { 'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z' };
-    private char[] Vowels = { 'a', 'e', 'i', 'o', 'u' };
-
-    // Roman numerals for hyphenated names
-    private string[] RomanNumerals = { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X" };
-
-    // Random number generator
-    private System.Random nameGenRandom = new ();
-
-    /// <summary>
-    /// Chooses between 2 available naming methods.
-    /// Randomly picks one and returns the generated star system name.
-    /// </summary>
-    public string PickNamingMethodAndGenerate()
-    {
-        if (nameGenRandom.Next(100) < 8)
-        {
-            SystemName = GenerateStarSystemNameSemiUnique();
-        }
-        else
-        {
-            SystemName = GenerateStarSystemNameGeneric();
-        }
-
-        return SystemName;
-    }
-    
-    /// <summary>
-    /// Generates a semi-unique star system name using the English alphabet.
-    /// Alternating patterns of consonants and vowels.
-    /// (Lazy naming method.)
-    /// </summary>
-    private string GenerateStarSystemNameSemiUnique()
-    {
-        // Set the name length to a random number between 3 and 9
-        int nameLength = nameGenRandom.Next(3, 10);
-
-        // Start with an empty string
-        string tempSystemName = "";
-
-        // Loop for the specified number of characters in the name
-        for (int i = 0; i < nameLength; i++)
-        {
-            // Choose a random character from either the consonants or vowels
-            char letter = i % 2 == 0 ? Consonants[nameGenRandom.Next(Consonants.Length)] : Vowels[nameGenRandom.Next(Vowels.Length)];
-
-            // Add the letter to the name
-            tempSystemName += letter;
-        }
-
-        // Capitalize the first letter of the name
-        tempSystemName = char.ToUpper(tempSystemName[0]) + tempSystemName.Substring(1);
-
-        // Check if the name should be hyphenated
-        if (nameGenRandom.Next(100) < 50)
-        {
-            // If so, choose a random Roman numeral and add it to the name
-            string numeral = RomanNumerals[nameGenRandom.Next(RomanNumerals.Length)];
-            tempSystemName = tempSystemName + "-" + numeral;
-        }
-
-        // Return the generated name
-        return tempSystemName;
-    }
-
-    /// <summary>
-    /// Generates a standard star system name.
-    /// Based on how the International Astronomical Union (IAU) names stars.
-    /// A simple mix of "x" letters, a "-", followed by a mix of "y" numbers.
-    /// </summary>
-    private string GenerateStarSystemNameGeneric()
-    {
-        string tempSystemName = "";
-        int nameLength = Random.Range(5, 14);
-        bool addingLetters = true;
-        for (int i = 0; i < nameLength; i++)
-        {
-            if (addingLetters)
-            {
-                tempSystemName += Letters[Random.Range(0, Letters.Length)];
-            }
-            else
-            {
-                tempSystemName += Numbers[Random.Range(0, Numbers.Length)];
-            }
-
-            if (i == (nameLength / 2) - 1)
-            {
-                tempSystemName += "-";
-                addingLetters = false;
-            }
-        }
-        return tempSystemName;
-    }
+    private const double SOL_MASS_KG = 1.9881e30; // in kg
+    private const double SOL_RADIUS_M = 6.96342E8; // in m
+    private const double StefanBoltzmannConstant = 5.670373E-8;
+    private const float SOL_LUMINOSITY = 3.828f;
+    private const float SOL_EFF_TEMP = 5780.0f;
     
     /// <summary>
     /// Generates a random yet realistic radius for the star.
-    /// Used later to rescale star GameObject by applying final value to a Vector3.
     /// Used to calculate luminosity.
     /// Measured in solar radii.
     /// </summary>
-    public double GenerateRadius(SpectralType spectralType)
+    public float GenerateInfoRadius(SpectralType spectralType)
     {
         float randomNumber = Random.Range(0, 250);
 
-        Radius = spectralType switch
+        Info_Radius = spectralType switch
         {
-            SpectralType.O when randomNumber == 250 => Random.Range(1250f, 1500f),
-            SpectralType.O when randomNumber <= 249 && randomNumber >= 240 => Random.Range(1000f, 1250f),
-            SpectralType.O when randomNumber <= 239 && randomNumber >= 230 => Random.Range(800f, 1000f),
-            SpectralType.O when randomNumber <= 229 && randomNumber >= 220 => Random.Range(500f, 800f),
-            SpectralType.O when randomNumber <= 219 && randomNumber >= 200 => Random.Range(100f, 500f),
-            SpectralType.O when randomNumber <= 199 && randomNumber >= 175 => Random.Range(30f, 100f),
-            SpectralType.O when randomNumber <= 174 && randomNumber >= 125 => Random.Range(10f, 30f),
+            SpectralType.O when Mathf.Approximately(randomNumber, 250) => Random.Range(1250f, 1500f),
+            SpectralType.O when randomNumber is <= 249 and >= 240 => Random.Range(1000f, 1250f),
+            SpectralType.O when randomNumber is <= 239 and >= 230 => Random.Range(800f, 1000f),
+            SpectralType.O when randomNumber is <= 229 and >= 220 => Random.Range(500f, 800f),
+            SpectralType.O when randomNumber is <= 219 and >= 200 => Random.Range(100f, 500f),
+            SpectralType.O when randomNumber is <= 199 and >= 175 => Random.Range(30f, 100f),
+            SpectralType.O when randomNumber is <= 174 and >= 125 => Random.Range(10f, 30f),
             SpectralType.O => Random.Range(6.6f, 10f),
             SpectralType.B => Random.Range(1.8f, 6.6f),
             SpectralType.A => Random.Range(1.4f, 1.8f),
@@ -158,9 +56,24 @@ public class StarProperties : MonoBehaviour
             SpectralType.G => Random.Range(0.96f, 1.15f),
             SpectralType.K => Random.Range(0.7f, 0.96f),
             SpectralType.M => Random.Range(0.08f, 0.7f),
-            _ => Radius,
-        } * SolRadiusM; // convert to solar radii
-        return Radius;
+            _ => Info_Radius,
+        } * (float)SOL_RADIUS_M; // convert to solar radii
+        return Info_Radius;
+    }
+    
+    /// <summary>
+    /// The origin point for our star(s) and the rest of the system.
+    /// </summary>
+    public Vector3 GenerateGOStartingPosition()
+    {
+        GO_Position = Vector3.zero;
+        return GO_Position;
+    }
+
+    public float GenerateGORadius()
+    {
+        GO_Radius = 50.0f;
+        return GO_Radius;
     }
 
     /// <summary>
@@ -168,9 +81,9 @@ public class StarProperties : MonoBehaviour
     /// Used to calculate luminosity.
     /// Measured in kelvins.
     /// </summary>
-    public double GenerateTemperature(SpectralType spectralType)
+    public float GenerateInfoTemperature(SpectralType spectralType)
     {
-        Temperature = spectralType switch
+        Info_Temperature = spectralType switch
         {
             SpectralType.O => Random.Range(30000f, 60000f),
             SpectralType.B => Random.Range(10000f, 30000f),
@@ -179,9 +92,9 @@ public class StarProperties : MonoBehaviour
             SpectralType.G => Random.Range(5200f, 6000f),
             SpectralType.K => Random.Range(3700f, 5200f),
             SpectralType.M => Random.Range(2400f, 3700f),
-            _ => Temperature,
+            _ => Info_Temperature,
         };
-        return Temperature;
+        return Info_Temperature;
     }
 
     /// <summary>
@@ -190,13 +103,11 @@ public class StarProperties : MonoBehaviour
     /// Used to calculate a stars mass.
     /// Measured in solar luminosities.
     /// </summary>
-    public double GenerateLuminosity(SpectralType spectralType)
+    public float GenerateInfoLuminosity(float starRadius, float starTemperature)
     {
-        double starRadius = GenerateRadius(spectralType);
-        double starTemperature = GenerateTemperature(spectralType);
-        Luminosity = ((float)StefanBoltzmannConstant * (4 * Mathf.PI * Mathf.Pow((float)starRadius, 2)) * Mathf.Pow((float)starTemperature, 4));
-        Luminosity /= SolLuminosity; // convert to solar luminosity
-        return Luminosity;
+        Info_Luminosity = ((float)StefanBoltzmannConstant * (4 * Mathf.PI * Mathf.Pow(starRadius, 2)) * Mathf.Pow(starTemperature, 4));
+        Info_Luminosity /= (float)SOL_LUMINOSITY; // convert to solar luminosity
+        return Info_Luminosity;
     }
 
     /// <summary>
@@ -204,11 +115,10 @@ public class StarProperties : MonoBehaviour
     /// Calculated via the mass - luminosity relation.
     /// Measured in solar masses.
     /// </summary>
-    public double GenerateMass(SpectralType spectralType)
+    public float GenerateInfoMass(float starLuminosity)
     {
-        double starLuminosity = GenerateLuminosity(spectralType);
-        Mass = Mathf.Pow((float)starLuminosity / 1f, 3f / 4f);
-        return Mass;
+        Info_Mass = Mathf.Pow(starLuminosity / 1f, 3f / 4f);
+        return Info_Mass;
     }
 
     /// <summary>
@@ -217,9 +127,9 @@ public class StarProperties : MonoBehaviour
     /// Smaller stars (M class) burn much slower and lower, so they have longer lives.
     /// Measured in years.
     /// </summary>
-    public double GenerateAge(SpectralType spectralType)
+    public double GenerateInfoAge(SpectralType spectralType)
     {
-        Age = spectralType switch
+        Info_Age = spectralType switch
         {
             SpectralType.O => Random.Range(5000000, 10000000),
             SpectralType.B => Random.Range(50000000, 100000000),
@@ -228,18 +138,18 @@ public class StarProperties : MonoBehaviour
             SpectralType.G => Random.Range(5000000000, 10000000000),
             SpectralType.K => Random.Range(25000000000, 50000000000),
             SpectralType.M => Random.Range(50000000000, 100000000000),
-            _ => Age,
+            _ => Info_Age,
         };
-        return Age;
+        return Info_Age;
     }
 
     /// <summary>
     /// Generates a random yet realistic axial rotation value for the star.
     /// Measured in kilometers / second.
     /// </summary>
-    public double GenerateRotation(SpectralType spectralType)
+    public float GenerateInfoRotation(SpectralType spectralType)
     {
-        Rotation = spectralType switch
+        Info_Rotation = spectralType switch
         {
             SpectralType.O => Random.Range(20f, 30f),
             SpectralType.B => Random.Range(5f, 15f),
@@ -248,9 +158,9 @@ public class StarProperties : MonoBehaviour
             SpectralType.G => Random.Range(0.1f, 1f),
             SpectralType.K => Random.Range(0.05f, 0.5f),
             SpectralType.M => Random.Range(0.01f, 0.05f),
-            _ => Rotation,
+            _ => Info_Rotation,
         };
-        return Rotation;
+        return Info_Rotation;
     }
 
     /// <summary>
@@ -258,9 +168,9 @@ public class StarProperties : MonoBehaviour
     /// Used as a factor in calculating final axial rotation.
     /// Measured in teslas.
     /// </summary>
-    public double GenerateMagneticField(SpectralType spectralType)
+    public float GenerateInfoMagneticField(SpectralType spectralType)
     {
-        MagneticField = spectralType switch
+        Info_MagneticField = spectralType switch
         {
             SpectralType.O => Random.Range(0.05f, 1.0f),
             SpectralType.B => Random.Range(0.03f, 0.05f),
@@ -269,9 +179,9 @@ public class StarProperties : MonoBehaviour
             SpectralType.G => Random.Range(0.001f, 0.003f),
             SpectralType.K => Random.Range(0.0005f, 0.001f),
             SpectralType.M => Random.Range(0.0001f, 0.0005f),
-            _ => MagneticField,
+            _ => Info_MagneticField,
         };
-        return MagneticField;
+        return Info_MagneticField;
     }
 
     /// <summary>
@@ -279,9 +189,9 @@ public class StarProperties : MonoBehaviour
     /// Used as the base color in the star's shader graph.
     /// (update to include hydrogen lines later as a factor?)
     /// </summary>
-    public Color GenerateChromaticity(SpectralType spectralType)
+    public Color GenerateGOChromaticity(SpectralType spectralType)
     {
-        Chromaticity = spectralType switch
+        GO_Chromaticity = spectralType switch
         {
             SpectralType.O => new Color(146, 181, 255, 255),
             SpectralType.B => new Color(162, 192, 255, 255),
@@ -290,27 +200,27 @@ public class StarProperties : MonoBehaviour
             SpectralType.G => new Color(255, 237, 227, 255),
             SpectralType.K => new Color(255, 218, 181, 255),
             SpectralType.M => new Color(255, 181, 108, 255),
-            _ => Chromaticity,
+            _ => GO_Chromaticity,
         };
-        return Chromaticity;
+        return GO_Chromaticity;
     }
 
     /// <summary>
     /// Generates a new random color to be used in the star objects _CellColor shader property.
     /// Said number is generated within a range of values based on the stars' chromaticity.
     /// </summary>
-    public Color RandomCellColorGenerator()
+    public Color GenerateGOCellColor()
     {
         // the range, -/+ the chromaticity,
         // to be filtered through for r, g, and b values of our output Color
         float rGBRange = 255;
 
-        CellColor = new(
-            Chromaticity.r + Random.Range(-rGBRange, rGBRange),
-            Chromaticity.g + Random.Range(-rGBRange, rGBRange),
-            Chromaticity.b + Random.Range(-rGBRange, rGBRange),
-            Chromaticity.a);
-        return CellColor;
+        GO_CellColor = new(
+            GO_Chromaticity.r + Random.Range(-rGBRange, rGBRange),
+            GO_Chromaticity.g + Random.Range(-rGBRange, rGBRange),
+            GO_Chromaticity.b + Random.Range(-rGBRange, rGBRange),
+            GO_Chromaticity.a);
+        return GO_CellColor;
     }
 
     /// <summary>
@@ -319,7 +229,7 @@ public class StarProperties : MonoBehaviour
     /// Can be intrinsic or extrinsic.
     /// Or none, in which case output = 0f.
     /// </summary>
-    public double GenerateIntrinsicVariability(SpectralType spectralType)
+    public float GenerateInfoIntrinsicVariability(SpectralType spectralType)
     {
         // ~60% of all known stars have some variability 
         // choose what type of variability the star will have, if it is variable
@@ -339,11 +249,11 @@ public class StarProperties : MonoBehaviour
         {
             ExtrinsicVariability = false;
             IntrinsicVariability = false;
-            Variability = 0f;
+            Info_Variability = 0f;
         }
         else
         {
-            Variability = spectralType switch
+            Info_Variability = spectralType switch
             {
                 SpectralType.O => Random.Range(0.05f, 0.15f),
                 SpectralType.B => Random.Range(0.03f, 0.10f),
@@ -355,7 +265,7 @@ public class StarProperties : MonoBehaviour
                 _ => 0f,
             };
         }
-        return Variability;
+        return Info_Variability;
     }
 
     /// <summary>
@@ -363,81 +273,83 @@ public class StarProperties : MonoBehaviour
     /// Each star class contains set compounds. (not random)
     /// Each stars' compounds have a random % though.
     /// </summary>
-    public void GenerateComposition(SpectralType spectralType)
+    public void GenerateInfoMetallicity(SpectralType spectralType)
     {
         switch (spectralType)
         {
             case SpectralType.O:
-                Metallicity.Add("H", Random.Range(74f, 76f));
-                Metallicity.Add("He", Random.Range(24f, 26f));
+                Info_Metallicity.Add("H", Random.Range(74f, 76f));
+                Info_Metallicity.Add("He", Random.Range(24f, 26f));
                 break;
             case SpectralType.B:
-                Metallicity.Add("H", Random.Range(58f, 70f));
-                Metallicity.Add("He", Random.Range(28f, 42f));
-                Metallicity.Add("C", Random.Range(0.1f, 2f));
-                Metallicity.Add("N", Random.Range(0.1f, 2f));
-                Metallicity.Add("O", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("H", Random.Range(58f, 70f));
+                Info_Metallicity.Add("He", Random.Range(28f, 42f));
+                Info_Metallicity.Add("C", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("N", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("O", Random.Range(0.1f, 2f));
                 break;
             case SpectralType.A:
-                Metallicity.Add("H", Random.Range(71f, 74f));
-                Metallicity.Add("He", Random.Range(25f, 28f));
-                Metallicity.Add("C", Random.Range(0.1f, 2f));
-                Metallicity.Add("N", Random.Range(0.1f, 2f));
-                Metallicity.Add("O", Random.Range(0.1f, 2f));
-                Metallicity.Add("Ne", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("H", Random.Range(71f, 74f));
+                Info_Metallicity.Add("He", Random.Range(25f, 28f));
+                Info_Metallicity.Add("C", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("N", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("O", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("Ne", Random.Range(0.1f, 2f));
                 break;
             case SpectralType.F:
-                Metallicity.Add("H", Random.Range(54f, 64f));
-                Metallicity.Add("He", Random.Range(35f, 45f));
-                Metallicity.Add("C", Random.Range(0.1f, 2f));
-                Metallicity.Add("N", Random.Range(0.1f, 2f));
-                Metallicity.Add("O", Random.Range(0.1f, 2f));
-                Metallicity.Add("Ne", Random.Range(0.1f, 2f));
-                Metallicity.Add("Fe", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("H", Random.Range(54f, 64f));
+                Info_Metallicity.Add("He", Random.Range(35f, 45f));
+                Info_Metallicity.Add("C", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("N", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("O", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("Ne", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("Fe", Random.Range(0.1f, 2f));
                 break;
             case SpectralType.G:
-                Metallicity.Add("H", Random.Range(74f, 84f));
-                Metallicity.Add("He", Random.Range(14f, 24f));
-                Metallicity.Add("C", Random.Range(0.1f, 2f));
-                Metallicity.Add("N", Random.Range(0.1f, 2f));
-                Metallicity.Add("O", Random.Range(0.1f, 2f));
-                Metallicity.Add("Ne", Random.Range(0.1f, 2f));
-                Metallicity.Add("Fe", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("H", Random.Range(74f, 84f));
+                Info_Metallicity.Add("He", Random.Range(14f, 24f));
+                Info_Metallicity.Add("C", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("N", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("O", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("Ne", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("Fe", Random.Range(0.1f, 2f));
                 break;
             case SpectralType.K:
-                Metallicity.Add("H", Random.Range(56f, 64f));
-                Metallicity.Add("He", Random.Range(36f, 44f));
-                Metallicity.Add("C", Random.Range(0.1f, 2f));
-                Metallicity.Add("N", Random.Range(0.1f, 2f));
-                Metallicity.Add("O", Random.Range(0.1f, 2f));
-                Metallicity.Add("Ne", Random.Range(0.1f, 2f));
-                Metallicity.Add("Fe", Random.Range(0.1f, 2f));
-                Metallicity.Add("Si", Random.Range(0.1f, 2f));
-                Metallicity.Add("Mg", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("H", Random.Range(56f, 64f));
+                Info_Metallicity.Add("He", Random.Range(36f, 44f));
+                Info_Metallicity.Add("C", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("N", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("O", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("Ne", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("Fe", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("Si", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("Mg", Random.Range(0.1f, 2f));
                 break;
             case SpectralType.M:
-                Metallicity.Add("H", Random.Range(36f, 56f));
-                Metallicity.Add("He", Random.Range(44f, 64f));
-                Metallicity.Add("C", Random.Range(0.1f, 2f));
-                Metallicity.Add("N", Random.Range(0.1f, 2f));
-                Metallicity.Add("O", Random.Range(0.1f, 2f));
-                Metallicity.Add("Ne", Random.Range(0.1f, 2f));
-                Metallicity.Add("Fe", Random.Range(0.1f, 2f));
-                Metallicity.Add("Si", Random.Range(0.1f, 2f));
-                Metallicity.Add("Mg", Random.Range(0.1f, 2f));
-                Metallicity.Add("S", Random.Range(0.1f, 2f));
-                Metallicity.Add("Cl", Random.Range(0.1f, 2f));
-                Metallicity.Add("K", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("H", Random.Range(36f, 56f));
+                Info_Metallicity.Add("He", Random.Range(44f, 64f));
+                Info_Metallicity.Add("C", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("N", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("O", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("Ne", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("Fe", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("Si", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("Mg", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("S", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("Cl", Random.Range(0.1f, 2f));
+                Info_Metallicity.Add("K", Random.Range(0.1f, 2f));
+                break;
+            case SpectralType.Unknown:
                 break;
             default:
-                break;
+                throw new ArgumentOutOfRangeException(nameof(spectralType), spectralType, null);
         }
     }
 
     /// <summary>
     /// Generates the inner boundary for a stars' habitable zone.
     /// </summary>
-    public float GenerateHabitableRangeInner(SpectralType spectralType)
+    public float GenerateGOHabitableRangeInner(SpectralType spectralType)
     {
         float zoneInner = spectralType switch
         {
@@ -452,15 +364,15 @@ public class StarProperties : MonoBehaviour
         };
 
         // Calculate the inner habitable zone boundary
-        HabitableRangeInner = Mathf.Sqrt((float)Luminosity / solLuminosity) * Mathf.Sqrt(solEffTemperature / (float)Temperature) * (zoneInner * 1000.0f);
+        GO_HabitableRangeInner = Mathf.Sqrt(Info_Luminosity / SOL_LUMINOSITY) * Mathf.Sqrt(SOL_EFF_TEMP / Info_Temperature) * (zoneInner * 1000.0f);
 
-        return HabitableRangeInner;
+        return GO_HabitableRangeInner;
     }
 
     /// <summary>
     /// Generates the outer boundary for a stars' habitable zone.
     /// </summary>
-    public float GenerateHabitableRangeOuter(SpectralType spectralType)
+    public float GenerateGOHabitableRangeOuter(SpectralType spectralType)
     {
         float zoneOuter = spectralType switch
         {
@@ -475,8 +387,8 @@ public class StarProperties : MonoBehaviour
         };
 
         // Calculate the outer habitable zone boundary
-        HabitableRangeOuter = Mathf.Sqrt((float)Luminosity / solLuminosity) * Mathf.Sqrt(solEffTemperature / (float)Temperature) * (zoneOuter * 1000.0f);
+        GO_HabitableRangeOuter = Mathf.Sqrt(Info_Luminosity / SOL_LUMINOSITY) * Mathf.Sqrt(SOL_EFF_TEMP / Info_Temperature) * (zoneOuter * 1000.0f);
 
-        return HabitableRangeOuter;
+        return GO_HabitableRangeOuter;
     }
 }

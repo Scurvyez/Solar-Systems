@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using SolarSystem;
 
 public class CelestialGen : MonoBehaviour
 {
@@ -33,13 +34,13 @@ public class CelestialGen : MonoBehaviour
     {
         StarGen();
         PlanetGen();
-        MoonGen();
+        //MoonGen();
     }
 
     private void StarGen()
     {
         string starName = "Star";
-        List<GameObject> starObjects = GameObject.FindObjectsOfType<GameObject>().Where(go => go.name == starName).ToList();
+        List<GameObject> starObjects = FindObjectsOfType<GameObject>().Where(go => go.name == starName).ToList();
 
         for (int i = 0; i < starObjects.Count; i++)
         {
@@ -61,62 +62,66 @@ public class CelestialGen : MonoBehaviour
 
     private void PlanetGen()
     {
-        // CHANGE THIS LATER
-        // DIFF TEXTURES FOR DIFF PLANET TYPES
         Material testMat = Resources.Load<Material>("Star");
 
-        foreach (RockyPlanet rP in SaveManager.instance.activeSave.rockyPlanets)
+        for (int index = 0; index < SaveManager.instance.activeSave.rockyPlanets.Count; index++)
         {
+            RockyPlanet rP = SaveManager.instance.activeSave.rockyPlanets[index];
+
+            float startPosXZ = 300f * (index + 1);
+            
             // planet properties
-            string pName = rP.Name;
-            float pMass = rP.Mass;
-            float pRadius = rP.Radius;
-            Vector3 pStartingPos = rP.StartingPosition;
-            float pOrbitalPeriod = rP.OrbitalPeriod;
-            float pRotationPeriod = rP.RotationPeriod;
-            float pAxialTilt = rP.AxialTilt;
-            float pSurfaceTemperature = rP.SurfaceTemperature;
-            float pMeanDensity = rP.MeanDensity;
-            float pSurfaceGravity = rP.SurfaceGravity;
-            float pEscapeVelocity = rP.EscapeVelocity;
-            float pAlbedo = rP.Albedo;
-            bool pHasAtmosphere = rP.HasAtmosphere;
-            bool pIsHabitable = rP.IsHabitable;
-            bool pHasRings = rP.HasRings;
-            float pInnerRingRadius = rP.InnerRingRadius;
-            float pOuterRingRadius = rP.OuterRingRadius;
+            Vector3 pStartingPos = new(startPosXZ, 0f, startPosXZ);
 
             // Make a planet prefab and set its comps and props
             GameObject pObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             pObject.AddComponent<TrailRenderer>();
             pObject.AddComponent<Rigidbody>();
             pObject.AddComponent<PlanetController>();
+            pObject.AddComponent<PlanetInfo>();
 
             // Populate all components fields
-            pObject.name = pName;
-            pObject.transform.localScale = new Vector3(pRadius, pRadius, pRadius);
-            pObject.transform.localPosition = new Vector3(pStartingPos.x, pStartingPos.y, pStartingPos.z);
+            pObject.name = rP.Name;
             pObject.GetComponent<MeshRenderer>().material = testMat;
-            pObject.GetComponent<SphereCollider>().isTrigger = true;
-            pObject.GetComponent<Rigidbody>().mass = pMass;
+            pObject.GetComponent<SphereCollider>().isTrigger = false;
+            pObject.GetComponent<Rigidbody>().mass = rP.Mass;
             pObject.GetComponent<Renderer>().material.color = Color.white;
             pObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
-            pObject.GetComponent<Rigidbody>().useGravity = true;
+            pObject.GetComponent<Rigidbody>().useGravity = false;
             pObject.GetComponent<PlanetController>().SaveManager = SaveManager.instance;
             pObject.GetComponent<PlanetController>().starPrefab = starPrefab;
             pObject.GetComponent<PlanetController>().planetaryRingsPrefab = planetaryRingsPrefab;
-            pObject.GetComponent<PlanetController>().Radius = pRadius;
+            pObject.GetComponent<PlanetController>().Radius = rP.Radius;
             pObject.GetComponent<PlanetController>().StartingPosition = pStartingPos;
-            pObject.GetComponent<PlanetController>().OrbitalPeriod = pOrbitalPeriod;
-            pObject.GetComponent<PlanetController>().RotationPeriod = pRotationPeriod;
-            pObject.GetComponent<PlanetController>().AxialTilt = pAxialTilt;
-            pObject.GetComponent<PlanetController>().IsHabitable = pIsHabitable;
-            pObject.GetComponent<PlanetController>().HasRings = pHasRings;
-            pObject.GetComponent<PlanetController>().InnerRingRadius = pInnerRingRadius;
-            pObject.GetComponent<PlanetController>().OuterRingRadius = pOuterRingRadius;
+            pObject.GetComponent<PlanetController>().OrbitalPeriod = rP.OrbitalPeriod;
+            pObject.GetComponent<PlanetController>().RotationPeriod = rP.RotationalPeriod;
+            pObject.GetComponent<PlanetController>().AxialTilt = rP.AxialTilt;
+            pObject.GetComponent<PlanetController>().IsHabitable = rP.IsHabitable;
+            pObject.GetComponent<PlanetController>().HasRings = rP.HasRings;
+            pObject.GetComponent<PlanetController>().InnerRingRadius = rP.InnerRingRadius;
+            pObject.GetComponent<PlanetController>().OuterRingRadius = rP.OuterRingRadius;
             pObject.GetComponent<PlanetController>().axialTiltMarkerPrefab = axialTiltMarkerPrefab;
             pObject.GetComponent<PlanetController>().spinDirectionMarkerPrefab = spinDirectionMarkerPrefab;
 
+            // Planet Info
+            pObject.GetComponent<PlanetInfo>().Name = rP.Name;
+            pObject.GetComponent<PlanetInfo>().Mass = rP.Mass;
+            pObject.GetComponent<PlanetInfo>().RotationalPeriod = rP.RotationalPeriod;
+            pObject.GetComponent<PlanetInfo>().OrbitalPeriod = rP.OrbitalPeriod;
+            pObject.GetComponent<PlanetInfo>().FocusPoint = rP.FocusPoint;
+            pObject.GetComponent<PlanetInfo>().SurfaceTemperature = rP.SurfaceTemperature;
+            pObject.GetComponent<PlanetInfo>().SurfacePressure = rP.SurfacePressure;
+            pObject.GetComponent<PlanetInfo>().SurfaceGravity = rP.SurfaceGravity;
+            pObject.GetComponent<PlanetInfo>().EscapeVelocity = rP.EscapeVelocity;
+            pObject.GetComponent<PlanetInfo>().MagneticFieldStrength = rP.MagneticFieldStrength;
+            pObject.GetComponent<PlanetInfo>().MeanDensity = rP.MeanDensity;
+            pObject.GetComponent<PlanetInfo>().AxialTilt = rP.AxialTilt;
+            pObject.GetComponent<PlanetInfo>().HasAtmosphere = rP.HasAtmosphere;
+            pObject.GetComponent<PlanetInfo>().IsHabitable = rP.IsHabitable;
+            pObject.GetComponent<PlanetInfo>().HasRings = rP.HasRings;
+            pObject.GetComponent<PlanetInfo>().Composition = rP.Composition;
+            pObject.GetComponent<PlanetInfo>().AtmosphereComposition = rP.AtmosphereComposition;
+            
             // Trail Renderer
             pObject.GetComponent<TrailRenderer>().startWidth = 3.0f;
             pObject.GetComponent<TrailRenderer>().endWidth = 0.0f;
@@ -128,25 +133,17 @@ public class CelestialGen : MonoBehaviour
             planets.Add(pObject);
         }
 
-        for (int i = 0; i < planets.Count; i++)
+        foreach (GameObject planet in planets)
         {
-            // Store a reference to the planet game object
-            GameObject planetObject = planets[i];
+            GameObject planetObject = planet;
             planetObject.transform.SetParent(starPrefab.transform);
 
             Button planetButton = Instantiate(planetButtonPrefab, scrollViewContent);
-            planetButton.GetComponentInChildren<TextMeshProUGUI>().text = planets[i].name;
+            planetButton.GetComponentInChildren<TextMeshProUGUI>().text = planet.name;
             planetButton.GetComponentInChildren<TextMeshProUGUI>().rectTransform.anchoredPosition = new Vector2(0.0f, -25.0f);
             planetButton.GetComponentInChildren<TextMeshProUGUI>().fontSize = 12.0f;
-            if (planets[i].GetComponent<PlanetController>().IsHabitable == true)
-            {
-                planetButton.GetComponentInChildren<TextMeshProUGUI>().color = planetUIColorHabitable;
-            }
-            else
-            {
-                planetButton.GetComponentInChildren<TextMeshProUGUI>().color = planetUIColor;
-            }
-
+            
+            planetButton.GetComponentInChildren<TextMeshProUGUI>().color = planet.GetComponent<PlanetController>().IsHabitable ? planetUIColorHabitable : planetUIColor;
             planetButton.onClick.AddListener(() => StaticAngledCamera.SetFocus(planetObject));
         }
     }

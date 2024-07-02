@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Planet
@@ -5,13 +6,9 @@ public class Planet
     public string Name { get; set; }
     public float Mass { get; set; }
     public float Radius { get; set; }
-    public Vector3 StartingPosition { get; set; }
-    public float RotationPeriod { get; set; }
+    public float RotationalPeriod { get; set; }
     public float OrbitalPeriod { get; set; }
-    public float SemiMajorAxis { get; set; }
     public Vector3 FocusPoint { get; set; }
-    public float Eccentricity { get; set; }
-    public float SemiMinorAxis { get; set; }
     public float AxialTilt { get; set; }
     public float SurfaceTemperature { get; set; }
     public bool HasAtmosphere { get; set; }
@@ -31,16 +28,21 @@ public class Planet
     
     public const float GravConstant = 6.674e-11f;
 
+    /// <summary>
+    /// 20% chance of having an atmosphere.
+    /// </summary>
     public virtual bool HasRandomAtmosphere()
     {
-        HasAtmosphere = Random.value < 0.2f; // 20% chance of having an atmosphere
+        HasAtmosphere = Random.value < 0.2f;
         return HasAtmosphere;
     }
 
-    public virtual float AtmosphereHeight()
+    /// <summary>
+    /// Returns a height if the planet has an atmosphere.
+    /// </summary>
+    public virtual float AtmosphereHeight(bool hasAtmosphere, float planetRadius)
     {
-        if (!HasAtmosphere) return 0f; // if no atmosphere, no value
-        return Radius * 2.5f; // set height of atmosphere, above planet's surface
+        return (!hasAtmosphere) ? 0f : planetRadius * 2.5f;
     }
 
     public virtual Color GetColor()
@@ -48,35 +50,24 @@ public class Planet
         return Color.white; // default base color of all planets
     }
 
-    public virtual float GenerateRadius()
+    /// <summary>
+    /// The radius of the planet GameObject in our scene.
+    /// </summary>
+    public virtual float GenerateGORadius()
     {
         // Generate a random radius between 0.25 and 5.0 Earth radii
-        Radius = Random.Range(0.25f, 5.0f);
+        //Radius = Random.Range(0.25f, 5.0f);
+        Radius = 2.0f;
         return Radius;
     }
-    
-    public virtual Vector3 GenerateStartingPosition()
-    {
-        // Define a range of x-coordinates for the starting position of the planet
-        float minX = 30f;
-        float maxX = 4000f;
 
-        float minZ = 50f;
-        float maxZ = 4000f;
-
-        // Generate a random x and y coordinate within the ranges
-        float x = Random.Range(minX, maxX);
-        float z = Random.Range(minZ, maxZ);
-
-        // Construct the second focus point vector
-        StartingPosition = new Vector3(x, 0f, z);
-
-        return StartingPosition;
-    }
-
+    /// <summary>
+    /// The length of time it takes the planet to make one full revolution around its parent star.
+    /// Measured in Earth days.
+    /// </summary>
     public virtual float GenerateOrbitalPeriod()
     {
-        OrbitalPeriod = Random.Range(50.0f, 1000f); // Measured in Earth days
+        OrbitalPeriod = Random.Range(9f, 5000f);
         return OrbitalPeriod;
     }
 
@@ -103,74 +94,17 @@ public class Planet
     /// Calculated via the planets' focal point (AU), the gravitational constant (AU^3/MO/yr^2),
     /// the planets' orbital period (years) and the host star(s) mass (solar masses).
     /// </summary>
-    public virtual float GenerateMass()
+    public virtual float GenerateMass(float starMass, Vector3 planetFocusPoint, float planetOrbitalPeriod)
     {
-        float starMass = (float)SaveManager.instance.activeSave.starMass; // solar masses
-
         // Calculate the mass using the third law of Kepler
-        Mass = 4f * Mathf.Pow(Mathf.PI, 2f) * Mathf.Pow(FocusPoint.x, 3f) / (GravConstant * Mathf.Pow(OrbitalPeriod, 2f) * starMass);
-
+        Mass = 4f * Mathf.Pow(Mathf.PI, 2f) * Mathf.Pow(planetFocusPoint.x, 3f) / (GravConstant * Mathf.Pow(planetOrbitalPeriod, 2f) * starMass);
         return Mass;
     }
-
-    public virtual float GenerateSemiMajorAxis()
+    
+    public virtual float GenerateRotationalPeriod()
     {
-        string starClass = SaveManager.instance.activeSave.starClassAsString;
-        float starMass = (float)SaveManager.instance.activeSave.starMass * (1.98847f * Mathf.Pow(10f, 30f)); // kg
-        float P = OrbitalPeriod * 86400f; // seconds
-        float planetMass = Mass; // kg
-
-        float M = starMass + planetMass; // kg
-        M /= 1.9885e+30f;
-        float x = (Mathf.Pow(P, 2) * GravConstant * M) / 4 * Mathf.Pow(Mathf.PI, 2);
-        float cubeRoot = Mathf.Pow(x, 1f / 3f);
-        SemiMajorAxis = cubeRoot;
-
-        float scalingFactor = 0;
-        scalingFactor = starClass switch
-        {
-            "O" => 2,
-            "B" => 25,
-            "A" => 50,
-            "F" => 100,
-            "G" => 100,
-            "K" => 100,
-            "M" => 100,
-            _ => scalingFactor,
-        };
-
-        SemiMajorAxis *= scalingFactor; // world-space factor
-
-        return SemiMajorAxis;
-    }
-
-    public virtual float GenerateEccentricity()
-    {
-        // Get the position of the two foci
-        Vector3 f1 = new Vector3(0f, 0f, 0f);
-        Vector3 f2 = FocusPoint;
-
-        float fociDistance = Vector3.Distance(f1, f2);
-        Eccentricity = fociDistance / (2f * SemiMajorAxis);
-        if (Eccentricity > 0.99f)
-        {
-            Eccentricity = 0.99f;
-        }
-
-        return Eccentricity;
-    }
-
-    public virtual float GenerateSemiMinorAxis()
-    {
-        SemiMinorAxis = SemiMajorAxis * Mathf.Sqrt(1 - Mathf.Pow(Eccentricity, 2));
-
-        return SemiMinorAxis;
-    }
-
-    public virtual float GenerateRotationPeriod()
-    {
-        RotationPeriod = Random.Range(0.1f, 1000f); // Measured in Earth days
-        return RotationPeriod;
+        RotationalPeriod = Random.Range(9f, 5000f); // Measured in Earth hours
+        return RotationalPeriod;
     }
 
     public virtual float GenerateAxialTilt()
@@ -178,79 +112,58 @@ public class Planet
         AxialTilt = Random.Range(0f, 90f); // Measured in degrees
         return AxialTilt;
     }
-
+    
     public virtual float GenerateSurfaceTemperature()
     {
-        // Calculate the greenhouse effect of the atmosphere
-        float greenhouseEffect = 1f;
-        if (HasAtmosphere)
+        float temperatureFinal = Random.value switch
         {
-            float pressureFactor = Mathf.Clamp01((SurfacePressure - 0.1f) / 99.9f);
-            greenhouseEffect = Mathf.Lerp(1f, 1.5f, pressureFactor);
-        }
+            < 0.1f => Random.Range(200f, 300f),   // 10% chance for cold planets
+            < 0.4f => Random.Range(300f, 500f),   // 30% chance for temperate planets
+            < 0.7f => Random.Range(500f, 700f),   // 30% chance for warm planets
+            _ => Random.Range(700f, 1000f),       // 30% chance for hot planets
+        };
 
-        // Calculate the temperature based on the distance from the star
-        float temperature = (float)SaveManager.instance.activeSave.starTemperature * Mathf.Sqrt(1f / SemiMajorAxis);
-
-        // Calculate the temperature based on the luminosity of the star
-        temperature *= Mathf.Sqrt((float)SaveManager.instance.activeSave.starLuminosity);
-
-        // Calculate the temperature based on the albedo of the planet
-        temperature *= Mathf.Pow(1f - Albedo, 0.25f);
-
-        // Calculate the temperature based on the greenhouse effect of the atmosphere
-        temperature *= greenhouseEffect;
-
-        // Account for the planet's rotational period
-        float dayLengthFactor = Mathf.Lerp(1.2f, 0.8f, Mathf.Clamp01((RotationPeriod - 1f) / 23f));
-        temperature *= dayLengthFactor;
-
-        // Account for the eccentricity of the orbit
-        float eccentricityFactor = Mathf.Lerp(1f, 1.4f, Eccentricity);
-        temperature *= eccentricityFactor;
-
-        SurfaceTemperature = temperature; // Kelvin
-
+        SurfaceTemperature = temperatureFinal; // Kelvin
         return SurfaceTemperature;
     }
 
     public virtual SerializableDictionary<string, float> GenerateComposition()
     {
         // initialize the Dict
-        Composition = new ();
+        Composition = new SerializableDictionary<string, float>();
         return Composition;
     }
-
-    public virtual SerializableDictionary<string, float> GenerateAtmosphereComposition()
+    
+    public virtual SerializableDictionary<string, float> GenerateAtmosphereComposition(bool hasAtmosphere, float habRangeInner, 
+        float habRangeOuter, float planetSurfaceTemperature)
     {
-        // initialize the Dict
-        AtmosphereComposition = new ();
-        if (!HasAtmosphere)
+        // Initialize the dictionary
+        AtmosphereComposition = new SerializableDictionary<string, float>();
+        if (!hasAtmosphere)
         {
             return AtmosphereComposition;
         }
 
         float total = 0f;
-        float minDistance = SaveManager.instance.activeSave.habitableRangeInner;
-        float maxDistance = SaveManager.instance.activeSave.habitableRangeOuter;
-        float distanceFactor = Mathf.Clamp01(((SemiMajorAxis / 1000f) - minDistance) / (maxDistance - minDistance));
 
-        // Define the probabilities of each element
-        // based on planets' surface temperature, distance from host star
-        float oxygenProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (100f * distanceFactor)));
-        float nitrogenProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (200f * distanceFactor)));
-        float carbonDioxideProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (100f * distanceFactor)));
-        float methaneProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (150f * distanceFactor)));
-        float hydrogenProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (200f * distanceFactor)));
-        float heliumProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (150f * distanceFactor)));
-        float neonProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (200f * distanceFactor)));
-        float argonProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (100f * distanceFactor)));
-        float kryptonProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (200f * distanceFactor)));
-        float xenonProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (300f * distanceFactor)));
-        float sulfurDioxideProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (100f * distanceFactor)));
-        float nitrogenOxidesProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (150f * distanceFactor)));
-        float ozoneProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (150f * distanceFactor)));
-        float waterVaporProb = Random.value * (1f - Mathf.Clamp01((SurfaceTemperature - 273f) / (100f * distanceFactor)));
+        // Define the probabilities of each element based on the planet's surface temperature
+        float temperatureFactor = Mathf.Clamp01((planetSurfaceTemperature - 273f) / 1000f);
+
+        // Element probabilities affected by temperature
+        float oxygenProb = Random.value * (1f - Mathf.Clamp01((planetSurfaceTemperature - 273f) / 100f));
+        float nitrogenProb = Random.value * (1f - Mathf.Clamp01((planetSurfaceTemperature - 273f) / 200f));
+        float carbonDioxideProb = Random.value * (1f - Mathf.Clamp01((planetSurfaceTemperature - 273f) / 100f));
+        float methaneProb = Random.value * (1f - Mathf.Clamp01((planetSurfaceTemperature - 273f) / 150f));
+        float hydrogenProb = Random.value * (1f - Mathf.Clamp01((planetSurfaceTemperature - 273f) / 200f));
+        float heliumProb = Random.value * (1f - Mathf.Clamp01((planetSurfaceTemperature - 273f) / 150f));
+        float neonProb = Random.value * (1f - Mathf.Clamp01((planetSurfaceTemperature - 273f) / 200f));
+        float argonProb = Random.value * (1f - Mathf.Clamp01((planetSurfaceTemperature - 273f) / 100f));
+        float kryptonProb = Random.value * (1f - Mathf.Clamp01((planetSurfaceTemperature - 273f) / 200f));
+        float xenonProb = Random.value * (1f - Mathf.Clamp01((planetSurfaceTemperature - 273f) / 300f));
+        float sulfurDioxideProb = Random.value * (1f - Mathf.Clamp01((planetSurfaceTemperature - 273f) / 100f));
+        float nitrogenOxidesProb = Random.value * (1f - Mathf.Clamp01((planetSurfaceTemperature - 273f) / 150f));
+        float ozoneProb = Random.value * (1f - Mathf.Clamp01((planetSurfaceTemperature - 273f) / 150f));
+        float waterVaporProb = Random.value * (1f - Mathf.Clamp01((planetSurfaceTemperature - 273f) / 100f));
 
         total = oxygenProb + nitrogenProb + carbonDioxideProb + methaneProb + hydrogenProb + heliumProb + neonProb + 
             argonProb + kryptonProb + xenonProb + sulfurDioxideProb + nitrogenOxidesProb + ozoneProb + waterVaporProb;
@@ -273,24 +186,18 @@ public class Planet
         return AtmosphereComposition;
     }
 
-    public virtual bool IsRandomlyHabitable()
+    public virtual bool IsRandomlyHabitable(float habRangeInner, float habRangeOuter, Vector3 planetFocusPoint)
     {
-        if (HasLiquidWater() == true)
-        {
-            float innerHabZone = SaveManager.instance.activeSave.habitableRangeInner;
-            float outerHabZone = SaveManager.instance.activeSave.habitableRangeOuter;
-
-            if (FocusPoint.x > innerHabZone - (FocusPoint.x * 1 / 2) && FocusPoint.x < outerHabZone + (FocusPoint.x * 1 / 2))
-            {
-                return true;
-            }
-        }
-        return false;
+        if (!HasLiquidWater(SurfaceTemperature, SurfacePressure, HasAtmosphere)) return false;
+        return planetFocusPoint.x > habRangeInner - (planetFocusPoint.x * 1 / 2) && planetFocusPoint.x < habRangeOuter + (planetFocusPoint.x * 1 / 2);
     }
-
+    
+    /// <summary>
+    /// 10% chance that a planet will have rings of asteroids orbiting it.
+    /// </summary>
     public virtual bool HasRandomRings()
     {
-        HasRings = Random.value < 0.5f; // 10% chance of having rings
+        HasRings = Random.value < 0.1f;
         return HasRings;
     }
 
@@ -305,60 +212,69 @@ public class Planet
         OuterRingRadius = InnerRingRadius + Random.Range(3f, 15.5f);
         return OuterRingRadius;
     }
-
-    public virtual float GenerateMeanDensity()
+    
+    public virtual float GenerateMeanDensity(SerializableDictionary<string, float> planetComposition)
     {
-        float volume = (4 / 3) * Mathf.PI * Mathf.Pow(Radius, 3);
-        MeanDensity = Mass / volume; // (kg/m³)
+        MeanDensity = 0;
+        float totalProportion = 0;
 
-        return MeanDensity;
+        foreach (KeyValuePair<string, float> element in planetComposition)
+        {
+            float atomicMass = Utils.AtomicMass.GetAtomicMass(element.Key);
+            MeanDensity += atomicMass * element.Value;
+            totalProportion += element.Value;
+        }
+        return MeanDensity / totalProportion;
     }
 
+    /// <summary>
+    /// Measured in Earth atmospheres.
+    /// </summary>
     public virtual float GenerateSurfacePressure()
     {
-        SurfacePressure = Random.Range(0.01f, 100f); // Measured in atmospheres
+        SurfacePressure = Random.Range(0.01f, 100f);
         return SurfacePressure;
     }
-
-    public virtual bool HasLiquidWater()
+    
+    /// <summary>
+    /// Checks if the planet's surface temperature is within the habitable range.
+    /// Checks if the planet has an atmosphere.
+    /// Checks if the atmospheric pressure is within the range required for liquid water.
+    /// </summary>
+    public virtual bool HasLiquidWater(float planetSurfaceTemp, float planetSurfacePressure, bool hasAtmosphere)
     {
-        // check if the planet's surface temperature is within the habitable range
-        if (SurfaceTemperature >= 273 && SurfaceTemperature <= 373)
-        {
-            // check if the planet has an atmosphere
-            if (HasAtmosphere)
-            {
-                // check if the atmospheric pressure is within the range required for liquid water
-                if (SurfacePressure >= 0.1f && SurfacePressure <= 100f)
-                {
-                    return true; // planet has liquid water
-                }
-            }
-        }
-        return false; // planet does not have liquid water
+        if (planetSurfaceTemp is < 273 or > 373) return false;
+        if (!hasAtmosphere) return false;
+        return planetSurfacePressure is >= 0.1f and <= 100f;
     }
 
-    public virtual float GenerateSurfaceGravity()
+    public virtual float GenerateSurfaceGravity(float planetMass, float planetRadius)
     {
-        SurfaceGravity = GravConstant * Mass / (Radius * Radius); // Measured in meters per second squared
+        SurfaceGravity = GravConstant * planetMass / (planetRadius * planetRadius); // Measured in meters per second squared
         return SurfaceGravity;
     }
 
-    public virtual float GenerateEscapeVelocity()
+    /// <summary>
+    /// Measured in kilometers per second.
+    /// </summary>
+    public virtual float GenerateEscapeVelocity(float planetMass, float planetRadius)
     {
-        EscapeVelocity = Mathf.Sqrt((2f * GravConstant * Mass) / Radius) * Random.Range(1.1f, 1.3f); // Measured in kilometers per second
+        EscapeVelocity = Mathf.Sqrt((2f * GravConstant * planetMass) / planetRadius) * Random.Range(1.1f, 1.3f);
         return EscapeVelocity;
     }
 
     public virtual float GenerateAlbedo()
     {
-        Albedo = Random.Range(0.1f, 0.9f); // a random value between 0.1 and 0.9
+        Albedo = Random.Range(0.1f, 0.9f);
         return Albedo;
     }
 
+    /// <summary>
+    /// Measured in Gauss.
+    /// </summary>
     public virtual float GenerateMagneticFieldStrength()
     {
-        MagneticFieldStrength = Random.Range(0f, 100f); // a random value between 0 and 100 Gauss
+        MagneticFieldStrength = Random.Range(0f, 100f);
         return MagneticFieldStrength;
     }
 

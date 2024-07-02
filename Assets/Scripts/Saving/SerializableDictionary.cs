@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -11,10 +10,10 @@ public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IX
         return null;
     }
 
-    public void ReadXml(System.Xml.XmlReader reader)
+    public void ReadXml(XmlReader reader)
     {
-        XmlSerializer keySerializer = new XmlSerializer(typeof(TKey));
-        XmlSerializer valueSerializer = new XmlSerializer(typeof(TValue));
+        XmlSerializer keySerializer = new (typeof(TKey));
+        XmlSerializer valueSerializer = new (typeof(TValue));
 
         bool wasEmpty = reader.IsEmptyElement;
         reader.Read();
@@ -22,7 +21,7 @@ public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IX
         if (wasEmpty)
             return;
 
-        while (reader.NodeType != System.Xml.XmlNodeType.EndElement)
+        while (reader.NodeType != XmlNodeType.EndElement)
         {
             reader.ReadStartElement("item");
 
@@ -42,10 +41,10 @@ public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IX
         reader.ReadEndElement();
     }
 
-    public void WriteXml(System.Xml.XmlWriter writer)
+    public void WriteXml(XmlWriter writer)
     {
-        XmlSerializer keySerializer = new XmlSerializer(typeof(TKey));
-        XmlSerializer valueSerializer = new XmlSerializer(typeof(TValue));
+        XmlSerializer keySerializer = new (typeof(TKey));
+        XmlSerializer valueSerializer = new (typeof(TValue));
 
         foreach (TKey key in this.Keys)
         {

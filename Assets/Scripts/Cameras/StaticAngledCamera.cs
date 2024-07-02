@@ -35,7 +35,7 @@ public class StaticAngledCamera : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        ZoomSpeed = 1000.0f;
+        ZoomSpeed = 2000.0f;
         ZoomMin = selectedObject.transform.localScale.x + 100.0f;
         ZoomMax = 20000.0f;
 

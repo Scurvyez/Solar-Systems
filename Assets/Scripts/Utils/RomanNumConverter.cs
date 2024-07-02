@@ -1,41 +1,41 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Text;
 
-public class RomanNumConverter
+namespace Utils
 {
-    public string ToRomanNumeral(int number)
+    public class RomanNumConverter
     {
-        // Define a dictionary of Roman numeral values
-        var numeralMap = new Dictionary<int, string>
+        public static string ToRomanNumeral(int number)
         {
-            {1000, "M"},
-            {900, "CM"},
-            {500, "D"},
-            {400, "CD"},
-            {100, "C"},
-            {90, "XC"},
-            {50, "L"},
-            {40, "XL"},
-            {10, "X"},
-            {9, "IX"},
-            {5, "V"},
-            {4, "IV"},
-            {1, "I"}
-        };
-
-        // Convert the number to a Roman numeral string
-        var result = new StringBuilder();
-        foreach (var pair in numeralMap)
-        {
-            while (number >= pair.Key)
+            // Define a dictionary of Roman numeral values
+            var numeralMap = new Dictionary<int, string>
             {
-                result.Append(pair.Value);
-                number -= pair.Key;
-            }
-        }
+                {1000, "M"},
+                {900, "CM"},
+                {500, "D"},
+                {400, "CD"},
+                {100, "C"},
+                {90, "XC"},
+                {50, "L"},
+                {40, "XL"},
+                {10, "X"},
+                {9, "IX"},
+                {5, "V"},
+                {4, "IV"},
+                {1, "I"}
+            };
 
-        return result.ToString();
-    }
+            // Convert the number to a Roman numeral string
+            StringBuilder result = new ();
+            foreach (var pair in numeralMap)
+            {
+                while (number >= pair.Key)
+                {
+                    result.Append(pair.Value);
+                    number -= pair.Key;
+                }
+            }
+            return result.ToString();
+        }
+    }    
 }

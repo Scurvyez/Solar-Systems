@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class StarAmbientVolumeScaler : MonoBehaviour
@@ -11,7 +9,7 @@ public class StarAmbientVolumeScaler : MonoBehaviour
 
     private double StarRadius;
     private float RadiusAsSolarRadii;
-    private const float SolRadii = 695700000.0f;
+    private const float SOL_RADII = 695700000.0f;
 
     private void Start()
     {
@@ -20,7 +18,7 @@ public class StarAmbientVolumeScaler : MonoBehaviour
         screenSpace = CalculateScreenSpace();
 
         StarRadius = SaveManager.instance.activeSave.starRadius;
-        RadiusAsSolarRadii = (float)StarRadius / SolRadii;
+        RadiusAsSolarRadii = (float)StarRadius / SOL_RADII;
         scaleFactor = (RadiusAsSolarRadii) / 10;
     }
 
@@ -43,10 +41,10 @@ public class StarAmbientVolumeScaler : MonoBehaviour
         // Calculate the size of the sphere's bounding sphere in screen space
         Vector3 center = sphereCollider.bounds.center;
         float radius = sphereCollider.radius;
+        if (Camera.main == null) return 0;
         Vector3 min = Camera.main.WorldToViewportPoint(center - Vector3.one * radius);
         Vector3 max = Camera.main.WorldToViewportPoint(center + Vector3.one * radius);
         float screenSpace = (max.x - min.x) * (max.y - min.y);
-
         return screenSpace;
     }
 }

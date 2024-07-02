@@ -31,26 +31,26 @@ public class StarDistance : MonoBehaviour
     /// Returns the value (probability) as a double.
     /// Later converted to a % of 100 for readability on-screen.
     /// </summary>
-    public double DistanceToStarProbability()
+    public float DistanceToStarProbability()
     {
 
         // Define the range of possible distances
-        double minDistance = 0;
-        double maxDistance = 50;
+        float minDistance = 0;
+        float maxDistance = 50;
 
         // Generate a random number within the range
-        double randomDistance = RandomDoubleValue().NextDouble() * (maxDistance - minDistance) + minDistance;
-        randomDistance *= 3.26;
+        float randomDistance = (float)RandomDoubleValue().NextDouble() * (maxDistance - minDistance) + minDistance;
+        randomDistance *= 3.26f;
 
         // Define the probability density function (PDF)
         // for the distribution of star distances
-        double pDF_Distances(double x)
+        float pDF_Distances(float x)
         {
             // Change if necessary
             return x * Mathf.Exp((float)-x);
         }
 
-        double pdfDistance = pDF_Distances(randomDistance);
+        float pdfDistance = pDF_Distances(randomDistance);
 
         return pdfDistance;
     }
@@ -62,12 +62,12 @@ public class StarDistance : MonoBehaviour
     /// Where d = distance (in parsecs), and p = parallax angle (in arcsecs).
     /// Returns distance as a double.
     /// </summary>
-    public double GenerateDistanceToStar()
+    public float GenerateDistanceToStar()
     {
         // Generate a random number for the star's parallax angle
-        double parallaxAngle = RandomDoubleValue().NextDouble() * 0.0001;
+        float parallaxAngle = (float)(RandomDoubleValue().NextDouble() * 0.0001f);
 
-        double distance = 1 / (parallaxAngle / 1000);
+        float distance = 1 / (parallaxAngle / 1000);
 
         // convert to light years
         //distance *= 3.26;

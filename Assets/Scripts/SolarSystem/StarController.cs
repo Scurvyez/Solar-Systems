@@ -1,116 +1,73 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class StarController : MonoBehaviour
 {
     public SaveManager SaveManager;
+    public StarController instance;
+    public float StarMass;
+    public float StarRadius;
+    public float StarRotation;
+    public float StarMagneticField;
 
-    public string StarClass;
-    public double StarMass;
-    public double StarRadius;
-    public float newStarRadius;
-    public double StarRotation;
-    public double starMagneticField;
-    public double variability;
-    private float currentVariability;
+    private static readonly int _chromaticity = Shader.PropertyToID("_Chromaticity");
+    private static readonly int _cellColor = Shader.PropertyToID("_CellColor");
+    private static readonly int _solarFlare = Shader.PropertyToID("_SolarFlare");
+    private float _currentVariability;
     private float _timer = 0;
+    private float _variability;
     private float _startVariability;
     private float _endVariability;
-    private const float SolRadii = 695700000.0f;
-
-    public StarController instance;
+    private Rigidbody _starRigidBody;
+    private Renderer _parentMaterial;
 
     private void Awake()
     {
         instance = this;
     }
 
-    void Start()
+    private void Start()
     {
-        // grab the stars' class
-        StarClass = SaveManager.instance.activeSave.starClassAsString;
-
-        // grab the saved mass value of our generated star
         StarMass = SaveManager.instance.activeSave.starMass;
-        // grab the objects' RigidBody component
-        Rigidbody parentRigidBody = transform.GetComponent<Rigidbody>();
-        // set the mass value of the RigidBody to our saved value
-        parentRigidBody.mass = (float)StarMass;
-
-        // grab the generated radius for the star
-        StarRadius = SaveManager.instance.activeSave.starRadius / SolRadii;
-        newStarRadius = SetStarScale(StarClass);
-        transform.localScale = new Vector3(newStarRadius, newStarRadius, newStarRadius);
-
-        // grab the saved rotation (on own axis) value for our generated star
+        StarRadius = SaveManager.instance.activeSave.starActualRadius;
         StarRotation = SaveManager.instance.activeSave.starRotation;
-        // grab the saves magnetic field value
-        starMagneticField = SaveManager.instance.activeSave.starMagneticField;
-
-        // grab the objects' material
-        var parentMaterial = transform.GetComponent<Renderer>();
-        // define the color in our saved settings
+        transform.position = SaveManager.instance.activeSave.starPosition;
+        StarMagneticField = SaveManager.instance.activeSave.starMagneticField;
         Color localChromaticity = SaveManager.instance.activeSave.starChromaticity;
         Color localCellColor = SaveManager.instance.activeSave.starCellColor;
-        // change the shaders "Chromaticity" color to the one above
-        parentMaterial.material.SetColor("_Chromaticity", localChromaticity);
-        parentMaterial.material.SetColor("_CellColor", localCellColor);
-
-        // Set the starting and ending values for variability
-        variability = SaveManager.instance.activeSave.starVariability;
-        _startVariability = -(float)variability;
-        _endVariability = (float)variability;
-
-        // set the stars' volume fallOff distance
-        //var parentAudioSource = transform.GetComponent<AudioSource>();
-        //parentAudioSource.minDistance = 1f;
-        //parentAudioSource.maxDistance = transform.localScale.x + (transform.localScale.x * 0.75f);
+        _variability = SaveManager.instance.activeSave.starVariability;
+        
+        _starRigidBody = transform.GetComponent<Rigidbody>();
+        _parentMaterial = transform.GetComponent<Renderer>();
+        
+        transform.localScale = new Vector3(StarRadius, StarRadius, StarRadius);
+        
+        _starRigidBody.mass = StarMass;
+        _startVariability = -_variability;
+        _endVariability = _variability;
+        _parentMaterial.material.SetColor(_chromaticity, localChromaticity);
+        _parentMaterial.material.SetColor(_cellColor, localCellColor);
     }
 
     private void Update()
     {
-        // grab the objects' material
-        var parentMaterial = transform.GetComponent<Renderer>();
-        // apply rotation every frame
-        transform.Rotate(((float)StarRotation * (float)starMagneticField) * Vector3.up);
+        transform.Rotate((StarRotation * StarMagneticField) * Vector3.up);
 
         _timer += Time.deltaTime;
         float t = _timer;
 
         if (SaveManager.instance.activeSave.hasExtrinsicVariability)
         {
-            currentVariability = Mathf.Lerp(_startVariability, _endVariability, t);
-            parentMaterial.material.SetFloat("_SolarFlare", currentVariability);
+            _currentVariability = Mathf.Lerp(_startVariability, _endVariability, t);
+            _parentMaterial.material.SetFloat(_solarFlare, _currentVariability);
         }
         else if (SaveManager.instance.activeSave.hasIntrinsicVariability)
         {
-            currentVariability = Mathf.Lerp(Random.Range(_startVariability, _endVariability), Random.Range(_startVariability, _endVariability), t);
-            parentMaterial.material.SetFloat("_SolarFlare", currentVariability);
+            _currentVariability = Mathf.Lerp(Random.Range(_startVariability, _endVariability), Random.Range(_startVariability, _endVariability), t);
+            _parentMaterial.material.SetFloat(_solarFlare, _currentVariability);
         }
 
-        if (t >= 1)
-        {
-            _timer = 0;
-            float temp = _startVariability;
-            _startVariability = _endVariability;
-            _endVariability = temp;
-        }
-    }
-
-    public float SetStarScale(string StarClass)
-    {
-        newStarRadius = StarClass switch
-        {
-            "O" => 100.0f,
-            "B" => 85.0f,
-            "A" => 56.0f,
-            "F" => 55.0f,
-            "G" => 45.0f,
-            "K" => 35.0f,
-            "M" => 25.0f,
-            _ => newStarRadius,
-        };
-        return newStarRadius;
+        if (!(t >= 1)) return;
+        _timer = 0;
+        (_startVariability, _endVariability) = (_endVariability, _startVariability);
     }
 }
