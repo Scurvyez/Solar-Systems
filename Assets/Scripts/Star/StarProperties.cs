@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Utils;
 using Random = UnityEngine.Random;
 
 public class StarProperties : MonoBehaviour
@@ -15,8 +16,6 @@ public class StarProperties : MonoBehaviour
     public float Info_Variability { get; set; }
     public float Info_Luminosity { get; set; }
     public float Info_Mass { get; set; }
-    public bool ExtrinsicVariability;
-    public bool IntrinsicVariability;
     public Vector3 GO_Size { get; set; }
     public Vector3 GO_Position { get; set; }
     public float GO_Radius { get; set; }
@@ -24,17 +23,12 @@ public class StarProperties : MonoBehaviour
     public Color GO_CellColor { get; set; }
     public float GO_HabitableRangeInner { get; set; }
     public float GO_HabitableRangeOuter { get; set; }
-
-    private const double SOL_MASS_KG = 1.9881e30; // in kg
-    private const double SOL_RADIUS_M = 6.96342E8; // in m
-    private const double StefanBoltzmannConstant = 5.670373E-8;
-    private const float SOL_LUMINOSITY = 3.828f;
-    private const float SOL_EFF_TEMP = 5780.0f;
     
+    public bool ExtrinsicVariability;
+    public bool IntrinsicVariability;
+
     /// <summary>
-    /// Generates a random yet realistic radius for the star.
-    /// Used to calculate luminosity.
-    /// Measured in solar radii.
+    /// Measured/returned in solar radii.
     /// </summary>
     public float GenerateInfoRadius(SpectralType spectralType)
     {
@@ -57,12 +51,12 @@ public class StarProperties : MonoBehaviour
             SpectralType.K => Random.Range(0.7f, 0.96f),
             SpectralType.M => Random.Range(0.08f, 0.7f),
             _ => Info_Radius,
-        } * (float)SOL_RADIUS_M; // convert to solar radii
+        };
         return Info_Radius;
     }
     
     /// <summary>
-    /// The origin point for our star(s) and the rest of the system.
+    /// Origin point for our star(s) and the rest of the system.
     /// </summary>
     public Vector3 GenerateGOStartingPosition()
     {
@@ -70,6 +64,9 @@ public class StarProperties : MonoBehaviour
         return GO_Position;
     }
 
+    /// <summary>
+    /// Physical radius of star game object.
+    /// </summary>
     public float GenerateGORadius()
     {
         GO_Radius = 50.0f;
@@ -77,8 +74,6 @@ public class StarProperties : MonoBehaviour
     }
 
     /// <summary>
-    /// Generates a random yet realistic surface temperature value for the star.
-    /// Used to calculate luminosity.
     /// Measured in kelvins.
     /// </summary>
     public float GenerateInfoTemperature(SpectralType spectralType)
@@ -98,34 +93,37 @@ public class StarProperties : MonoBehaviour
     }
 
     /// <summary>
-    /// Generates a random yet realistic luminosity for the star.
-    /// Calculated via the stars radius and temperature.
-    /// Used to calculate a stars mass.
-    /// Measured in solar luminosities.
+    /// Measured/returned in solar luminosities.
     /// </summary>
     public float GenerateInfoLuminosity(float starRadius, float starTemperature)
     {
-        Info_Luminosity = ((float)StefanBoltzmannConstant * (4 * Mathf.PI * Mathf.Pow(starRadius, 2)) * Mathf.Pow(starTemperature, 4));
-        Info_Luminosity /= (float)SOL_LUMINOSITY; // convert to solar luminosity
+        float starRadiusInMeters = starRadius * ConstantsUtil.SOL_RADII_METERS;
+        float luminosity = ConstantsUtil.STEFAN_BOLTZMANN_CONSTANT * (4 * Mathf.PI * Mathf.Pow(starRadiusInMeters, 2)) * Mathf.Pow(starTemperature, 4);
+
+        // Convert luminosity to solar luminosities
+        Info_Luminosity = luminosity / ConstantsUtil.SOL_LUMINOSITY;
+
         return Info_Luminosity;
     }
 
     /// <summary>
-    /// Generates a random yet realistic mass value for the star.
-    /// Calculated via the mass - luminosity relation.
-    /// Measured in solar masses.
+    /// Measured/returned in solar masses.
     /// </summary>
     public float GenerateInfoMass(float starLuminosity)
     {
-        Info_Mass = Mathf.Pow(starLuminosity / 1f, 3f / 4f);
+        if (starLuminosity <= 0)
+        {
+            throw new ArgumentException("solarLuminosity must be a positive value.");
+        }
+        
+        Info_Mass = Mathf.Pow(starLuminosity, 3f / 4f);
         return Info_Mass;
     }
 
     /// <summary>
-    /// Generates a random yet realistic age for the star.
     /// Bigger stars (O class) burn hotter and faster, so shorter lives.
     /// Smaller stars (M class) burn much slower and lower, so they have longer lives.
-    /// Measured in years.
+    /// Measured in Earth years.
     /// </summary>
     public double GenerateInfoAge(SpectralType spectralType)
     {
@@ -144,8 +142,7 @@ public class StarProperties : MonoBehaviour
     }
 
     /// <summary>
-    /// Generates a random yet realistic axial rotation value for the star.
-    /// Measured in kilometers / second.
+    /// Measured/returned in kilometers / second.
     /// </summary>
     public float GenerateInfoRotation(SpectralType spectralType)
     {
@@ -164,9 +161,7 @@ public class StarProperties : MonoBehaviour
     }
 
     /// <summary>
-    /// Generates a random yet realistic magnetic field value for the star.
-    /// Used as a factor in calculating final axial rotation.
-    /// Measured in teslas.
+    /// Measured/returned in teslas.
     /// </summary>
     public float GenerateInfoMagneticField(SpectralType spectralType)
     {
@@ -185,7 +180,6 @@ public class StarProperties : MonoBehaviour
     }
 
     /// <summary>
-    /// Generates a realistic color for the star object.
     /// Used as the base color in the star's shader graph.
     /// (update to include hydrogen lines later as a factor?)
     /// </summary>
@@ -213,12 +207,12 @@ public class StarProperties : MonoBehaviour
     {
         // the range, -/+ the chromaticity,
         // to be filtered through for r, g, and b values of our output Color
-        float rGBRange = 255;
+        const float RGB_RANGE = 255;
 
-        GO_CellColor = new(
-            GO_Chromaticity.r + Random.Range(-rGBRange, rGBRange),
-            GO_Chromaticity.g + Random.Range(-rGBRange, rGBRange),
-            GO_Chromaticity.b + Random.Range(-rGBRange, rGBRange),
+        GO_CellColor = new Color(
+            GO_Chromaticity.r + Random.Range(-RGB_RANGE, RGB_RANGE),
+            GO_Chromaticity.g + Random.Range(-RGB_RANGE, RGB_RANGE),
+            GO_Chromaticity.b + Random.Range(-RGB_RANGE, RGB_RANGE),
             GO_Chromaticity.a);
         return GO_CellColor;
     }
@@ -269,7 +263,6 @@ public class StarProperties : MonoBehaviour
     }
 
     /// <summary>
-    /// Generates random yet realistic chemical compositions for the star.
     /// Each star class contains set compounds. (not random)
     /// Each stars' compounds have a random % though.
     /// </summary>
@@ -347,7 +340,7 @@ public class StarProperties : MonoBehaviour
     }
 
     /// <summary>
-    /// Generates the inner boundary for a stars' habitable zone.
+    /// Stars' habitable zone inner radius for game object.
     /// </summary>
     public float GenerateGOHabitableRangeInner(SpectralType spectralType)
     {
@@ -364,13 +357,13 @@ public class StarProperties : MonoBehaviour
         };
 
         // Calculate the inner habitable zone boundary
-        GO_HabitableRangeInner = Mathf.Sqrt(Info_Luminosity / SOL_LUMINOSITY) * Mathf.Sqrt(SOL_EFF_TEMP / Info_Temperature) * (zoneInner * 1000.0f);
+        GO_HabitableRangeInner = Mathf.Sqrt(Info_Luminosity) * zoneInner;
 
         return GO_HabitableRangeInner;
     }
 
     /// <summary>
-    /// Generates the outer boundary for a stars' habitable zone.
+    /// Stars' habitable zone outer radius for game object.
     /// </summary>
     public float GenerateGOHabitableRangeOuter(SpectralType spectralType)
     {
@@ -387,7 +380,7 @@ public class StarProperties : MonoBehaviour
         };
 
         // Calculate the outer habitable zone boundary
-        GO_HabitableRangeOuter = Mathf.Sqrt(Info_Luminosity / SOL_LUMINOSITY) * Mathf.Sqrt(SOL_EFF_TEMP / Info_Temperature) * (zoneOuter * 1000.0f);
+        GO_HabitableRangeOuter = Mathf.Sqrt(Info_Luminosity) * zoneOuter;
 
         return GO_HabitableRangeOuter;
     }

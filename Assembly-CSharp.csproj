@@ -52,6 +52,7 @@
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
      <Compile Include="Assets\Scripts\SolarSystem\GameSpeedController.cs" />
+     <Compile Include="Assets\Scripts\Utils\EasingFunctionsUtil.cs" />
      <Compile Include="Assets\Scripts\Utils\RomanNumConverter.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
@@ -64,7 +65,9 @@
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
      <Compile Include="Assets\Scripts\StarMenu\StarSelectionMenu.cs" />
+     <Compile Include="Assets\Scripts\Saving\SystemSaveData.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
+     <Compile Include="Assets\Scripts\SolarSystemUI\PlanetInfo_UI.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
      <Compile Include="Assets\Scripts\Saving\SerializableDictionary.cs" />
@@ -90,6 +93,7 @@
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
      <Compile Include="Assets\Scripts\Star\StarTemperature.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
+     <Compile Include="Assets\Scripts\SolarSystem\PlanetInfo.cs" />
      <Compile Include="Assets\Scripts\Cameras\StaticAngledCamera.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
@@ -98,15 +102,19 @@
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
      <Compile Include="Assets\Scripts\SolarSystem\MoonController.cs" />
      <Compile Include="Assets\Scripts\SolarSystem\PlanetController.cs" />
+     <Compile Include="Assets\Scripts\SolarSystemUI\DebugMarkers_UI.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
      <Compile Include="Assets\Scripts\Star\StarDescriptions.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
+     <Compile Include="Assets\Scripts\SolarSystem\StarGenerator.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
      <Compile Include="Assets\Scripts\Star\StarMagnitude.cs" />
+     <Compile Include="Assets\Scripts\SolarSystem\PlanetGenerator.cs" />
      <Compile Include="Assets\Scripts\SolarSystem\EllipseCalculator.cs" />
      <Compile Include="Assets\Scripts\StarSystemData\StarAmbientVolumeScaler.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
      <Compile Include="Assets\Scripts\Utils\PolygonGenerator.cs" />
+     <Compile Include="Assets\Scripts\Utils\ConstantsUtil.cs" />
      <Compile Include="Assets\Scripts\Cameras\MouseLook.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
@@ -114,8 +122,8 @@
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
      <Compile Include="Assets\Scripts\SolarSystem\SystemStarData.cs" />
+     <Compile Include="Assets\Scripts\SolarSystem\MoonGenerator.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
-     <Compile Include="Assets\Scripts\SolarSystem\PlanetInfo.cs" />
      <Folder Include="Assets" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <Folder Include="Assets\Scripts\StarMenu" />
@@ -150,6 +158,7 @@
      <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Materials" />
+     <Folder Include="Assets\Scripts\SolarSystemUI" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />

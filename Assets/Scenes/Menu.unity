@@ -174,9 +174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1939023e399b24997250e9b5eab645, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttons:
-  - {fileID: 2086816930}
-  - {fileID: 2029069641}
+  Buttons: []
 --- !u!1 &791533412
 GameObject:
   m_ObjectHideFlags: 0
@@ -581,6 +579,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7526636551065044962, guid: 31f90183104ac40429e9ea4608f3074e, type: 3}
+      propertyPath: Sounds.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7526636551065044962, guid: 31f90183104ac40429e9ea4608f3074e, type: 3}
+      propertyPath: Sounds.Array.data[0].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: b32036e75c4cada4ebf4dac189c401e4, type: 3}
     - target: {fileID: 7526636551065044972, guid: 31f90183104ac40429e9ea4608f3074e, type: 3}
       propertyPath: m_Name
       value: AudioManager

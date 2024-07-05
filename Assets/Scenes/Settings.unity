@@ -258,7 +258,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 269acbd130072ea479b4f822bec47e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StarDistance: {fileID: 2079321903}
   StarProperties: {fileID: 1057691478}
   StarDescriptions: {fileID: 452211938}
   Index: 2
@@ -266,7 +265,8 @@ MonoBehaviour:
   StarDescriptionText: {fileID: 2077698552}
   DefaultScale: {x: 1, y: 1, z: 1}
   HighlightScale: {x: 2, y: 2, z: 2}
-  starClass: 
+  Planets: []
+  Moons: []
 --- !u!1 &214463630
 GameObject:
   m_ObjectHideFlags: 0
@@ -402,7 +402,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 269acbd130072ea479b4f822bec47e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StarDistance: {fileID: 2079321903}
   StarProperties: {fileID: 1057691478}
   StarDescriptions: {fileID: 452211938}
   Index: 6
@@ -410,7 +409,8 @@ MonoBehaviour:
   StarDescriptionText: {fileID: 2077698552}
   DefaultScale: {x: 1, y: 1, z: 1}
   HighlightScale: {x: 2, y: 2, z: 2}
-  starClass: 
+  Planets: []
+  Moons: []
 --- !u!1 &263982820
 GameObject:
   m_ObjectHideFlags: 0
@@ -546,7 +546,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 269acbd130072ea479b4f822bec47e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StarDistance: {fileID: 2079321903}
   StarProperties: {fileID: 1057691478}
   StarDescriptions: {fileID: 452211938}
   Index: 1
@@ -554,7 +553,8 @@ MonoBehaviour:
   StarDescriptionText: {fileID: 2077698552}
   DefaultScale: {x: 1, y: 1, z: 1}
   HighlightScale: {x: 2, y: 2, z: 2}
-  starClass: 
+  Planets: []
+  Moons: []
 --- !u!1 &274856637
 GameObject:
   m_ObjectHideFlags: 0
@@ -567,7 +567,7 @@ GameObject:
   - component: {fileID: 274856640}
   - component: {fileID: 274856639}
   m_Layer: 5
-  m_Name: Luminosity
+  m_Name: Moons Count
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -613,7 +613,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Luminosity: '
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7abcbad9500735e4697e99aace85a2ac, type: 2}
   m_sharedMaterial: {fileID: -6337446821874032587, guid: 7abcbad9500735e4697e99aace85a2ac, type: 2}
@@ -825,7 +825,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 269acbd130072ea479b4f822bec47e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StarDistance: {fileID: 2079321903}
   StarProperties: {fileID: 1057691478}
   StarDescriptions: {fileID: 452211938}
   Index: 3
@@ -833,7 +832,8 @@ MonoBehaviour:
   StarDescriptionText: {fileID: 2077698552}
   DefaultScale: {x: 1, y: 1, z: 1}
   HighlightScale: {x: 2, y: 2, z: 2}
-  starClass: 
+  Planets: []
+  Moons: []
 --- !u!1 &351294261
 GameObject:
   m_ObjectHideFlags: 0
@@ -1251,7 +1251,7 @@ GameObject:
   - component: {fileID: 420111388}
   - component: {fileID: 420111387}
   m_Layer: 5
-  m_Name: Mass
+  m_Name: Stellar Class
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1277,7 +1277,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Mass: '
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7abcbad9500735e4697e99aace85a2ac, type: 2}
   m_sharedMaterial: {fileID: -6337446821874032587, guid: 7abcbad9500735e4697e99aace85a2ac, type: 2}
@@ -1391,7 +1391,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &421036657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1705,7 +1705,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &667707421
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1881,7 +1881,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'System Name: '
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7abcbad9500735e4697e99aace85a2ac, type: 2}
   m_sharedMaterial: {fileID: -6337446821874032587, guid: 7abcbad9500735e4697e99aace85a2ac, type: 2}
@@ -2081,7 +2081,7 @@ GameObject:
   - component: {fileID: 786821067}
   - component: {fileID: 786821066}
   m_Layer: 5
-  m_Name: Radius
+  m_Name: Planets Count
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2107,7 +2107,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Radius: '
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7abcbad9500735e4697e99aace85a2ac, type: 2}
   m_sharedMaterial: {fileID: -6337446821874032587, guid: 7abcbad9500735e4697e99aace85a2ac, type: 2}
@@ -2233,10 +2233,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 653a6b32b4f909041b729e36beb9c08d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetButton: {fileID: 1295628327}
-  pulseSpeed: 4
-  pulseAmount: 0.4
-  pulseDuration: 2.35
+  TargetButton: {fileID: 1295628327}
+  PulseSpeed: 1
+  PulseAmount: 0.1
+  PulseDuration: 2
 --- !u!224 &806230246
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2286,13 +2286,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d562bf2551ebd34abcc979f3ae78989, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeSave:
+  ActiveSave:
     saveName: 
     starClassAsString: 
     starSystemName: 
     starAge: 0
+    starPosition: {x: 0, y: 0, z: 0}
     starMass: 0
     starRadius: 0
+    starActualRadius: 0
     starLuminosity: 0
     starTemperature: 0
     starRotation: 0
@@ -2300,13 +2302,16 @@ MonoBehaviour:
     hasIntrinsicVariability: 0
     hasExtrinsicVariability: 0
     starVariability: 0
-    starDistance: 0
+    habitableRangeInner: 0
+    habitableRangeOuter: 0
     starSize: {x: 0, y: 0, z: 0}
     starChromaticity: {r: 0, g: 0, b: 0, a: 0}
     starCellColor: {r: 0, g: 0, b: 0, a: 0}
-  resetButton: {fileID: 1185132890}
-  hasLoaded: 0
-  hasBeenReset: 0
+    rockyPlanets: []
+    moons: []
+  ResetButton: {fileID: 0}
+  HasLoaded: 0
+  HasBeenReset: 0
 --- !u!4 &843908862
 Transform:
   m_ObjectHideFlags: 0
@@ -2574,7 +2579,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ExtrinsicVariability: 0
   IntrinsicVariability: 0
-  instance: {fileID: 0}
 --- !u!4 &1057691479
 Transform:
   m_ObjectHideFlags: 0
@@ -2860,7 +2864,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 269acbd130072ea479b4f822bec47e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StarDistance: {fileID: 2079321903}
   StarProperties: {fileID: 1057691478}
   StarDescriptions: {fileID: 452211938}
   Index: 0
@@ -2868,7 +2871,8 @@ MonoBehaviour:
   StarDescriptionText: {fileID: 2077698552}
   DefaultScale: {x: 1, y: 1, z: 1}
   HighlightScale: {x: 2, y: 2, z: 2}
-  starClass: 
+  Planets: []
+  Moons: []
 --- !u!1 &1185132887
 GameObject:
   m_ObjectHideFlags: 0
@@ -2974,7 +2978,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 843908861}
         m_TargetAssemblyTypeName: SaveManager, Assembly-CSharp
-        m_MethodName: Save
+        m_MethodName: DeleteSaveData
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3192,7 +3196,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1338401208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4003,7 +4007,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 269acbd130072ea479b4f822bec47e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StarDistance: {fileID: 2079321903}
   StarProperties: {fileID: 1057691478}
   StarDescriptions: {fileID: 452211938}
   Index: 4
@@ -4011,7 +4014,8 @@ MonoBehaviour:
   StarDescriptionText: {fileID: 2077698552}
   DefaultScale: {x: 1, y: 1, z: 1}
   HighlightScale: {x: 2, y: 2, z: 2}
-  starClass: 
+  Planets: []
+  Moons: []
 --- !u!1 &1619692825
 GameObject:
   m_ObjectHideFlags: 0
@@ -4500,7 +4504,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 269acbd130072ea479b4f822bec47e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StarDistance: {fileID: 2079321903}
   StarProperties: {fileID: 1057691478}
   StarDescriptions: {fileID: 452211938}
   Index: 5
@@ -4508,7 +4511,8 @@ MonoBehaviour:
   StarDescriptionText: {fileID: 2077698552}
   DefaultScale: {x: 1, y: 1, z: 1}
   HighlightScale: {x: 2, y: 2, z: 2}
-  starClass: 
+  Planets: []
+  Moons: []
 --- !u!1 &1733265536
 GameObject:
   m_ObjectHideFlags: 0
@@ -4897,17 +4901,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2599c6866f999834b8461875440fdfbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StarProperties: {fileID: 1057691478}
   SaveManager: {fileID: 843908861}
   SystemNameText: {fileID: 744513099}
-  AgeText: {fileID: 1891402052}
-  MassText: {fileID: 420111387}
-  RadiusText: {fileID: 786821066}
-  LuminosityText: {fileID: 274856639}
-  TemperatureText: {fileID: 421036657}
-  RotationText: {fileID: 667707421}
-  MagneticFieldText: {fileID: 1338401208}
-  MetallicityText: {fileID: 1992338330}
+  SystemAgeText: {fileID: 1891402052}
+  StellarClassText: {fileID: 420111387}
+  PlanetsCountText: {fileID: 786821066}
+  MoonsCountText: {fileID: 274856639}
 --- !u!1 &1891402050
 GameObject:
   m_ObjectHideFlags: 0
@@ -4920,7 +4919,7 @@ GameObject:
   - component: {fileID: 1891402053}
   - component: {fileID: 1891402052}
   m_Layer: 5
-  m_Name: Age
+  m_Name: System Age
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4966,7 +4965,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Age: '
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7abcbad9500735e4697e99aace85a2ac, type: 2}
   m_sharedMaterial: {fileID: -6337446821874032587, guid: 7abcbad9500735e4697e99aace85a2ac, type: 2}
@@ -5195,7 +5194,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1992338330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5575,6 +5574,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7526636551065044962, guid: 31f90183104ac40429e9ea4608f3074e, type: 3}
+      propertyPath: Sounds.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7526636551065044962, guid: 31f90183104ac40429e9ea4608f3074e, type: 3}
+      propertyPath: Sounds.Array.data[0].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: b32036e75c4cada4ebf4dac189c401e4, type: 3}
+    - target: {fileID: 7526636551065044962, guid: 31f90183104ac40429e9ea4608f3074e, type: 3}
+      propertyPath: Sounds.Array.data[0].name
+      value: MenuButtonClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 7526636551065044962, guid: 31f90183104ac40429e9ea4608f3074e, type: 3}
+      propertyPath: Sounds.Array.data[0].volume
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7526636551065044972, guid: 31f90183104ac40429e9ea4608f3074e, type: 3}
       propertyPath: m_Name
       value: AudioManager

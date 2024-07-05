@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Utils;
 
 public class Planet
 {
@@ -26,8 +27,6 @@ public class Planet
     public SerializableDictionary<string, float> AtmosphereComposition { get; set; }
     //public List<Moon> Moons { get; set; }
     
-    public const float GravConstant = 6.674e-11f;
-
     /// <summary>
     /// 20% chance of having an atmosphere.
     /// </summary>
@@ -97,7 +96,7 @@ public class Planet
     public virtual float GenerateMass(float starMass, Vector3 planetFocusPoint, float planetOrbitalPeriod)
     {
         // Calculate the mass using the third law of Kepler
-        Mass = 4f * Mathf.Pow(Mathf.PI, 2f) * Mathf.Pow(planetFocusPoint.x, 3f) / (GravConstant * Mathf.Pow(planetOrbitalPeriod, 2f) * starMass);
+        Mass = 4f * Mathf.Pow(Mathf.PI, 2f) * Mathf.Pow(planetFocusPoint.x, 3f) / (ConstantsUtil.GRAVITY * Mathf.Pow(planetOrbitalPeriod, 2f) * starMass);
         return Mass;
     }
     
@@ -220,7 +219,7 @@ public class Planet
 
         foreach (KeyValuePair<string, float> element in planetComposition)
         {
-            float atomicMass = Utils.AtomicMass.GetAtomicMass(element.Key);
+            float atomicMass = AtomicMass.GetAtomicMass(element.Key);
             MeanDensity += atomicMass * element.Value;
             totalProportion += element.Value;
         }
@@ -250,7 +249,7 @@ public class Planet
 
     public virtual float GenerateSurfaceGravity(float planetMass, float planetRadius)
     {
-        SurfaceGravity = GravConstant * planetMass / (planetRadius * planetRadius); // Measured in meters per second squared
+        SurfaceGravity = ConstantsUtil.GRAVITY * planetMass / (planetRadius * planetRadius); // Measured in meters per second squared
         return SurfaceGravity;
     }
 
@@ -259,7 +258,7 @@ public class Planet
     /// </summary>
     public virtual float GenerateEscapeVelocity(float planetMass, float planetRadius)
     {
-        EscapeVelocity = Mathf.Sqrt((2f * GravConstant * planetMass) / planetRadius) * Random.Range(1.1f, 1.3f);
+        EscapeVelocity = Mathf.Sqrt((2f * ConstantsUtil.GRAVITY * planetMass) / planetRadius) * Random.Range(1.1f, 1.3f);
         return EscapeVelocity;
     }
 

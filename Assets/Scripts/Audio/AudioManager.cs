@@ -1,36 +1,35 @@
-using UnityEngine.Audio;
 using UnityEngine;
 using System;
 
 public class AudioManager : MonoBehaviour
 {
-    public Sound[] sounds;
+    public Sound[] Sounds;
 
     // Start is called before the first frame update
-    void Awake()
+    private void Awake()
     {
-        foreach (Sound s in sounds)
+        foreach (Sound sound in Sounds)
         {
-            s.source = gameObject.AddComponent<AudioSource>();
-            s.source.clip = s.clip;
+            sound.source = gameObject.AddComponent<AudioSource>();
+            sound.source.clip = sound.clip;
 
-            s.source.volume = s.volume;
-            s.source.pitch = s.pitch;
-            s.source.loop = s.loop;
+            sound.source.volume = sound.volume;
+            sound.source.pitch = sound.pitch;
+            sound.source.loop = sound.loop;
         }
     }
 
-    public void Play(string name)
+    public void Play(string soundName)
     {
-        Sound s = Array.Find(sounds, sound => sound.name == name);
+        Sound sound = Array.Find(Sounds, sound => sound.name == soundName);
 
-        // check if the sound file name matches what its called in the reference
-        if (s == null)
+        // check if the sound file name matches what it's called in the reference
+        if (sound == null)
         {
-            Debug.LogWarning("Sound: " + name + " not found. Ensure the sound files' name matches up correctly in the reference.");
+            Debug.LogWarning("Sound: " + soundName + " not found. Ensure the sound files' name matches up correctly in the reference.");
             return;
         }
         
-        s.source.Play();
+        sound.source.Play();
     }
 }

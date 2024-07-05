@@ -1,12 +1,14 @@
 using UnityEngine;
+using Utils;
 
 [System.Serializable]
 public class Moon
 {
+    public int Index { get; set; }
     public string Name { get; set; }
     public float Mass { get; set; }
     public float Radius { get; set; }
-    public float OrbitalDistanceX { get; set; }
+    public float OrbitalDistanceFrom { get; set; }
     public float OrbitalPeriod { get; set; }
     public float RotationPeriod { get; set; }
     public float AxialTilt { get; set; }
@@ -18,8 +20,12 @@ public class Moon
     public float EscapeVelocity { get; set; }
     public float Albedo { get; set; }
 
-    public const float GravConstant = 6.674e-11f;
-
+    public virtual int GetIndex(int index)
+    {
+        Index = index;
+        return Index;
+    }
+    
     public virtual float GenerateMass()
     {
         // Generate a random mass between 0.1 and 10 Earth masses
@@ -27,17 +33,16 @@ public class Moon
         return Mass;
     }
 
-    public virtual float GenerateRadius()
+    public virtual float GenerateGORadius()
     {
-        // Generate a random radius between 0.5 and 2.5 Earth radii
-        Radius = Random.Range(0.5f, 3.0f);
+        Radius = 0.25f;
         return Radius;
     }
 
-    public virtual float GenerateOrbitalDistanceX()
+    public virtual float GenerateOrbitalDistanceFrom()
     {
-        OrbitalDistanceX = Random.Range(1f, 65f);
-        return OrbitalDistanceX;
+        OrbitalDistanceFrom = 1f;
+        return OrbitalDistanceFrom;
     }
 
     //private const double SolRadiusM = 6.96342E8; // in m
@@ -86,13 +91,13 @@ public class Moon
 
     public virtual float GenerateSurfaceGravity()
     {
-        SurfaceGravity = GravConstant * Mass / (Radius * Radius); // Measured in meters per second squared
+        SurfaceGravity = ConstantsUtil.GRAVITY * Mass / (Radius * Radius); // Measured in meters per second squared
         return SurfaceGravity;
     }
 
     public virtual float GenerateEscapeVelocity()
     {
-        EscapeVelocity = Mathf.Sqrt((2f * GravConstant * Mass) / Radius) * Random.Range(1.1f, 1.3f); // Measured in kilometers per second
+        EscapeVelocity = Mathf.Sqrt((2f * ConstantsUtil.GRAVITY * Mass) / Radius) * Random.Range(1.1f, 1.3f); // Measured in kilometers per second
         return EscapeVelocity;
     }
 

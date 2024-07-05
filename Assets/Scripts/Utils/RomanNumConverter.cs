@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Utils
 {
-    public class RomanNumConverter
+    public static class RomanNumConverter
     {
         public static string ToRomanNumeral(int number)
         {

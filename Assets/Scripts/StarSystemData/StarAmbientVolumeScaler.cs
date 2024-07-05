@@ -1,4 +1,6 @@
+using Saving;
 using UnityEngine;
+using Utils;
 
 public class StarAmbientVolumeScaler : MonoBehaviour
 {
@@ -9,7 +11,6 @@ public class StarAmbientVolumeScaler : MonoBehaviour
 
     private double StarRadius;
     private float RadiusAsSolarRadii;
-    private const float SOL_RADII = 695700000.0f;
 
     private void Start()
     {
@@ -17,8 +18,8 @@ public class StarAmbientVolumeScaler : MonoBehaviour
         originalMaxDistance = audioSource.maxDistance;
         screenSpace = CalculateScreenSpace();
 
-        StarRadius = SaveManager.instance.activeSave.starRadius;
-        RadiusAsSolarRadii = (float)StarRadius / SOL_RADII;
+        StarRadius = SaveManager.Instance.ActiveSave.starRadius;
+        RadiusAsSolarRadii = (float)StarRadius / ConstantsUtil.SOL_RADII_METERS;
         scaleFactor = (RadiusAsSolarRadii) / 10;
     }
 

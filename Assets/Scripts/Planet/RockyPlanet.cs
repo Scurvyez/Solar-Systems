@@ -1,4 +1,5 @@
 using UnityEngine;
+using Utils;
 
 [System.Serializable]
 public class RockyPlanet : Planet
@@ -9,7 +10,7 @@ public class RockyPlanet : Planet
         float periodInYears = planetOrbitalPeriod / 365.25f; // Convert OrbitalPeriod to Earth years
         
         // Calculate the mass using the third law of Kepler
-        Mass = 4f * Mathf.Pow(Mathf.PI, 2f) * Mathf.Pow(focusPointInAU.x, 3f) / (GravConstant * Mathf.Pow(periodInYears, 2f) * starMass);
+        Mass = 4f * Mathf.Pow(Mathf.PI, 2f) * Mathf.Pow(focusPointInAU.x, 3f) / (ConstantsUtil.GRAVITY * Mathf.Pow(periodInYears, 2f) * starMass);
 
         return Mass;
     }

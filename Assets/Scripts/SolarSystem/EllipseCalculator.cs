@@ -9,7 +9,7 @@ public class EllipseCalculator : MonoBehaviour
     public float semiMajorAxis;
     public float semiMinorAxis;
 
-    void Start()
+    private void Start()
     {
         /*
         fociOne = SaveManager.instance.activeSave.starFociOne;

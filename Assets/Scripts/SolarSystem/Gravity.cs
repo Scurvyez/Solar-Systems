@@ -12,7 +12,7 @@ public class Gravity : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector3 gravityDirection = new Vector3(0, gravity, 0);
+        Vector3 gravityDirection = new (0, gravity, 0);
 
         foreach (Rigidbody rb in _rigidbodies)
         {

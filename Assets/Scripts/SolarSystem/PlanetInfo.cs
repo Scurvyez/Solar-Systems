@@ -7,6 +7,7 @@ namespace SolarSystem
     {
         public string Name;
         public float Mass;
+        public float Radius;
         public float RotationalPeriod;
         public float OrbitalPeriod;
         public Vector3 FocusPoint;

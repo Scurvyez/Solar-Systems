@@ -1,14 +1,13 @@
 using UnityEngine;
+using Utils;
 
 [System.Serializable]
 public class GasGiant : Planet
 {
-    private const float MASS_AVERAGE = 318f; // Earth masses, average mass of gas giants
-    
     /*
     public override float GenerateMass(float starMass, Vector3 planetFocusPoint, float planetOrbitalPeriod)
     {
-        Mass = MASS_AVERAGE * Mathf.Pow(Radius * 6371f, 3f) / Mathf.Pow(SemiMajorAxis, 1.5f);
+        Mass = ConstantsUtil.GAS_GIANT_MASS_AVERAGE * Mathf.Pow(Radius * 6371f, 3f) / Mathf.Pow(SemiMajorAxis, 1.5f);
         return Mass;
     }
     */

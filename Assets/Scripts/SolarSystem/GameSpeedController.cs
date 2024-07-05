@@ -1,38 +1,35 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils;
 
 public class GameSpeedController : MonoBehaviour
 {
+    public Button[] Buttons;
+    public float CurSpeed;
+
+    public float Speed1;
+    public float Speed2 = 0.01f;
+    public float Speed3 = 0.25f;
+    public float Speed4 = 0.5f;
+    public float Speed5 = 1f;
+    public float Speed6 = 50f;
+    public float Speed7 = 100f;
+    public float Speed8 = 200f;
+    
     private static GameSpeedController _instance;
-
-    public Button[] buttons;
-    public float curSpeed = 1f; // Initialize curSpeed to 1 by default
-
-    public float speed1 = 0f;
-    public float speed2 = 0.005f;
-    public float speed3 = 0.25f;
-    public float speed4 = 1f;
-    public float speed5 = 15f;
-    public float speed6 = 40f;
-    public float speed7 = 75f;
-    public float speed8 = 75f;
-
+    private float _transitionDuration = 3.0f;
+    
     public static GameSpeedController Instance
     {
         get
         {
-            if (_instance == null)
-            {
-                // If the instance is null, try to find it in the scene
-                _instance = FindObjectOfType<GameSpeedController>();
+            if (_instance is not null) return _instance;
+            _instance = FindObjectOfType<GameSpeedController>();
 
-                // If it's still null, create a new instance
-                if (_instance == null)
-                {
-                    GameObject singletonObject = new GameObject("GameSpeedController");
-                    _instance = singletonObject.AddComponent<GameSpeedController>();
-                }
-            }
+            if (_instance is not null) return _instance;
+            GameObject singletonObject = new ("GameSpeedController");
+            _instance = singletonObject.AddComponent<GameSpeedController>();
 
             return _instance;
         }
@@ -41,28 +38,45 @@ public class GameSpeedController : MonoBehaviour
     private void Awake()
     {
         // Set curSpeed to 1 when the script instance is being loaded
-        curSpeed = 1f;
+        CurSpeed = Speed5;
     }
 
     public void SetGameSpeed(Button button)
     {
-        curSpeed = CalculateGameSpeed(button);
+        float targetSpeed = CalculateGameSpeed(button);
+        StopAllCoroutines(); // Stop any existing transition
+        StartCoroutine(SmoothTransition(targetSpeed));
     }
 
-    public float CalculateGameSpeed(Button button)
+    private float CalculateGameSpeed(Button button)
     {
         float speed = button.name switch
         {
-            "Pause" => speed1,
-            "Slowww" => speed2,
-            "Quarter" => speed3,
-            "Half" => speed4,
-            "Normal" => speed5,
-            "Fast" => speed6,
-            "Double" => speed7,
-            "Warp Speed" => speed8,
+            "Pause" => Speed1,
+            "Slowww" => Speed2,
+            "Quarter" => Speed3,
+            "Half" => Speed4,
+            "Normal" => Speed5,
+            "Fast" => Speed6,
+            "Double" => Speed7,
+            "Warp Speed" => Speed8,
             _ => throw new System.ArgumentException($"Unknown speed name '{button.name}'")
         };
         return speed;
+    }
+    
+    private IEnumerator SmoothTransition(float targetSpeed)
+    {
+        float startSpeed = CurSpeed;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < _transitionDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / _transitionDuration;
+            CurSpeed = Mathf.Lerp(startSpeed, targetSpeed, EasingFunctionsUtil.EaseInOutCubic(t));
+            yield return null;
+        }
+        CurSpeed = targetSpeed; // Ensure the exact target speed is set at the end
     }
 }

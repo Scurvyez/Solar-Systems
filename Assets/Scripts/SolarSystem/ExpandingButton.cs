@@ -1,8 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+using Utils;
 using UnityEngine.EventSystems;
 
 public class ExpandingButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
@@ -11,17 +10,16 @@ public class ExpandingButton : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public Vector3 DefaultScale = new(1f, 1f, 1f);
     public Vector3 HighlightScale = new(2.0f, 2.0f, 2.0f);
 
-    private bool IsMouseOver = false;
-    private float ScaleLerpSpeed = 0.025f;
+    private bool _isMouseOver = false;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        IsMouseOver = true;
+        _isMouseOver = true;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        IsMouseOver = false;
+        _isMouseOver = false;
     }
 
     private IEnumerator ScaleButton(Transform button, Vector3 startScale, Vector3 endScale, float duration)
@@ -37,13 +35,6 @@ public class ExpandingButton : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public void Update()
     {
-        if (IsMouseOver)
-        {
-            transform.localScale = Vector3.Lerp(transform.localScale, HighlightScale, ScaleLerpSpeed);
-        }
-        else
-        {
-            transform.localScale = Vector3.Lerp(transform.localScale, DefaultScale, ScaleLerpSpeed);
-        }
+        transform.localScale = Vector3.Lerp(transform.localScale, _isMouseOver ? HighlightScale : DefaultScale, ConstantsUtil.BUTTON_SCALE_LERP_SPEED);
     }
 }

@@ -1,47 +1,46 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PolygonGenerator : MonoBehaviour
 {
     #region setup
-    //mesh properties
-    private Mesh mesh;
-    public Vector3[] polygonPoints;
-    public int[] polygonTriangles;
-    public Vector2[] uvs;
+    public Vector3[] PolygonPoints;
+    public int[] PolygonTriangles;
+    public Vector2[] Uvs;
+    public bool IsFilled;
+    public int PolygonSides;
+    public float PolygonRadius;
+    public float CenterRadius;
 
-    //polygon properties
-    public bool isFilled;
-    public int polygonSides;
-    public float polygonRadius;
-    public float centerRadius;
-
+    private Mesh _mesh;
+    
     private void Start()
     {
-        mesh = new Mesh();
-        this.GetComponent<MeshFilter>().mesh = mesh;
+        _mesh = new Mesh();
+        GetComponent<MeshFilter>().mesh = _mesh;
     }
 
     private void Update()
     {
-        if (isFilled)
+        if (IsFilled)
         {
-            DrawFilled(polygonSides, polygonRadius);
+            DrawFilled(PolygonSides, PolygonRadius);
         }
         else
         {
-            DrawHollow(polygonSides, polygonRadius, centerRadius);
+            DrawHollow(PolygonSides, PolygonRadius, CenterRadius);
         }
     }
     #endregion
 
     private void DrawFilled(int sides, float radius)
     {
-        polygonPoints = GetCircumferencePoints(sides, radius).ToArray();
-        polygonTriangles = DrawFilledTriangles(polygonPoints);
-        mesh.Clear();
-        mesh.vertices = polygonPoints;
-        mesh.triangles = polygonTriangles;
+        PolygonPoints = GetCircumferencePoints(sides, radius).ToArray();
+        PolygonTriangles = DrawFilledTriangles(PolygonPoints);
+        _mesh.Clear();
+        _mesh.vertices = PolygonPoints;
+        _mesh.triangles = PolygonTriangles;
     }
 
     public void DrawHollow(int sides, float outerRadius, float innerRadius)
@@ -52,25 +51,25 @@ public class PolygonGenerator : MonoBehaviour
         List<Vector3> innerPoints = GetCircumferencePoints(sides, innerRadius);
         pointsList.AddRange(innerPoints);
 
-        polygonPoints = pointsList.ToArray();
+        PolygonPoints = pointsList.ToArray();
 
-        polygonTriangles = DrawHollowTriangles(polygonPoints);
-        mesh.Clear();
-        mesh.vertices = polygonPoints;
-        mesh.triangles = polygonTriangles;
+        PolygonTriangles = DrawHollowTriangles(PolygonPoints);
+        _mesh.Clear();
+        _mesh.vertices = PolygonPoints;
+        _mesh.triangles = PolygonTriangles;
 
         // okay, calculate the bounding box of our generated mesh (where outer most vertices of ring mesh reach)
         Vector3 min = Vector3.one * float.MaxValue;
         Vector3 max = Vector3.one * float.MinValue;
-        foreach (Vector3 point in mesh.vertices)
+        foreach (Vector3 point in _mesh.vertices)
         {
             min = Vector3.Min(min, point);
             max = Vector3.Max(max, point);
         }
 
         // now, set the uv array to the length of our vertices array (have to be the same length, this is important!)
-        uvs = new Vector2[mesh.vertices.Length];
-        for (int i = 0; i < uvs.Length; i++)
+        Uvs = new Vector2[_mesh.vertices.Length];
+        for (int i = 0; i < Uvs.Length; i++)
         {
             // now...
             // for each axis, map the position of the vertex to some position along a straight line between the
@@ -78,16 +77,16 @@ public class PolygonGenerator : MonoBehaviour
             // remember, use InverseLerp when we have a specific value and want to find its position within a range
             // and Lerp when we have normalized coordinates and want to find a specific value within a range
             Vector3 normalizedPoint = new Vector3(
-                Mathf.InverseLerp(min.x, max.x, mesh.vertices[i].x),
-                Mathf.InverseLerp(min.y, max.y, mesh.vertices[i].y),
-                Mathf.InverseLerp(min.z, max.z, mesh.vertices[i].z)
+                Mathf.InverseLerp(min.x, max.x, _mesh.vertices[i].x),
+                Mathf.InverseLerp(min.y, max.y, _mesh.vertices[i].y),
+                Mathf.InverseLerp(min.z, max.z, _mesh.vertices[i].z)
             );
             // and then, set our uv array to the new, normalized coordinates
             // these represent the position of the vertex within our uv space
-            uvs[i] = new Vector2(normalizedPoint.x, normalizedPoint.y);
+            Uvs[i] = new Vector2(normalizedPoint.x, normalizedPoint.y);
         }
         // assign the new uvs to our mesh :)
-        mesh.uv = uvs;
+        _mesh.uv = Uvs;
     }
 
     private static int[] DrawHollowTriangles(Vector3[] points)
@@ -98,18 +97,17 @@ public class PolygonGenerator : MonoBehaviour
         List<int> newTriangles = new List<int>();
         for (int i = 0; i < sides; i++)
         {
-            int outerIndex = i;
             int innerIndex = i + sides;
 
             //first triangle starting at outer edge i
-            newTriangles.Add(outerIndex);
+            newTriangles.Add(i);
             newTriangles.Add(innerIndex);
             newTriangles.Add((i + 1) % sides);
 
             //second triangle starting at outer edge i
-            newTriangles.Add(outerIndex);
+            newTriangles.Add(i);
             newTriangles.Add(sides + ((sides + i - 1) % sides));
-            newTriangles.Add(outerIndex + sides);
+            newTriangles.Add(i + sides);
         }
         return newTriangles.ToArray();
     }
@@ -118,7 +116,7 @@ public class PolygonGenerator : MonoBehaviour
     {
         List<Vector3> points = new List<Vector3>();
         float circumferenceProgressPerStep = (float)1 / sides;
-        float TAU = 2 * Mathf.PI;
+        const float TAU = 2 * Mathf.PI;
         float radianProgressPerStep = circumferenceProgressPerStep * TAU;
 
         for (int i = 0; i < sides; i++)

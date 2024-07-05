@@ -44,9 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41e55e8e75f05a94984c7126bbef71a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sounds:
+  Sounds:
   - name: MenuButtonClick
     clip: {fileID: 8300000, guid: b32036e75c4cada4ebf4dac189c401e4, type: 3}
-    volume: 1
-    pitch: 1
+    volume: 0.5
+    pitch: 0
+    loop: 0
     source: {fileID: 0}
