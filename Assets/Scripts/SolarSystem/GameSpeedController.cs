@@ -5,20 +5,17 @@ using Utils;
 
 public class GameSpeedController : MonoBehaviour
 {
-    public Button[] Buttons;
+    public float TransitionDuration = 3.0f;
     public float CurSpeed;
-
-    public float Speed1;
-    public float Speed2 = 0.01f;
-    public float Speed3 = 0.25f;
-    public float Speed4 = 0.5f;
-    public float Speed5 = 1f;
-    public float Speed6 = 50f;
-    public float Speed7 = 100f;
-    public float Speed8 = 200f;
+    public float Speed1 = 0.01f;
+    public float Speed2 = 0.25f;
+    public float Speed3 = 0.5f;
+    public float Speed4 = 1f;
+    public float Speed5 = 50f;
+    public float Speed6 = 100f;
+    public float Speed7 = 200f;
     
     private static GameSpeedController _instance;
-    private float _transitionDuration = 3.0f;
     
     public static GameSpeedController Instance
     {
@@ -38,7 +35,7 @@ public class GameSpeedController : MonoBehaviour
     private void Awake()
     {
         // Set curSpeed to 1 when the script instance is being loaded
-        CurSpeed = Speed5;
+        CurSpeed = Speed4;
     }
 
     public void SetGameSpeed(Button button)
@@ -52,14 +49,13 @@ public class GameSpeedController : MonoBehaviour
     {
         float speed = button.name switch
         {
-            "Pause" => Speed1,
-            "Slowww" => Speed2,
-            "Quarter" => Speed3,
-            "Half" => Speed4,
-            "Normal" => Speed5,
-            "Fast" => Speed6,
-            "Double" => Speed7,
-            "Warp Speed" => Speed8,
+            "Slowww" => Speed1,
+            "Quarter" => Speed2,
+            "Half" => Speed3,
+            "Normal" => Speed4,
+            "Fast" => Speed5,
+            "Double" => Speed6,
+            "Warp Speed" => Speed7,
             _ => throw new System.ArgumentException($"Unknown speed name '{button.name}'")
         };
         return speed;
@@ -70,10 +66,10 @@ public class GameSpeedController : MonoBehaviour
         float startSpeed = CurSpeed;
         float elapsedTime = 0f;
 
-        while (elapsedTime < _transitionDuration)
+        while (elapsedTime < TransitionDuration)
         {
             elapsedTime += Time.deltaTime;
-            float t = elapsedTime / _transitionDuration;
+            float t = elapsedTime / TransitionDuration;
             CurSpeed = Mathf.Lerp(startSpeed, targetSpeed, EasingFunctionsUtil.EaseInOutCubic(t));
             yield return null;
         }

@@ -4,7 +4,7 @@ using TMPro;
 
 public class SystemStarData : MonoBehaviour
 {
-    public StarProperties StarProperties;
+    public Star Star;
     public StaticAngledCamera SystemCamera;
     
     public TextMeshProUGUI SystemNameText;

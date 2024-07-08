@@ -14,7 +14,7 @@ public class GasGiant : Planet
 
     public override float GenerateGORadius()
     {
-        Radius = Random.Range(3.5f, 12.0f); // in AU
+        Radius = 3.25f;
         return Radius;
     }
 
@@ -39,5 +39,10 @@ public class GasGiant : Planet
         Composition.Add("N", nitrogen);
 
         return Composition;
+    }
+
+    public override bool IsRandomlyHabitable(float habRangeInner, float habRangeOuter, Vector3 planetFocusPoint)
+    {
+        return false;
     }
 }

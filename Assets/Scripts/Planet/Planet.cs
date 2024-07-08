@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Utils;
+using Random = UnityEngine.Random;
 
 public class Planet
 {
+    public int OrbitPosition { get; set; }
     public string Name { get; set; }
     public float Mass { get; set; }
     public float Radius { get; set; }
@@ -23,9 +25,9 @@ public class Planet
     public float EscapeVelocity { get; set; }
     public float Albedo { get; set; }
     public float MagneticFieldStrength { get; set; }
+    public int Moons { get; set; }
     public SerializableDictionary<string, float> Composition { get; set; }
     public SerializableDictionary<string, float> AtmosphereComposition { get; set; }
-    //public List<Moon> Moons { get; set; }
     
     /// <summary>
     /// 20% chance of having an atmosphere.
@@ -277,21 +279,19 @@ public class Planet
         return MagneticFieldStrength;
     }
 
-    /*
-    public virtual List<Moon> GenerateMoons()
+    public virtual int GenerateNumMoons(float mass, float magneticFieldStrength)
     {
-        // Initialize the Moons list
-        Moons = new ();
+        int numMoons = Mathf.FloorToInt(mass * 0.5f);
+        numMoons += Mathf.FloorToInt(magneticFieldStrength * 0.1f);
 
-        // generate a random number of moons between 0 and 3
-        int numMoons = Random.Range(0, 3);
-
-        for (int i = 0; i < numMoons; i++)
+        numMoons = GetType().Name switch
         {
-            Moon moon = new ();
-            Moons.Add(moon);
-        }
+            "RockyPlanet" => Mathf.Max(0, numMoons / 3),
+            "GasGiant" => Mathf.Max(3, numMoons),
+            _ => 0
+        };
+
+        Moons = Mathf.Min(numMoons, ConstantsUtil.NUM_MOONS_PER_PLANET);
         return Moons;
     }
-    */
 }

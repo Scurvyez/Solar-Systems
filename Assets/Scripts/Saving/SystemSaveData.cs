@@ -9,32 +9,34 @@ namespace Saving
         //public string saveName;
 
         // STAR DATA: start
-        public string starClassAsString;                                // class
-        public string starSystemName;                                   // name
-        public double starAge;                                          // age
-        public Vector3 starPosition;                                    // position
-        public float starMass;                                          // mass
-        public float starRadius;                                        // radius
-        public float starActualRadius;                                  // actual radius for gae object
-        public float starLuminosity;                                    // luminosity
-        public float starTemperature;                                   // temperature
-        public float starRotation;                                      // rotation
-        public float starMagneticField;                                 // magnetic field
-        public bool hasIntrinsicVariability;                            // is intrinsic?
-        public bool hasExtrinsicVariability;                            // is extrinsic?
-        public float starVariability;                                   // variability
-        public float habitableRangeInner;                               // inner hab zone boundary
-        public float habitableRangeOuter;                               // outer hab zone boundary
+        public string starClassAsString;
+        public string starSystemName;
+        public double starAge;
+        public Vector3 starPosition;
+        public float starMass;
+        public float starRadius;
+        public float starActualRadius;
+        public float starLuminosity;
+        public float starTemperature;
+        public float starRotation;
+        public float starMagneticField;
+        public bool hasIntrinsicVariability;
+        public bool hasExtrinsicVariability;
+        public float starVariability;
+        public float habitableRangeInner;
+        public float habitableRangeOuter;
+        public int planetCount;
 
-        public Vector3 starSize;                                        // scale
-        public Color starChromaticity;                                  // primary color (surface)
-        public Color starCellColor;                                     // secondary color (solar flare)
+        public Vector3 starSize;
+        public Color starChromaticity; // primary color (surface)
+        public Color starCellColor; // secondary color (solar flare)
 
-        public SerializableDictionary<string, float> starMetallicity;   // metallicity
+        public SerializableDictionary<string, float> starMetallicity;
         // STAR DATA: end
 
         // PLANET DATA: start
         public List<RockyPlanet> rockyPlanets;
+        public List<GasGiant> gasGiantPlanets;
         // PLANET DATA: end
 
         // PLANET DATA: start

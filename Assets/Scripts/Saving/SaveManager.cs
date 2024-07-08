@@ -1,8 +1,10 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.IO;
 using System.Xml.Serialization;
+using Utils;
 
 namespace Saving
 {
@@ -14,7 +16,6 @@ namespace Saving
         public bool HasLoaded;
         public bool HasBeenReset;
     
-        // Start is called before the first frame update
         private void Start()
         {
             if (ResetButton == null) return;
@@ -33,18 +34,11 @@ namespace Saving
             // change in the future
             string dataPath = Application.persistentDataPath;
     
-            // type of info we are saving
             XmlSerializer serializer = new (typeof(SystemSaveData));
-    
-            // where we are saving it to
             FileStream stream = new (dataPath + "/" + ActiveSave + ".xml", FileMode.Create);
-    
-            // object to save
             serializer.Serialize(stream, ActiveSave);
     
             stream.Close();
-            //Debug.Log("Saved.");
-            //Debug.Log(dataPath);
         }
     
         private void Load()
@@ -56,7 +50,6 @@ namespace Saving
             FileStream stream = new (dataPath + "/" + ActiveSave + ".xml", FileMode.Open);
             ActiveSave = serializer.Deserialize(stream) as SystemSaveData;
             stream.Close();
-            //Debug.Log("Loaded.");
             HasLoaded = true;
         }
     
@@ -69,8 +62,14 @@ namespace Saving
                 File.Delete(dataPath + "/" + ActiveSave + ".xml");
             }
     
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+            StartCoroutine(DelayedSceneSwitch(ConstantsUtil.BUTTON_ACTION_DELAY_SOUND));
             HasBeenReset = true;
+        }
+        
+        private IEnumerator DelayedSceneSwitch(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
         }
     }    
 }

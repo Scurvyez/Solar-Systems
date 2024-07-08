@@ -4,7 +4,8 @@ using Utils;
 [System.Serializable]
 public class Moon
 {
-    public int Index { get; set; }
+    //public int Index { get; set; }
+    public string ParentPlanetName { get; set; }
     public string Name { get; set; }
     public float Mass { get; set; }
     public float Radius { get; set; }
@@ -20,11 +21,13 @@ public class Moon
     public float EscapeVelocity { get; set; }
     public float Albedo { get; set; }
 
+    /*
     public virtual int GetIndex(int index)
     {
         Index = index;
         return Index;
     }
+    */
     
     public virtual float GenerateMass()
     {

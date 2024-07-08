@@ -2,8 +2,11 @@ namespace Utils
 {
     public static class ConstantsUtil
     {
+        public const float BUTTON_ACTION_DELAY_SOUND = 0.05f;
         public const float BUTTON_SCALE_LERP_SPEED = 0.025f;
         public const float GRAVITY = 6.674e-11f;
+        public const float MILLION = 1000000f;
+        public const float BILLION = 1000000000f;
         public const int EARTH_YEAR = 365; // days
         public const int EARTH_HOURS = 24; // hours
         public const float SOL_MASS_KILOGRAMS = 5.9722e-24f; // kilograms
@@ -12,5 +15,6 @@ namespace Utils
         public const float STEFAN_BOLTZMANN_CONSTANT = 5.670373E-8f;
         public const float SOL_LUMINOSITY = 3.828e+26f; // solar luminosities
         public const float SOL_EFF_TEMP = 5780.0f; // Kelvin
+        public const int NUM_MOONS_PER_PLANET = 12;
     }
 }

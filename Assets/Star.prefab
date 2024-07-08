@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 763773190704664864}
   - component: {fileID: 763773190704664923}
   - component: {fileID: 763773190704664927}
-  - component: {fileID: 9212112754303526579}
+  - component: {fileID: 5697934536478892219}
   m_Layer: 0
   m_Name: Star
   m_TagString: Untagged
@@ -70,7 +70,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9354d184a42fc5e4b8be44cfe1730cdb, type: 2}
+  - {fileID: 2100000, guid: 709a1ba9e78aa4946b1a44c700fe087c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -133,16 +133,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 704974fa7ae2c434ea127524c8247a7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SaveManager: {fileID: 0}
-  StarClass: 
+  instance: {fileID: 0}
   StarMass: 0
   StarRadius: 0
-  newStarRadius: 0
   StarRotation: 0
-  starMagneticField: 0
-  variability: 0
-  instance: {fileID: 0}
---- !u!114 &9212112754303526579
+  StarMagneticField: 0
+--- !u!114 &5697934536478892219
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -151,18 +147,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 763773190704664922}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a05ce0aa63185b49a9d057a02c210e4, type: 3}
+  m_Script: {fileID: 11500000, guid: abe6e875cad14b69a542c5369838ef00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StarProperties: {fileID: 0}
-  SaveManager: {fileID: 0}
-  SystemNameText: {fileID: 0}
-  AgeText: {fileID: 0}
-  MassText: {fileID: 0}
-  RadiusText: {fileID: 0}
-  LuminosityText: {fileID: 0}
-  TemperatureText: {fileID: 0}
-  RotationText: {fileID: 0}
-  MagneticFieldText: {fileID: 0}
-  VariabilityText: {fileID: 0}
-  MetallicityText: {fileID: 0}
+  Class: 
+  Name: 
+  Age: 0
+  Mass: 0
+  Radius: 0
+  Luminosity: 0
+  SurfaceTemperature: 0
+  RotationalPeriod: 0
+  MagneticFieldStrength: 0
+  HasIntrinsicVariability: 0
+  HasExtrinsicVariability: 0
+  Variability: 0
+  CompositionString: 
