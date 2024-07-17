@@ -76,8 +76,16 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2DLOD_0f24c2fe3cc54ea6b0d3394a77492918_Texture_1:
+        m_Texture: {fileID: 2800000, guid: e0d08014cc77562479c09bf2c99c86a0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2DLOD_285d501b50994e8c8dd61ed33065fa00_Texture_1:
         m_Texture: {fileID: 2800000, guid: 4f703a7223742644f8e0d8e60e7fca9f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2DLOD_d1ab0400c83f4fd9af3465229310b4ff_Texture_1:
+        m_Texture: {fileID: 2800000, guid: b020d818eec6f804c8cd2d92a1d4772f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -102,6 +110,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AOStrength: -150
     - _AlphaClip: 0
     - _AtmosphereSize: 5
     - _Blend: 0
@@ -123,6 +132,7 @@ Material:
     - _GlossinessSource: 0
     - _GlossyReflections: 0
     - _Metallic: 0
+    - _NormalsStrength: 0.5
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
@@ -147,7 +157,7 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _AmbientLightDirection: {r: 0, g: 0, b: 0, a: 0}
+    - _AmbientLightDirection: {r: 0.9348078, g: -0.03, b: 0.3551541, a: 0}
     - _AtmosphereColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}

@@ -1,3 +1,4 @@
+using System.Linq;
 using SolarSystemUI;
 using UnityEngine;
 using Utils;
@@ -7,7 +8,6 @@ namespace SolarSystem
     public class PlanetController : MonoBehaviour
     {
         public GameObject StarPrefab;
-        public GameObject PlanetaryRingsPrefab;
         public GameObject AxialTiltMarkerPrefab;
         public GameObject SpinDirectionMarkerPrefab;
         public bool ReverseOrbitDirection;
@@ -27,10 +27,9 @@ namespace SolarSystem
         private float _orbitRadius;
         private Vector4 _finalAtmosphereColor;
         
-        //private static readonly int _innerRadius = Shader.PropertyToID("_InnerRadius");
-        //private static readonly int _ringColor = Shader.PropertyToID("_RingColor");
         private static readonly int _mainTex = Shader.PropertyToID("_MainTex");
-        private static readonly int _tint = Shader.PropertyToID("_Tint");
+        private static readonly int _aOTex = Shader.PropertyToID("_AOTex");
+        private static readonly int _normalMap = Shader.PropertyToID("_NormalMap");
         private static readonly int _atmosphereColor = Shader.PropertyToID("_AtmosphereColor");
         private static readonly int _ambientLightDirection = Shader.PropertyToID("_AmbientLightDirection");
         private MeshRenderer _meshRenderer;
@@ -51,7 +50,6 @@ namespace SolarSystem
             SetGOScale();
             SetGOAxialTiltMarker();
             SetGOSpinDirectionMarker();
-            //TrySetGOPlanetaryRings();
             
             _orbitCenter = StarPrefab.transform.position;
             _orbitRadius = Vector3.Distance(transform.position, _orbitCenter);
@@ -74,6 +72,24 @@ namespace SolarSystem
             UpdatePlanetaryLightRotation();
             UpdateOrbitAroundStar();
         }
+
+        private void AssignPlanetTextures(Material material, string planetTypeFolder)
+        {
+            TexturesUtil.GetPlanetTextures(planetTypeFolder, out Texture2D albedo, out Texture2D ambientOcclusion, out Texture2D normalMap);
+
+            if (albedo != null)
+            {
+                material.SetTexture(_mainTex, albedo);
+            }
+            if (ambientOcclusion != null)
+            {
+                material.SetTexture(_aOTex, ambientOcclusion);
+            }
+            if (normalMap != null)
+            {
+                material.SetTexture(_normalMap, normalMap);
+            }
+        }
         
         private void AssignMaterialProperties()
         {
@@ -81,30 +97,13 @@ namespace SolarSystem
             {
                 case "RockyPlanet":
                 {
-                    Texture2D[] texturesRP = Resources.LoadAll<Texture2D>("Textures/RockyPlanet");
-                    if (texturesRP.Length == 0)
-                    {
-                        Debug.LogWarning("No textures found in `Resources/Textures/RockyPlanet`");
-                        return;
-                    }
-
-                    Texture2D randomTexture = texturesRP[Random.Range(0, texturesRP.Length)];
-                    _materialPropertyBlock.SetTexture(_mainTex, randomTexture);
+                    AssignPlanetTextures(_meshRenderer.material, TexturesUtil.RockyPlanetTextureFolders.ElementAt(Random.Range(1, TexturesUtil.RockyPlanetTextureFolders.Length)));
                     _meshRenderer.SetPropertyBlock(_materialPropertyBlock);
                     break;
                 }
                 case "GasGiant":
                 {
-                    Texture2D[] texturesGG = Resources.LoadAll<Texture2D>("Textures/GasGiant");
-                    if (texturesGG.Length == 0)
-                    {
-                        Debug.LogWarning("No textures found in `Resources/Textures/GasGiant`");
-                        return;
-                    }
-
-                    Texture2D randomTexture = texturesGG[Random.Range(0, texturesGG.Length)];
-                    _materialPropertyBlock.SetTexture(_mainTex, randomTexture);
-                    _materialPropertyBlock.SetColor(_tint, _finalAtmosphereColor);
+                    AssignPlanetTextures(_meshRenderer.material, TexturesUtil.GasGiantTextureFolders.ElementAt(Random.Range(1, TexturesUtil.GasGiantTextureFolders.Length)));
                     _meshRenderer.SetPropertyBlock(_materialPropertyBlock);
                     break;
                 }
@@ -176,7 +175,6 @@ namespace SolarSystem
 
             _startingPosition = new Vector3(xComponent, 0f, zComponent);
             transform.position = _startingPosition;
-            transform.localRotation = Quaternion.Euler(-_planetInfo.AxialTilt, 0f, 0f);
         }
         
         private void SetGOAxialTiltMarker()
@@ -197,38 +195,6 @@ namespace SolarSystem
             _spinDirectionMarker.transform.localScale = new Vector3(2f, 2f, 1f);
         }
 
-        /*
-        private void TrySetGOPlanetaryRings() // TODO: FIX THIS SHIT
-        {
-            if (!_planetInfo.HasRings) return;
-
-            _planetaryRings = Instantiate(PlanetaryRingsPrefab, transform.position, Quaternion.identity);
-            _planetaryRings.transform.parent = transform;
-            _planetaryRings.transform.localPosition = Vector3.zero;
-
-            float minInner = _planetInfo.Info_Radius + 0.5f;
-            float maxInner = _planetInfo.Info_Radius + 1f;
-            //_planetInfo.InnerRingRadius = Mathf.InverseLerp(minInner, maxInner, _planetInfo.InnerRingRadius);
-            //_planetInfo.InnerRingRadius = Mathf.Clamp(_planetInfo.InnerRingRadius, 0.1f, 0.4f);
-            _planetInfo.InnerRingRadius = _planetInfo.Info_Radius + 0.5f;
-            _planetInfo.OuterRingRadius = _planetInfo.Info_Radius + 1f;
-            _planetaryRings.transform.localScale = new Vector3(50f, 0f, 50f);
-            _planetaryRings.transform.localRotation = _planetaryRings.transform.parent.localRotation;
-            _planetaryRings.transform.GetComponent<MeshRenderer>().material.SetFloat(_innerRadius, _planetInfo.InnerRingRadius);
-            _planetaryRings.transform.GetComponent<MeshRenderer>().material.SetColor(_ringColor, TryGenerateRandomRingsColor());
-        }
-        */
-
-        /*
-        private static Color TryGenerateRandomRingsColor()
-        {
-            float r = Random.Range(0.8f, 1.0f);
-            float g = Random.Range(0.7f, 0.74f);
-            float b = Random.Range(0.53f, 0.57f);
-            return new Color(r, g, b);
-        }
-        */
-
         private void UpdateOrbitAroundStar()
         {
             _elapsedTime += Time.fixedDeltaTime * GameSpeedController.Instance.CurSpeed;
@@ -243,11 +209,12 @@ namespace SolarSystem
 
             transform.position = newPos;
             transform.LookAt(StarPrefab.transform);
+            transform.rotation *= Quaternion.Euler(0f, -90f, 0f);
         }
 
         private void UpdatePlanetaryLightRotation()
         {
-            _lightObject.transform.LookAt(transform);
+            _lightObject?.transform.LookAt(transform);
         }
 
         private void UpdateMarkerVisibility()
