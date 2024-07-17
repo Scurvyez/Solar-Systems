@@ -7,6 +7,7 @@ namespace SolarSystemUI
     public class UI_StarInfo : MonoBehaviour
     {
         public StaticAngledCamera SystemCamera;
+        public GameObject UI_SelectedStar;
         
         [Header("Star Info UI Elements")]
         public TextMeshProUGUI ClassText;
@@ -59,17 +60,17 @@ namespace SolarSystemUI
         private void SetSavedStarValues()
         {
             ClassText.text = "<color=#ff8f8f>Class:</color> " + _currentStarInfo.Class;
-            AgeText.text = "<color=#ff8f8f>Age:</color> " + _currentStarInfo.Age;
+            AgeText.text = "<color=#ff8f8f>Age:</color> " + _currentStarInfo.Age + " years";
             NameText.text = "<color=#ff8f8f>Name:</color> " + _currentStarInfo.Name;
-            MassText.text = "<color=#ff8f8f>Mass:</color> " + _currentStarInfo.Mass;
-            RadiusText.text = "<color=#ff8f8f>Radius:</color> " + _currentStarInfo.Radius;
-            LuminosityText.text = "<color=#ff8f8f>Luminosity:</color> " + _currentStarInfo.Luminosity;
-            SurfaceTemperatureText.text = "<color=#ff8f8f>Surface Temperature:</color> " + _currentStarInfo.SurfaceTemperature;
-            RotationalPeriodText.text = "<color=#ff8f8f>Rotational Period:</color> " + _currentStarInfo.RotationalPeriod;
+            MassText.text = "<color=#ff8f8f>Mass:</color> " + _currentStarInfo.Mass.ToString("F2");
+            RadiusText.text = "<color=#ff8f8f>Radius:</color> " + _currentStarInfo.Radius.ToString("F2");
+            LuminosityText.text = "<color=#ff8f8f>Luminosity:</color> " + _currentStarInfo.Luminosity.ToString("F2");
+            SurfaceTemperatureText.text = "<color=#ff8f8f>Surface Temperature:</color> " + _currentStarInfo.SurfaceTemperature.ToString("F2");
+            RotationalPeriodText.text = "<color=#ff8f8f>Rotational Period:</color> " + _currentStarInfo.RotationalPeriod.ToString("F2");
+            MagneticFieldStrengthText.text = "<color=#ff8f8f>Magnetic Field Strength:</color> " + _currentStarInfo.MagneticFieldStrength.ToString("F5");
             HasIntrinsicVariabilityText.text = "<color=#ff8f8f>Has Intrinsic Variability:</color> " + _currentStarInfo.HasIntrinsicVariability;
             HasExtrinsicVariabilityText.text = "<color=#ff8f8f>Has Extrinsic Variability:</color> " + _currentStarInfo.HasExtrinsicVariability;
-            MagneticFieldStrengthText.text = "<color=#ff8f8f>Magnetic Field Strength:</color> " + _currentStarInfo.MagneticFieldStrength;
-            VariabilityText.text = "<color=#ff8f8f>Variability:</color> " + _currentStarInfo.Variability;
+            VariabilityText.text = "<color=#ff8f8f>Variability:</color> " + _currentStarInfo.Variability.ToString("F2");
         }
 
         private GameObject GetSelectedStar()
@@ -98,18 +99,12 @@ namespace SolarSystemUI
         
         private void ShowUIElements()
         {
-            foreach (TextMeshProUGUI textElement in _textElements)
-            {
-                textElement.gameObject.SetActive(true);
-            }
+            UI_SelectedStar.SetActive(true);
         }
 
         private void HideUIElements()
         {
-            foreach (TextMeshProUGUI textElement in _textElements)
-            {
-                textElement.gameObject.SetActive(false);
-            }
+            UI_SelectedStar.SetActive(false);
         }
 
         private bool StarInfoChanged()
@@ -119,12 +114,12 @@ namespace SolarSystemUI
             return ClassText.text != "<color=#ff8f8f>Class:</color> " + _currentStarInfo.Class ||
                    AgeText.text != "<color=#ff8f8f>Age:</color> " + _currentStarInfo.Age ||
                    NameText.text != "<color=#ff8f8f>Name:</color> " + _currentStarInfo.Name ||
-                   MassText.text != "<color=#ff8f8f>Mass:</color> " + _currentStarInfo.Mass ||
-                   RadiusText.text != "<color=#ff8f8f>Radius:</color> " + _currentStarInfo.Radius ||
-                   LuminosityText.text != "<color=#ff8f8f>Luminosity:</color> " + _currentStarInfo.Luminosity ||
-                   SurfaceTemperatureText.text != "<color=#ff8f8f>Surface Temperature:</color> " + _currentStarInfo.SurfaceTemperature ||
-                   RotationalPeriodText.text != "<color=#ff8f8f>Rotational Period:</color> " + _currentStarInfo.RotationalPeriod ||
-                   MagneticFieldStrengthText.text != "<color=#ff8f8f>Magnetic Field Strength:</color> " + _currentStarInfo.MagneticFieldStrength ||
+                   MassText.text != "<color=#ff8f8f>Mass:</color> " + _currentStarInfo.Mass.ToString("F2") ||
+                   RadiusText.text != "<color=#ff8f8f>Radius:</color> " + _currentStarInfo.Radius.ToString("F2") ||
+                   LuminosityText.text != "<color=#ff8f8f>Luminosity:</color> " + _currentStarInfo.Luminosity.ToString("F2") ||
+                   SurfaceTemperatureText.text != "<color=#ff8f8f>Surface Temperature:</color> " + _currentStarInfo.SurfaceTemperature.ToString("F2") ||
+                   RotationalPeriodText.text != "<color=#ff8f8f>Rotational Period:</color> " + _currentStarInfo.RotationalPeriod.ToString("F2") ||
+                   MagneticFieldStrengthText.text != "<color=#ff8f8f>Magnetic Field Strength:</color> " + _currentStarInfo.MagneticFieldStrength.ToString("F5") ||
                    HasIntrinsicVariabilityText.text != "<color=#ff8f8f>Has Intrinsic Variability:</color> " + _currentStarInfo.HasIntrinsicVariability ||
                    HasExtrinsicVariabilityText.text != "<color=#ff8f8f>Has Extrinsic Variability:</color> " + _currentStarInfo.HasExtrinsicVariability ||
                    VariabilityText.text != "<color=#ff8f8f>Variability:</color> " + _currentStarInfo.Variability;

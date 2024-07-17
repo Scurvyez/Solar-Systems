@@ -1,108 +1,132 @@
-
 using SolarSystem;
 using SolarSystemUI;
 using UnityEngine;
-using Utils;
-using Color = UnityEngine.Color;
 using Random = UnityEngine.Random;
 
 public class MoonController : MonoBehaviour
 {
+    public GameObject StarPrefab;
     public GameObject AxialTiltMarkerPrefab;
     public GameObject SpinDirectionMarkerPrefab;
-    public Color MoonTrailColor;
     
     private GameObject _axialTiltMarker;
     private GameObject _spinDirectionMarker;
     private UI_DebugMarkers _uiDebugMarkers;
     private MoonInfo _moonInfo;
     private Rigidbody _rigidBody;
-    private TrailRenderer _trailRenderer;
     private Vector3 _startingPosition;
-    private readonly float _initialTrailTime = 1f;
-    private readonly float _trailTimeTransitionDuration = 1.0f;
-    private float _currentTrailTime;
+    private MaterialPropertyBlock _materialPropertyBlock;
+    
+    private static readonly int _mainTex = Shader.PropertyToID("_MainTex");
+    private static readonly int _gameSpeed = Shader.PropertyToID("_GameSpeed");
     
     private void Start()
     {
         _moonInfo = GetComponent<MoonInfo>();
         _rigidBody = GetComponent<Rigidbody>();
-        _trailRenderer = GetComponent<TrailRenderer>();
         _uiDebugMarkers = GameObject.Find("UI_DebugMarkers").GetComponent<UI_DebugMarkers>();
-        _currentTrailTime = _initialTrailTime;
-        _trailRenderer.time = _currentTrailTime;
+        
+        _materialPropertyBlock = new MaterialPropertyBlock();
+        AssignMaterialProperties();
         
         SetGOInitialComps();
         SetRandomGOStartingPosition();
         SetGOScale();
         SetGOAxialTiltMarker();
         SetGOSpinDirectionMarker();
-        SetGOTrailRenderer();
     }
 
-    public void Update()
+    private void Update()
     {
         ToggleMarkerVisibility();
-        
-        if (GameSpeedController.Instance is null) return;
-        TryCalculateTrailRendererLength();
+        transform.LookAt(StarPrefab.transform);
     }
 
+    private void AssignMaterialProperties()
+    {
+        Texture2D[] textures = Resources.LoadAll<Texture2D>("Textures/Moon");
+        
+        Texture2D randomTexture = textures[Random.Range(0, textures.Length)];
+        _materialPropertyBlock.SetTexture(_mainTex, randomTexture);
+        GetComponent<MeshRenderer>().SetPropertyBlock(_materialPropertyBlock);
+    }
+    
     private void SetGOInitialComps()
     {
         if (_rigidBody is null) return;
         _rigidBody.mass = _moonInfo.Mass;
         _rigidBody.constraints = RigidbodyConstraints.FreezePosition;
         _rigidBody.useGravity = false;
+        
+        if (transform.parent.GetComponent<PlanetInfo>() == null) return;
+        PlanetInfo parentPlanetInfo = transform.parent.GetComponent<PlanetInfo>();
+        gameObject.layer = LayerMask.NameToLayer(parentPlanetInfo.LayerName);
     }
 
     private void SetGOScale()
     {
-        transform.localScale = new Vector3(_moonInfo.Radius, _moonInfo.Radius, _moonInfo.Radius);
+        Vector3 desiredWorldScale = new (_moonInfo.Radius, _moonInfo.Radius, _moonInfo.Radius);
+        Vector3 parentScale = transform.parent.localScale;
+        transform.localScale = new Vector3(
+            desiredWorldScale.x / parentScale.x,
+            desiredWorldScale.y / parentScale.y,
+            desiredWorldScale.z / parentScale.z
+        );
     }
-
+    
     private void SetRandomGOStartingPosition()
     {
-        Transform parentPlanet = transform.parent; // Assuming parent of parent is the planet
+        Transform parentPlanet = transform.parent;
         SphereCollider parentCollider = parentPlanet.GetComponent<SphereCollider>();
         if (parentCollider is null)
         {
-            Debug.LogError("Parent planet does not have a SphereCollider.");
+            Debug.LogError("[MoonController.SetRandomGOStartingPosition] Parent planet does not have a SphereCollider.");
+            return;
+        }
+        
+        PlanetInfo parentPlanetInfo = parentPlanet.GetComponent<PlanetInfo>();
+        if (parentPlanetInfo is null)
+        {
+            Debug.LogError("[MoonController.SetRandomGOStartingPosition] Parent planet does not have a PlanetInfo component.");
             return;
         }
 
-        transform.rotation = Quaternion.Euler(0, 0, _moonInfo.AxialTilt);
-        float moonSpacingOffset = _moonInfo.Radius * 2;
-        float finalOffset = (_moonInfo.Index + 1) * (_moonInfo.Radius + moonSpacingOffset);
+        MoonControllerUtil.cachedMoonPositions.Clear();
+        float parentPlanetRadius = parentPlanetInfo.GO_Radius;
+        transform.localRotation = Quaternion.Euler(0, 0, _moonInfo.AxialTilt);
 
-        // Generate a random point on a unit sphere
-        Vector3 randomPointOnSphere = Random.onUnitSphere;
+        // Define the minimum and maximum distance for the moons
+        float minDistance = parentPlanetRadius + _moonInfo.Radius + 2f; // Minimum distance from the parent planet
+        float maxDistance = parentPlanetRadius + _moonInfo.Radius + 3f; // Maximum distance from the parent planet
 
-        // Scale the point based on the parent planet's scale
-        Vector3 point = randomPointOnSphere * (parentPlanet.localScale.x * 75f) + parentPlanet.position;
+        // Attempt to find a valid position
+        Vector3 point;
+        int maxAttempts = 1000; // Limit the number of attempts to prevent infinite loops
+        int attempt = 0;
 
-        // Apply the random offsets
-        float xComponent = Random.Range(0, 2) == 0 ? finalOffset : -finalOffset;
-        float yComponent = Random.Range(0, 2) == 0 ? finalOffset : -finalOffset;
-        float zComponent = Random.Range(0, 2) == 0 ? finalOffset : -finalOffset;
-        point += new Vector3(xComponent, yComponent, zComponent);
-
-        // Check if the position is valid using cached positions
-        if (!MoonControllerUtil.IsPositionValid(point, _moonInfo.Radius))
+        do
         {
-            // Retry once with a new random position if not valid
-            point = randomPointOnSphere * (parentPlanet.localScale.x * 75f) + parentPlanet.position;
-            point += new Vector3(xComponent, yComponent, zComponent);
-        }
+            // Generate a random point on a unit sphere
+            Vector3 randomPointOnSphere = Random.onUnitSphere;
+
+            // Scale the point based on the parent planet's scale
+            float distanceFromParent = Random.Range(minDistance, maxDistance);
+            point = randomPointOnSphere * distanceFromParent + parentPlanet.position;
+
+            attempt++;
+            if (attempt <= maxAttempts) continue;
+            Debug.LogError($"[MoonController.SetRandomGOStartingPosition] Could not find a valid position for the moon after {maxAttempts} attempts.");
+            break;
+
+        } while (!MoonControllerUtil.IsPositionValid(point, _moonInfo.Radius));
 
         // Set the moon's position
         transform.position = point;
-        //Debug.Log($"position cached: {point}"); // :)
 
         // Cache the position
         MoonControllerUtil.AddCachedPosition(transform.position);
     }
-
+    
     private void SetGOAxialTiltMarker()
     {
         _axialTiltMarker = Instantiate(AxialTiltMarkerPrefab, transform.position, Quaternion.identity);
@@ -119,22 +143,6 @@ public class MoonController : MonoBehaviour
         _spinDirectionMarker.transform.localPosition = Vector3.zero;
         _spinDirectionMarker.transform.localScale = new Vector3(1f, 1f, 0.0f);
         _spinDirectionMarker.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-    }
-    
-    private void SetGOTrailRenderer()
-    {
-        _trailRenderer.startWidth = 5.0f;
-        _trailRenderer.endWidth = 0.0f;
-        _trailRenderer.time = _initialTrailTime;
-        _trailRenderer.startColor = MoonTrailColor;
-        _trailRenderer.endColor = Color.clear;
-    }
-    
-    private void TryCalculateTrailRendererLength()
-    {
-        float targetTrailTime = TrailTimersUtil.MoonTrailTime(GameSpeedController.Instance.CurSpeed);
-        _currentTrailTime = Mathf.Lerp(_currentTrailTime, targetTrailTime, Time.deltaTime / _trailTimeTransitionDuration);
-        _trailRenderer.time = _currentTrailTime;
     }
     
     private void ToggleMarkerVisibility()

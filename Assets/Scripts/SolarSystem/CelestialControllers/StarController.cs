@@ -35,7 +35,6 @@ public class StarController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (GameSpeedController.Instance is null) return;
         RotateAroundOwnAxis();
         TryCalculateVariability();
     }
@@ -73,7 +72,7 @@ public class StarController : MonoBehaviour
     
     private void TryCalculateVariability()
     {
-        _timer += Time.fixedDeltaTime;
+        _timer += Time.deltaTime;
         float t = _timer;
 
         if (SaveManager.Instance.ActiveSave.hasExtrinsicVariability)

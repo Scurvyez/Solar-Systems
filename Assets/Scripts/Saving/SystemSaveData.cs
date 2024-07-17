@@ -35,6 +35,7 @@ namespace Saving
         // STAR DATA: end
 
         // PLANET DATA: start
+        public List<Planet> planets;
         public List<RockyPlanet> rockyPlanets;
         public List<GasGiant> gasGiantPlanets;
         // PLANET DATA: end

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Utils
 {
+    /// <summary>
+    /// Measured in AMU (atomic mass unit).
+    /// </summary>
     public static class AtomicMass
     {
         public static float GetAtomicMass(string elementSymbol)

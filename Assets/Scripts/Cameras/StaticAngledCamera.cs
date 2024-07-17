@@ -52,23 +52,29 @@ public class StaticAngledCamera : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        ZoomMin = SelectedObject.transform.localScale.x + 100.0f;
+        ZoomMin = SelectedObject.transform.localScale.x + 5.0f;
         _currentSwivelSpeed = SwivelSpeed;
 
         _mainCamera = Camera.main;
         if (_mainCamera == null) return;
 
         Vector3 sphereScale = StarObject.transform.localScale;
-        Vector3 cameraPos = new Vector3(
-            StarObject.transform.position.x,
-            StarObject.transform.position.y + (sphereScale.y * 100.0f),
-            StarObject.transform.position.z - (sphereScale.z * 100.0f)
+
+        // Calculate the offset position for a 45-degree angle
+        float distance = sphereScale.magnitude * 50.0f;
+        Vector3 offset = new 
+        (
+            Mathf.Cos(Mathf.Deg2Rad * 45) * distance,
+            Mathf.Sin(Mathf.Deg2Rad * 45) * distance,
+            Mathf.Cos(Mathf.Deg2Rad * 45) * distance
         );
+
+        Vector3 cameraPos = StarObject.transform.position + offset;
 
         _mainCamera.transform.position = cameraPos;
         _mainCamera.transform.LookAt(StarObject.transform.position);
     }
-
+    
     private void HandleCursorLocking()
     {
         if (!Input.GetKeyDown(KeyCode.Space)) return;
@@ -137,7 +143,7 @@ public class StaticAngledCamera : MonoBehaviour
     private void HandleMouseScrollZoom()
     {
         float scroll = Input.GetAxis("Mouse ScrollWheel");
-        _mainCamera.transform.position += 100.0f * scroll * Time.deltaTime * ZoomSpeed * _mainCamera.transform.forward;
+        _mainCamera.transform.position += 10.0f * scroll * Time.deltaTime * ZoomSpeed * _mainCamera.transform.forward;
     }
 
     private void EnsureCameraZoomRange()

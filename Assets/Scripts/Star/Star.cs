@@ -70,7 +70,7 @@ public class Star : MonoBehaviour
     /// </summary>
     public float GenerateGORadius()
     {
-        GO_Radius = 50.0f;
+        GO_Radius = 1f;
         return GO_Radius;
     }
 

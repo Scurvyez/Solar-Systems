@@ -6,6 +6,7 @@ namespace SolarSystemUI
 {
     public class UI_SystemGrid : MonoBehaviour
     {
+        public bool GridVisible = false; // Set to false by default
         public Button ShowGridButton;
         public MeshFilter MeshFilter;
         public Vector2Int GridSize;
@@ -25,7 +26,6 @@ namespace SolarSystemUI
         private List<Vector3> _vertices;
         private List<int> _indices;
         private List<Color> _colors;
-        private bool _isGridVisible = true;
 
         private void Start() 
         {
@@ -35,11 +35,18 @@ namespace SolarSystemUI
             ShowGridButton.onClick.AddListener(ToggleGridVisibility);
             
             BuildGrid();
+
+            // Set grid visibility based on the GridVisible flag
+            meshRenderer.enabled = GridVisible;
+            
+            if (!DEBUG_UpdateGrid) return;
+            Debug.LogWarning($"System Grid Updating Every Frame...");
         }
 
         private void Update()
         {
             // rebuilding the grid is expensive, so uh... yeah...
+            // throw a log message as a reminder, so we don't spend hours tracking down why we lost ~300 fps again xD
             if (!DEBUG_UpdateGrid) return;
             BuildGrid();
         }
@@ -119,8 +126,8 @@ namespace SolarSystemUI
 
         private void ToggleGridVisibility()
         {
-            _isGridVisible = !_isGridVisible;
-            MeshFilter.GetComponent<MeshRenderer>().enabled = _isGridVisible;
+            GridVisible = !GridVisible;
+            MeshFilter.GetComponent<MeshRenderer>().enabled = GridVisible;
         }
     }
 }

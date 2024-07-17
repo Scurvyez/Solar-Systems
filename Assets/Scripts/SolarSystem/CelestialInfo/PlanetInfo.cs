@@ -5,10 +5,13 @@ namespace SolarSystem
 {
     public class PlanetInfo : MonoBehaviour
     {
+        public string PlanetType;
+        public string LayerName;
         public int Index;
         public string Name;
         public float Mass;
-        public float Radius;
+        public float GO_Radius;
+        public float Info_Radius;
         public float RotationalPeriod;
         public float OrbitalPeriod;
         public Vector3 FocusPoint;

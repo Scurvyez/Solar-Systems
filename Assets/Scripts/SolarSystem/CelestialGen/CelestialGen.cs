@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
 using TMPro;
 using System.Linq;
 using Saving;
 using SolarSystem;
+using Unity.VisualScripting;
 
 public class CelestialGen : MonoBehaviour
 {
@@ -19,99 +21,138 @@ public class CelestialGen : MonoBehaviour
     public Button RockyPlanetButtonPrefab;
     public Button GasGiantPlanetButtonPrefab;
     public Button MoonButtonPrefab;
+    public Color CelestialBodyUIColor;
     public Color StarUIColor;
-    public Color PlanetUIColor;
+    public Color RockyPlanetUIColor;
+    public Color GasGiantPlanetUIColor;
     public Color PlanetUIColorHabitable;
     public Color MoonUIColor;
+    
     public List<GameObject> Stars = new();
     public List<GameObject> Planets = new();
     public List<GameObject> Moons = new();
-
+    
+    public PlanetMesh PlanetMesh;
+    public PlanetMesh MoonMesh;
+    public Material RockyPlanetMat;
+    public Material GasGiantPlanetMat;
+    public Material MoonMaterial;
+    
     private int _moonCountPerPlanet;
     
     public void Start()
     {
         TryGenerateFinalStars();
-        TryGenerateFinalRockyPlanets();
-        TryGenerateFinalGasGiantPlanets();
-        TryGenerateFinalMoons();
+
+        PlanetMesh = this.AddComponent<PlanetMesh>();
+        MoonMesh = this.AddComponent<PlanetMesh>();
+        if (PlanetMesh == null || MoonMesh == null)
+        {
+            Debug.LogError("PlanetMesh or MoonMesh component not found on CelestialGen.");
+            return;
+        }
+        
+        if (Stars == null || Stars.Count == 0) return;
+        TryGenerateFinalPlanets();
+        
+        if (Planets != null && Planets.Count != 0)
+        {
+            TryGenerateFinalMoons();
+        }
     }
 
     private void TryGenerateFinalStars()
     {
-        List<GameObject> starObjects = FindObjectsOfType<GameObject>().Where(go => go.name == "Star").ToList();
-
-        if (starObjects.Count == 0)
+        for (int index = 0; index < 1; index++)
         {
             GameObject starInstance = Instantiate(StarPrefab);
+            starInstance.name = "Star";
             Stars.Add(starInstance);
             TryPopulateStarInfo(starInstance);
             TryGenerateStarUIButton(starInstance);
+            StaticAngledCamera.SelectedObject = starInstance;
         }
-        else
+    }
+
+    private void TryGenerateFinalPlanets()
+    {
+        var savedPlanet = SaveManager.Instance.ActiveSave.planets;
+        int layerIndex = 8;
+        
+        foreach (Planet planetData in savedPlanet)
         {
-            foreach (GameObject starObject in starObjects)
+            GameObject planetInstance;
+            Button planetButtonPrefab;
+            string planetName = planetData.Info_Name;
+            MeshFilter combinedMesh = PlanetMesh.meshFilter;
+            
+            switch (planetData)
             {
-                TryPopulateStarInfo(starObject);
-                TryGenerateStarUIButton(starObject);
+                case RockyPlanet:
+                    planetInstance = Instantiate(RockyPlanetPrefab);
+                    planetInstance.AddComponent<MeshFilter>().mesh = combinedMesh.mesh;
+                    planetInstance.AddComponent<MeshRenderer>().material = RockyPlanetMat;
+                    planetInstance.name = planetName;
+                    planetButtonPrefab = RockyPlanetButtonPrefab;
+                    break;
+                case GasGiant:
+                    planetInstance = Instantiate(GasGiantPlanetPrefab);
+                    planetInstance.AddComponent<MeshFilter>().mesh = combinedMesh.mesh;
+                    planetInstance.AddComponent<MeshRenderer>().material = GasGiantPlanetMat;
+                    planetInstance.name = planetName;
+                    planetButtonPrefab = GasGiantPlanetButtonPrefab;
+                    break;
+                default:
+                    Debug.Log($"[CelestialGen.TryGenerateFinalPlanets] Unknown planet type.");
+                    continue;
+            }
+            
+            Planets.Add(planetInstance);
+            TryPopulatePlanetInfo(planetInstance, planetData);
+            TryGeneratePlanetUIButton(planetInstance, planetButtonPrefab);
+            GameObject starObject = GameObject.Find("Star");
+            if (starObject == null) return;
+            planetInstance.transform.SetParent(starObject.transform);
+            
+            // Assign a new and unique layer to the planet
+            if (layerIndex < 32) // Ensure we do not exceed the maximum number of layers
+            {
+                string layerName = $"PlanetLayer{layerIndex}";
+                planetInstance.GetComponent<PlanetInfo>().LayerName = layerName;
+                CreateLayer(layerName);
+                planetInstance.layer = LayerMask.NameToLayer(layerName);
+                layerIndex++;
+            }
+            else
+            {
+                Debug.LogWarning("Maximum number of layers exceeded. Not all planets will have unique layers.");
             }
         }
     }
-
-    private void TryGenerateFinalRockyPlanets()
+    
+    private static void CreateLayer(string layerName)
     {
-        for (int index = 0; index < SaveManager.Instance.ActiveSave.rockyPlanets.Count; index++)
-        {
-            RockyPlanet rockyPlanet = SaveManager.Instance.ActiveSave.rockyPlanets[index];
-            GameObject planetInstance = Instantiate(RockyPlanetPrefab);
-            Planets.Add(planetInstance);
-            GameObject planetObject = Planets[index];
+        SerializedObject tagManager = new (AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset")[0]);
+        SerializedProperty layersProp = tagManager.FindProperty("layers");
 
-            TryPopulateRockyPlanetInfo(planetObject, rockyPlanet, index);
-            TryGenerateRockyPlanetUIButton(planetObject);
-            planetObject.transform.SetParent(StarPrefab.transform);
+        for (int i = 8; i < layersProp.arraySize; i++)
+        {
+            SerializedProperty layerSP = layersProp.GetArrayElementAtIndex(i);
+            if (layerSP.stringValue == layerName)
+            {
+                return; // Layer already exists
+            }
+
+            if (!string.IsNullOrEmpty(layerSP.stringValue)) continue;
+            layerSP.stringValue = layerName;
+            tagManager.ApplyModifiedProperties();
+            return;
         }
+
+        Debug.LogWarning("Maximum number of layers exceeded. Cannot create new layer.");
     }
     
-    private void TryGenerateFinalGasGiantPlanets()
-    {
-        for (int index = 0; index < SaveManager.Instance.ActiveSave.gasGiantPlanets.Count; index++)
-        {
-            GasGiant gasGiantPlanet = SaveManager.Instance.ActiveSave.gasGiantPlanets[index];
-            GameObject planetInstance = Instantiate(GasGiantPlanetPrefab);
-            Planets.Add(planetInstance);
-            GameObject planetObject = Planets[index];
-
-            TryPopulateGasGiantPlanetInfo(planetObject, gasGiantPlanet, index);
-            TryGenerateGasGiantPlanetUIButton(planetObject);
-            planetObject.transform.SetParent(StarPrefab.transform);
-        }
-    }
-    
-    private void TryGenerateFinalMoons()
-    {
-        for (int index = 0; index < SaveManager.Instance.ActiveSave.moons.Count; index++)
-        {
-            Moon moon = SaveManager.Instance.ActiveSave.moons[index];
-            GameObject moonInstance = Instantiate(MoonPrefab);
-            Moons.Add(moonInstance);
-            GameObject moonObject = Moons[index];
-
-            TryPopulateMoonInfo(moonObject, moon, index);
-            TryGenerateMoonUIButton(moonObject);
-            
-            GameObject parentPlanet = Planets.FirstOrDefault(p => p.name == moon.ParentPlanetName); // TODO: change back to ParentPlanetName
-            
-            if (parentPlanet == null) continue;
-            moonObject.transform.SetParent(parentPlanet.transform);
-            PlanetInfo planetInfo = parentPlanet.GetComponent<PlanetInfo>();
-            
-            if (planetInfo == null) return;
-            planetInfo.NumberOfMoons++;
-        }
-    }
-
-    private void TryPopulateStarInfo(GameObject starGO)
+    private static void TryPopulateStarInfo(GameObject starGO)
     {
         starGO.GetComponent<StarInfo>().Class = SaveManager.Instance.ActiveSave.starClassAsString;
         starGO.GetComponent<StarInfo>().Name = SaveManager.Instance.ActiveSave.starSystemName;
@@ -131,91 +172,108 @@ public class CelestialGen : MonoBehaviour
     private void TryGenerateStarUIButton(GameObject starGO)
     {
         Button starButton = Instantiate(StarButtonPrefab, ScrollViewContent);
-        starButton.GetComponentInChildren<TextMeshProUGUI>().text = SaveManager.Instance.ActiveSave.starSystemName;
-        starButton.GetComponentInChildren<TextMeshProUGUI>().rectTransform.anchoredPosition = new Vector2(0.0f, -25.0f);
-        starButton.GetComponentInChildren<TextMeshProUGUI>().fontSize = 12.0f;
-        starButton.GetComponentInChildren<TextMeshProUGUI>().color = StarUIColor;
+        
+        TextMeshProUGUI nameTextMesh = starButton.transform.Find("TEXT_Name").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI typeTextMesh = starButton.transform.Find("TEXT_S").GetComponent<TextMeshProUGUI>();
+        
+        nameTextMesh.text = SaveManager.Instance.ActiveSave.starSystemName;
+        nameTextMesh.color = CelestialBodyUIColor;
+        nameTextMesh.fontSize = 16.0f;
+        typeTextMesh.color = StarUIColor;
+        
         starButton.onClick.AddListener(() => StaticAngledCamera.SetFocus(starGO));
         starButton.onClick.AddListener(AudioSource.Play);
     }
-
-    private void TryPopulateRockyPlanetInfo(GameObject planetGO, RockyPlanet rockyPlanet, int index)
+    
+    private static void TryPopulatePlanetInfo(GameObject planetGO, Planet planetData)
     {
-        planetGO.name = rockyPlanet.Name;
-        planetGO.GetComponent<PlanetController>().StarPrefab = StarPrefab;
-        planetGO.GetComponent<PlanetInfo>().Index = rockyPlanet.OrbitPosition;
-        planetGO.GetComponent<PlanetInfo>().Name = rockyPlanet.Name;
-        planetGO.GetComponent<PlanetInfo>().Mass = rockyPlanet.Mass;
-        planetGO.GetComponent<PlanetInfo>().Radius = rockyPlanet.Radius;
-        planetGO.GetComponent<PlanetInfo>().RotationalPeriod = rockyPlanet.RotationalPeriod;
-        planetGO.GetComponent<PlanetInfo>().OrbitalPeriod = rockyPlanet.OrbitalPeriod;
-        planetGO.GetComponent<PlanetInfo>().FocusPoint = rockyPlanet.FocusPoint;
-        planetGO.GetComponent<PlanetInfo>().SurfaceTemperature = rockyPlanet.SurfaceTemperature;
-        planetGO.GetComponent<PlanetInfo>().SurfacePressure = rockyPlanet.SurfacePressure;
-        planetGO.GetComponent<PlanetInfo>().SurfaceGravity = rockyPlanet.SurfaceGravity;
-        planetGO.GetComponent<PlanetInfo>().EscapeVelocity = rockyPlanet.EscapeVelocity;
-        planetGO.GetComponent<PlanetInfo>().MagneticFieldStrength = rockyPlanet.MagneticFieldStrength;
-        planetGO.GetComponent<PlanetInfo>().MeanDensity = rockyPlanet.MeanDensity;
-        planetGO.GetComponent<PlanetInfo>().AxialTilt = rockyPlanet.AxialTilt;
-        planetGO.GetComponent<PlanetInfo>().HasAtmosphere = rockyPlanet.HasAtmosphere;
-        planetGO.GetComponent<PlanetInfo>().IsHabitable = rockyPlanet.IsHabitable;
-        planetGO.GetComponent<PlanetInfo>().HasRings = rockyPlanet.HasRings;
-        planetGO.GetComponent<PlanetInfo>().InnerRingRadius = rockyPlanet.InnerRingRadius;
-        planetGO.GetComponent<PlanetInfo>().OuterRingRadius = rockyPlanet.OuterRingRadius;
-        planetGO.GetComponent<PlanetInfo>().Composition = rockyPlanet.Composition;
-        planetGO.GetComponent<PlanetInfo>().AtmosphereComposition = rockyPlanet.AtmosphereComposition;
+        PlanetInfo planetInfo = planetGO.GetComponent<PlanetInfo>();
+        planetInfo.PlanetType = planetData.PlanetType;
+        planetInfo.Index = planetData.GO_OrbitPosition;
+        planetInfo.Name = planetData.Info_Name;
+        planetInfo.Mass = planetData.Info_Mass;
+        planetInfo.GO_Radius = planetData.GO_Radius;
+        planetInfo.Info_Radius = planetData.Info_Radius;
+        planetInfo.RotationalPeriod = planetData.Info_RotationalPeriod;
+        planetInfo.OrbitalPeriod = planetData.Info_OrbitalPeriod;
+        planetInfo.FocusPoint = planetData.Info_FocusPoint;
+        planetInfo.SurfaceTemperature = planetData.Info_SurfaceTemperature;
+        planetInfo.SurfacePressure = planetData.Info_SurfacePressure;
+        planetInfo.SurfaceGravity = planetData.Info_SurfaceGravity;
+        planetInfo.EscapeVelocity = planetData.Info_EscapeVelocity;
+        planetInfo.MagneticFieldStrength = planetData.Info_MagneticFieldStrength;
+        planetInfo.MeanDensity = planetData.Info_MeanDensity;
+        planetInfo.AxialTilt = planetData.Info_AxialTilt;
+        planetInfo.HasAtmosphere = planetData.Info_HasAtmosphere;
+        planetInfo.IsHabitable = planetData.Info_IsHabitable;
+        planetInfo.HasRings = planetData.Info_HasRings;
+        planetInfo.InnerRingRadius = planetData.GO_InnerRingRadius;
+        planetInfo.OuterRingRadius = planetData.GO_OuterRingRadius;
+        planetInfo.Composition = planetData.Info_Composition;
+        planetInfo.AtmosphereComposition = planetData.Info_AtmosphereComposition;
+    }
+
+    private Color TryGetPlanetUIColor(PlanetInfo planetInfo)
+    {
+        if (planetInfo.IsHabitable) return PlanetUIColorHabitable;
+        
+        switch (planetInfo.PlanetType)
+        {
+            case "RockyPlanet":
+                return RockyPlanetUIColor;
+            case "GasGiant":
+                return GasGiantPlanetUIColor;
+            default:
+                Debug.Log($"[CelestialGen.TryGenPlanetUIColor] Unknown planet type.");
+                return Color.white;
+        }
     }
     
-    private void TryPopulateGasGiantPlanetInfo(GameObject planetGO, GasGiant gasGiantPlanet, int index)
+    private void TryGeneratePlanetUIButton(GameObject planetGO, Button planetButtonPrefab)
     {
-        planetGO.name = gasGiantPlanet.Name;
-        planetGO.GetComponent<PlanetController>().StarPrefab = StarPrefab;
-        planetGO.GetComponent<PlanetInfo>().Index = gasGiantPlanet.OrbitPosition;
-        planetGO.GetComponent<PlanetInfo>().Name = gasGiantPlanet.Name;
-        planetGO.GetComponent<PlanetInfo>().Mass = gasGiantPlanet.Mass;
-        planetGO.GetComponent<PlanetInfo>().Radius = gasGiantPlanet.Radius;
-        planetGO.GetComponent<PlanetInfo>().RotationalPeriod = gasGiantPlanet.RotationalPeriod;
-        planetGO.GetComponent<PlanetInfo>().OrbitalPeriod = gasGiantPlanet.OrbitalPeriod;
-        planetGO.GetComponent<PlanetInfo>().FocusPoint = gasGiantPlanet.FocusPoint;
-        planetGO.GetComponent<PlanetInfo>().SurfaceTemperature = gasGiantPlanet.SurfaceTemperature;
-        planetGO.GetComponent<PlanetInfo>().SurfacePressure = gasGiantPlanet.SurfacePressure;
-        planetGO.GetComponent<PlanetInfo>().SurfaceGravity = gasGiantPlanet.SurfaceGravity;
-        planetGO.GetComponent<PlanetInfo>().EscapeVelocity = gasGiantPlanet.EscapeVelocity;
-        planetGO.GetComponent<PlanetInfo>().MagneticFieldStrength = gasGiantPlanet.MagneticFieldStrength;
-        planetGO.GetComponent<PlanetInfo>().MeanDensity = gasGiantPlanet.MeanDensity;
-        planetGO.GetComponent<PlanetInfo>().AxialTilt = gasGiantPlanet.AxialTilt;
-        planetGO.GetComponent<PlanetInfo>().HasAtmosphere = gasGiantPlanet.HasAtmosphere;
-        planetGO.GetComponent<PlanetInfo>().IsHabitable = gasGiantPlanet.IsHabitable;
-        planetGO.GetComponent<PlanetInfo>().HasRings = gasGiantPlanet.HasRings;
-        planetGO.GetComponent<PlanetInfo>().InnerRingRadius = gasGiantPlanet.InnerRingRadius;
-        planetGO.GetComponent<PlanetInfo>().OuterRingRadius = gasGiantPlanet.OuterRingRadius;
-        planetGO.GetComponent<PlanetInfo>().Composition = gasGiantPlanet.Composition;
-        planetGO.GetComponent<PlanetInfo>().AtmosphereComposition = gasGiantPlanet.AtmosphereComposition;
-    }
-
-    private void TryGenerateRockyPlanetUIButton(GameObject rockyPlanetGO)
-    {
-        Button planetButton = Instantiate(RockyPlanetButtonPrefab, ScrollViewContent);
-        planetButton.GetComponentInChildren<TextMeshProUGUI>().text = rockyPlanetGO.name;
-        planetButton.GetComponentInChildren<TextMeshProUGUI>().rectTransform.anchoredPosition = new Vector2(0.0f, -25.0f);
-        planetButton.GetComponentInChildren<TextMeshProUGUI>().fontSize = 12.0f;
-        planetButton.GetComponentInChildren<TextMeshProUGUI>().color = rockyPlanetGO.GetComponent<PlanetInfo>().IsHabitable ? PlanetUIColorHabitable : PlanetUIColor;
-        planetButton.onClick.AddListener(() => StaticAngledCamera.SetFocus(rockyPlanetGO));
+        Button planetButton = Instantiate(planetButtonPrefab, ScrollViewContent);
+        
+        TextMeshProUGUI nameTextMesh = planetButton.transform.Find("TEXT_Name").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI typeTextMesh = planetButton.transform.Find("TEXT_P").GetComponent<TextMeshProUGUI>();
+        
+        nameTextMesh.text = planetGO.name;
+        nameTextMesh.color = CelestialBodyUIColor;
+        nameTextMesh.fontSize = 16.0f;
+        
+        PlanetInfo planetInfo = planetGO.GetComponent<PlanetInfo>();
+        typeTextMesh.color = TryGetPlanetUIColor(planetInfo);
+        
+        planetButton.onClick.AddListener(() => StaticAngledCamera.SetFocus(planetGO));
         planetButton.onClick.AddListener(AudioSource.Play);
     }
     
-    private void TryGenerateGasGiantPlanetUIButton(GameObject gasGiantPlanetGO)
+    private void TryGenerateFinalMoons()
     {
-        Button planetButton = Instantiate(GasGiantPlanetButtonPrefab, ScrollViewContent);
-        planetButton.GetComponentInChildren<TextMeshProUGUI>().text = gasGiantPlanetGO.name;
-        planetButton.GetComponentInChildren<TextMeshProUGUI>().rectTransform.anchoredPosition = new Vector2(0.0f, -25.0f);
-        planetButton.GetComponentInChildren<TextMeshProUGUI>().fontSize = 12.0f;
-        planetButton.GetComponentInChildren<TextMeshProUGUI>().color = gasGiantPlanetGO.GetComponent<PlanetInfo>().IsHabitable ? PlanetUIColorHabitable : PlanetUIColor;
-        planetButton.onClick.AddListener(() => StaticAngledCamera.SetFocus(gasGiantPlanetGO));
-        planetButton.onClick.AddListener(AudioSource.Play);
+        for (int index = 0; index < SaveManager.Instance.ActiveSave.moons.Count; index++)
+        {
+            Moon moon = SaveManager.Instance.ActiveSave.moons[index];
+            MeshFilter combinedMesh = MoonMesh.meshFilter;
+            GameObject moonInstance = Instantiate(MoonPrefab);
+            moonInstance.AddComponent<MeshFilter>().mesh = combinedMesh.mesh;
+            moonInstance.AddComponent<MeshRenderer>().material = MoonMaterial;
+            Moons.Add(moonInstance);
+            GameObject moonObject = Moons[index];
+
+            TryPopulateMoonInfo(moonObject, moon, index);
+            TryGenerateMoonUIButton(moonObject);
+            
+            GameObject parentPlanet = Planets.FirstOrDefault(p => p.name == moon.ParentPlanetName);
+            
+            if (parentPlanet == null) continue;
+            moonObject.transform.SetParent(parentPlanet.transform);
+            PlanetInfo planetInfo = parentPlanet.GetComponent<PlanetInfo>();
+            
+            if (planetInfo == null) return;
+            planetInfo.NumberOfMoons++;
+        }
     }
 
-    private void TryPopulateMoonInfo(GameObject moonGO, Moon moon, int index)
+    private static void TryPopulateMoonInfo(GameObject moonGO, Moon moon, int index)
     {
         moonGO.name = moon.Name;
         moonGO.GetComponent<MoonInfo>().ParentPlanetName = moon.ParentPlanetName;
@@ -236,10 +294,15 @@ public class CelestialGen : MonoBehaviour
     private void TryGenerateMoonUIButton(GameObject moonGO)
     {
         Button moonButton = Instantiate(MoonButtonPrefab, ScrollViewContent);
-        moonButton.GetComponentInChildren<TextMeshProUGUI>().text = moonGO.name;
-        moonButton.GetComponentInChildren<TextMeshProUGUI>().rectTransform.anchoredPosition = new Vector2(0.0f, -25.0f);
-        moonButton.GetComponentInChildren<TextMeshProUGUI>().fontSize = 12.0f;
-        moonButton.GetComponentInChildren<TextMeshProUGUI>().color = MoonUIColor;
+        
+        TextMeshProUGUI nameTextMesh = moonButton.transform.Find("TEXT_Name").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI typeTextMesh = moonButton.transform.Find("TEXT_M").GetComponent<TextMeshProUGUI>();
+        
+        nameTextMesh.text = moonGO.name;
+        nameTextMesh.color = CelestialBodyUIColor;
+        nameTextMesh.fontSize = 16.0f;
+        typeTextMesh.color = MoonUIColor;
+        
         moonButton.onClick.AddListener(() => StaticAngledCamera.SetFocus(moonGO));
         moonButton.onClick.AddListener(AudioSource.Play);
     }

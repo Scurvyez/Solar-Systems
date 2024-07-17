@@ -13,7 +13,7 @@ namespace SolarSystem
             SystemSaveData sSD = SaveManager.Instance.ActiveSave;
             if (star == null)
             {
-                Debug.LogError("StarPhysicalProperties is null");
+                Debug.LogError("[StarGenerator.GenerateStar] Star is null");
                 return;
             }
 

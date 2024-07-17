@@ -32,8 +32,8 @@ namespace Utils
         /// </summary>
         private static string GenerateStarSystemNameSemiUnique()
         {
-            // Set the name length to a random number between 3 and 9
-            int nameLength = _nameGenRandom.Next(3, 10);
+            // Set the name length to a random number between 3 and 7
+            int nameLength = _nameGenRandom.Next(3, 8);
 
             // Start with an empty string
             string tempSystemName = "";
@@ -67,7 +67,7 @@ namespace Utils
         private static string GenerateStarSystemNameGeneric()
         {
             string tempSystemName = "";
-            int nameLength = Random.Range(5, 14);
+            int nameLength = Random.Range(3, 8);
             bool addingLetters = true;
             for (int i = 0; i < nameLength; i++)
             {

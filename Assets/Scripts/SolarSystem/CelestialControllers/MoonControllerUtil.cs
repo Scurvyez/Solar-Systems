@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace SolarSystem
 {
     public class MoonControllerUtil
     {
-        private static List<Vector3> cachedMoonPositions = new ();
+        public static List<Vector3> cachedMoonPositions = new ();
 
         public static void AddCachedPosition(Vector3 position)
         {
@@ -14,14 +15,7 @@ namespace SolarSystem
 
         public static bool IsPositionValid(Vector3 position, float radius)
         {
-            foreach (Vector3 cachedPosition in cachedMoonPositions)
-            {
-                if (Vector3.Distance(position, cachedPosition) < radius * 2)
-                {
-                    return false;
-                }
-            }
-            return true;
+            return cachedMoonPositions.All(cachedPosition => !(Vector3.Distance(position, cachedPosition) < radius * 4));
         }
     }
 }
