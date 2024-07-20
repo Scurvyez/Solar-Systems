@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Utils
 {
-    public class TexturesUtil : MonoBehaviour
+    public static class TexturesUtil
     {
         public static readonly string[] RockyPlanetTextureFolders = 
         { 
@@ -18,20 +18,17 @@ namespace Utils
             "gasgiant_5", "gasgiant_6", "gasgiant_8", "gasgiant_11"
         };
         
-        public static void GetPlanetTextures(string planetTypeFolder, out Texture2D albedo, out Texture2D ambientOcclusion, out Texture2D normalMap)
+        public static void GetPlanetTextures(string planetTypeFolder, out Texture2D albedo, out Texture2D ambientOcclusion, out Texture2D normalMap, out Texture2D heightMap)
         {
             // Initialize the output parameters
             albedo = null;
             ambientOcclusion = null;
             normalMap = null;
+            heightMap = null;
 
-            // Define the folder path based on the planet type
             string folderPath = $"Textures/Planets/{planetTypeFolder}";
-
-            // Load all textures from the specified folder
             Texture2D[] textures = Resources.LoadAll<Texture2D>(folderPath);
 
-            // Iterate through the textures and assign them based on their names
             foreach (Texture2D texture in textures)
             {
                 if (texture.name.EndsWith("_Albedo"))
@@ -46,9 +43,12 @@ namespace Utils
                 {
                     normalMap = texture;
                 }
+                else if (texture.name.EndsWith("_Height"))
+                {
+                    heightMap = texture;
+                }
             }
 
-            // Check if any texture is missing and log a warning
             if (albedo == null)
             {
                 Debug.LogWarning($"Albedo texture not found in folder {folderPath}");
@@ -60,6 +60,10 @@ namespace Utils
             if (normalMap == null)
             {
                 Debug.LogWarning($"Normal map texture not found in folder {folderPath}");
+            }
+            if (heightMap == null)
+            {
+                Debug.LogWarning($"Height map texture not found in folder {folderPath}");
             }
         }
     }

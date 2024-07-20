@@ -12,7 +12,6 @@ public class AudioManager : MonoBehaviour
         {
             sound.source = gameObject.AddComponent<AudioSource>();
             sound.source.clip = sound.clip;
-
             sound.source.volume = sound.volume;
             sound.source.pitch = sound.pitch;
             sound.source.loop = sound.loop;
@@ -23,13 +22,11 @@ public class AudioManager : MonoBehaviour
     {
         Sound sound = Array.Find(Sounds, sound => sound.name == soundName);
 
-        // check if the sound file name matches what it's called in the reference
         if (sound == null)
         {
             Debug.LogWarning("Sound: " + soundName + " not found. Ensure the sound files' name matches up correctly in the reference.");
             return;
         }
-        
         sound.source.Play();
     }
 }

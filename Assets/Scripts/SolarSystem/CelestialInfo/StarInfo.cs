@@ -14,8 +14,6 @@ namespace SolarSystem
         public float SurfaceTemperature;
         public float RotationalPeriod;
         public float MagneticFieldStrength;
-        public bool HasIntrinsicVariability;
-        public bool HasExtrinsicVariability;
         public float Variability;
         public int PlanetCount;
         

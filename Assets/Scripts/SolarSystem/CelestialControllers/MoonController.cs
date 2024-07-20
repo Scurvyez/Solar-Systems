@@ -18,7 +18,6 @@ public class MoonController : MonoBehaviour
     private MaterialPropertyBlock _materialPropertyBlock;
     
     private static readonly int _mainTex = Shader.PropertyToID("_MainTex");
-    private static readonly int _gameSpeed = Shader.PropertyToID("_GameSpeed");
     
     private void Start()
     {

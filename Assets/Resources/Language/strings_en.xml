@@ -2,9 +2,47 @@
 <language>
 
     <!-- Random: Commonly Used -->
-    <string key="unknown">Unknown</string>
-    <string key="m_years_old">million years old</string>
-    <string key="b_years_old">billion years old</string>
+    <string key="unknown"> Unknown</string>
+    <string key="m_years_old">M years</string>
+    <string key="b_years_old">B years</string>
+    <string key="sys_name_label">System name: </string>
+    <string key="sys_age_label">System age: </string>
+    <string key="sys_class_label">Stellar class: </string>
+    <string key="obj_name_label">Name: </string>
+    <string key="obj_mass_label">Mass: </string>
+    <string key="obj_radius_label">Radius: </string>
+    <string key="obj_lumin_label">Luminosity: </string>
+    <string key="obj_surf_temp_label">Surface temperature: </string>
+    <string key="obj_surf_pressure_label">Surface pressure: </string>
+    <string key="obj_surf_grav_label">Surface gravity: </string>
+    <string key="obj_esc_vel_label">Escape velocity: </string>
+    <string key="obj_mean_density_label">Mean density: </string>
+    <string key="obj_axial_tilt_label">Axial tilt: </string>
+    <string key="obj_rot_period_label">Rotational period: </string>
+    <string key="obj_orb_period_label">Orbital period: </string>
+    <string key="obj_mag_field_strength_label">Magnetic field strength: </string>
+    <string key="obj_variability_label">Variability: </string>
+    <string key="obj_num_satellites_label">Number of satellites: </string>
+    <string key="obj_has_atmos_label">Has atmosphere: </string>
+    <string key="obj_has_rings_label">Has rings: </string>
+    <string key="obj_habitable_label">Habitable: </string>
+    
+    <!-- Menu_StarCreation: Generated System Text -->
+    <string key="msc_num_planets">Planets: </string>
+    <string key="msc_num_moons">Moons: </string>
+    
+    <!-- Menu_StarCreation: Tooltip Text -->
+    <string key="msc_header_default_tooltip"/>
+    <string key="msc_name_tooltip">The name of our generated star system. This can be either generic or unique.</string>
+    <string key="msc_age_tooltip">The age of our generated star system. Slower burning and colder stars, such as class M and K stars, live longer and typically reach ages of several billion years old before burning out. Class O stars, being the hottest, live much shorter lives.</string>
+    <string key="msc_class_tooltip">The class, or type, of our generated star. Different types of stars harbor different types of planets and have varying physical characteristics.</string>
+    <string key="msc_num_planets_tooltip">The total number of planets in our generated star system.</string>
+    <string key="msc_num_moons_tooltip">The total number of moons in our generated star system.</string>
+    <string key="msc_spectral_class_desc_tooltip">Hover over any of the 7 options above to learn more about each type of main sequence star. Select one to generate a new solar system based on that star type.</string>
+    <string key="msc_back_button_tooltip">Go back to the main menu.</string>
+    <string key="msc_save_button_tooltip">Save the currently generated system data.</string>
+    <string key="msc_reset_button_tooltip">Reset the currently generated system data. This will return you to the main menu.</string>
+    <string key="msc_forward_button_tooltip">Go to and interact with the fully generated system. Save data must exist to proceed.</string>
     
     <!-- Menu_StarCreation: Star Descriptions -->
     <string key="desc_o_class">O-type stars are incredibly hot and massive, with temperatures reaching up to 60,000 K. They emit a tremendous amount of ultraviolet radiation and have a very short lifespan, living only a few million years. They are primarily composed of hydrogen and helium. Due to their short lifespan and intense radiation, O-type star systems are less likely to harbor stable, life-supporting planets, but they may have massive gas giants and possibly young, rocky planets in their early stages of formation.</string>
@@ -15,5 +53,44 @@
     <string key="desc_k_class">K-type stars have temperatures ranging from 3,500 to 5,000 K and have a longer lifespan of around 30 billion years. They are primarily composed of hydrogen and helium, with traces of other elements such as carbon, nitrogen, oxygen, iron, silicon, and magnesium. K-type star systems are very promising for planet formation, with a wide habitable zone that can support both rocky and gas giant planets. Their long lifespans provide ample time for life to potentially evolve. These stars are excellent candidates for hosting Earth-like planets with stable climates.</string>
     <string key="desc_m_class">M-type stars are the coolest and have temperatures of less than 3,500 K. They have a longer lifespan of around 100 billion years and are primarily composed of hydrogen and helium, with traces of other elements such as carbon, nitrogen, oxygen, iron, silicon, and magnesium. M-type star systems are likely to have numerous rocky planets and potentially habitable worlds. Despite their lower energy output, their long lifespans allow for extensive periods of planetary stability. However, their habitable zones are close to the star, which can result in tidal locking and intense stellar flares affecting planetary atmospheres.</string>
 
+    <!-- View_SolarSystem: Generic Celestial Body Info Tooltip Text -->
+    <string key="vss_object_mass_tooltip">The mass of a celestial body is the total amount of matter it contains, measured in units like kilograms or Earth masses. It's determined through gravitational interactions with other bodies or observations of its effects on nearby objects.</string>
+    <string key="vss_object_radius_tooltip">The radius of a celestial body is the distance from its center to its surface. Measured in units such as kilometers or Earth radii, it helps determine the object's size and is typically found using telescopic observations or spacecraft data.</string>
+    <string key="vss_object_rot_period_tooltip">The rotational period is the time a celestial body takes to complete one full rotation on its axis. It is measured in Earth hours and can be determined through observations of surface features or changes in the object's light curve.</string>
+    <string key="vss_object_orb_period_tooltip">The orbital period is the time a celestial body takes to complete one orbit around its host body. It is measured in Earth days and determined through observations of the object's position relative to its host over time.</string>
+    <string key="vss_object_surf_temp_tooltip">The surface temperature of a celestial body is the average temperature at its surface. It is measured using thermal imaging or by analyzing the object's emitted radiation in different wavelengths.</string>
+    <string key="vss_object_surf_pressure_tooltip">The surface pressure is the force exerted by a celestial body's atmosphere on its surface, measured in units like Pascals or Earth atmospheres. It is determined using atmospheric models or direct measurements from landers and probes.</string>
+    <string key="vss_object_surf_grav_tooltip">Surface gravity is the gravitational acceleration experienced at a celestial body's surface. Measured in units like meters per second squared, it is calculated from the object's mass and radius.</string>
+    <string key="vss_object_esc_vel_tooltip">Escape velocity is the speed an object must reach to break free from another celestial object's gravitational pull without further propulsion. It is calculated based on the object's mass and radius.</string>
+    <string key="vss_object_mag_field_strength_tooltip">Magnetic field strength measures the intensity of a celestial object's magnetic field. It is measured in units like nanoteslas or gauss, typically determined through observations from spacecraft or magnetic field surveys.</string>
+    <string key="vss_object_mean_density_tooltip">Mean density is the average mass of a celestial body per unit volume, calculated by dividing its mass by its volume. It provides insights into the object's composition and internal structure.</string>
+    <string key="vss_object_axial_tilt_tooltip">Axial tilt is the angle between a celestial object's rotational axis and its orbital plane. It affects the object's seasons and climate, and is measured through observations of the object's orientation and movement.</string>
+    <string key="vss_object_has_atmos_tooltip">Whether or not the selected celestial body harbors an atmosphere. Not all atmospheres are of equal elemental composition.</string>
+    <string key="vss_object_has_rings_tooltip">Whether or not the selected celestial body has rings, or belt(s) of asteroids and other cosmic material orbiting around its plane of existence.</string>
+    <string key="vss_object_habitable_tooltip">Whether or not the selected celestial body is habitable. This is based on a large number of factors from surface temperature, to the presence and composition of an atmosphere, the objects' relative surface gravity, and more.</string>
+    
+    <!-- View_SolarSystem: Star Info Tooltip Text -->
+    <string key="vss_header_default_tooltip"/>
+    <string key="vss_star_class_tooltip">Stellar classification categorizes stars based on their spectral characteristics and temperature. The primary classes are O, B, A, F, G, K, and M, ranging from the hottest and most massive (O) to the coolest and least massive (M). This system helps to determine a star's color, temperature, and stage in its lifecycle, providing insight into its physical properties and evolutionary state.</string>
+    <string key="vss_star_name_tooltip">The name of our system. Who gave the star this name though? Perhaps an ancient clue lies buried deep on a planetary surface...</string>
+    <string key="vss_star_age_tooltip">The age of a star indicates how long it has been since its formation. It is estimated based on its evolutionary stage, luminosity, and temperature, compared to models of stellar evolution. For example, a star's age can be inferred from its position on the Hertzsprung-Russell diagram and its stage in the life cycle, such as main sequence or red giant.</string>
+    <string key="vss_star_mass_tooltip">The mass of a star is the total amount of matter it contains, usually measured in terms of the Sun's mass. It is determined using various methods, including observing the star’s gravitational effects on nearby objects or through stellar models. A star's mass influences its luminosity, life cycle, and the formation of planets and other celestial bodies.</string>
+    <string key="vss_star_radius_tooltip">The radius of a star is the distance from its center to its surface. It is typically measured in terms of the Sun's radius using stellar models and observations of the star’s brightness and temperature. The radius helps determine the star’s size and plays a key role in understanding its luminosity and overall structure.</string>
+    <string key="vss_star_lumin_tooltip">Luminosity is the total amount of energy a star emits per second. It is measured in watts and can be determined using the star's brightness and distance from Earth. A star's luminosity provides insight into its energy output and size, with more luminous stars being either larger or hotter.</string>
+    <string key="vss_star_surf_temp_tooltip">A star's surface temperature is the temperature of its outer layer, known as the photosphere. It is determined by analyzing the star's light spectrum and comparing it to known temperature models. This temperature influences the star's color, with hotter stars appearing blue and cooler stars appearing red.</string>
+    <string key="vss_star_rot_period_tooltip">A star's rotational period is the time it takes for the star to complete one full spin on its axis. It is typically measured by observing the movement of surface features, such as star spots, or by tracking variations in the star's light output due to rotational changes. This period can range from a few days to several months, depending on the star's type and age.</string>
+    <string key="vss_star_mag_field_strength_tooltip">A stellar magnetic field arises from the motion of conductive plasma within a star, driven by convection. This field increases pressure in localized regions, causing them to rise and form star spots on the surface. It also creates coronal loops, which are visible as bright, arching structures in the star's outer atmosphere.</string>
+    <string key="vss_star_variability_tooltip">Stellar variability refers to changes in a star's brightness over time. These variations can be periodic, like in pulsating stars, or irregular, such as in eruptive or cataclysmic stars. Factors causing variability include pulsations, magnetic activity, or interactions with companion stars. Observing these changes helps astronomers understand stellar behavior and dynamics.</string>
+    
+    <!-- View_SolarSystem: Planet Info Tooltip Text -->
+    <string key="vss_planet_name_tooltip">The name of the currently selected planet. Planetary naming conventions typically follow the rules established by the International Astronomical Union (IAU), for which... there are not many..</string>
+    <string key="vss_planet_num_moons_tooltip">The total number of "natural satellites", or moons, locked in orbit around a parent planet.</string>
 
+    <!-- View_SolarSystem: Moon Info Tooltip Text -->
+    <string key="vss_moon_parent_name_tooltip">The host planet of the currently selected natural satellite (moon).</string>
+    <string key="vss_moon_name_tooltip">The name of the currently selected moon.</string>
+
+    <!-- View_SolarSystem: Moon Info Labels -->
+    <string key="obj_moon_parent_name_label">Parent planet name: </string>
+    
 </language>

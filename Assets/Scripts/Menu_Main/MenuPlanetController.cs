@@ -20,6 +20,7 @@ namespace Menu_Main
         private static readonly int _mainTex = Shader.PropertyToID("_MainTex");
         private static readonly int _aOTex = Shader.PropertyToID("_AOTex");
         private static readonly int _normalMap = Shader.PropertyToID("_NormalMap");
+        private static readonly int _heightMap = Shader.PropertyToID("_HeightMap");
         private static readonly int _atmosphereColor = Shader.PropertyToID("_AtmosphereColor");
         private static readonly int _ambientLightDirection = Shader.PropertyToID("_AmbientLightDirection");
         
@@ -83,7 +84,7 @@ namespace Menu_Main
         
         private void AssignPlanetTextures(Material material, string planetTypeFolder)
         {
-            TexturesUtil.GetPlanetTextures(planetTypeFolder, out Texture2D albedo, out Texture2D ambientOcclusion, out Texture2D normalMap);
+            TexturesUtil.GetPlanetTextures(planetTypeFolder, out Texture2D albedo, out Texture2D ambientOcclusion, out Texture2D normalMap, out Texture2D heightMap);
 
             if (albedo != null)
             {
@@ -96,6 +97,10 @@ namespace Menu_Main
             if (normalMap != null)
             {
                 material.SetTexture(_normalMap, normalMap);
+            }
+            if (heightMap != null)
+            {
+                material.SetTexture(_heightMap, heightMap);
             }
         }
         

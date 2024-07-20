@@ -163,8 +163,6 @@ public class CelestialGen : MonoBehaviour
         starGO.GetComponent<StarInfo>().SurfaceTemperature = SaveManager.Instance.ActiveSave.starTemperature;
         starGO.GetComponent<StarInfo>().RotationalPeriod = SaveManager.Instance.ActiveSave.starRotation;
         starGO.GetComponent<StarInfo>().MagneticFieldStrength = SaveManager.Instance.ActiveSave.starMagneticField;
-        starGO.GetComponent<StarInfo>().HasIntrinsicVariability = SaveManager.Instance.ActiveSave.hasIntrinsicVariability;
-        starGO.GetComponent<StarInfo>().HasExtrinsicVariability = SaveManager.Instance.ActiveSave.hasExtrinsicVariability;
         starGO.GetComponent<StarInfo>().Variability = SaveManager.Instance.ActiveSave.starVariability;
         starGO.GetComponent<StarInfo>().Composition = SaveManager.Instance.ActiveSave.starMetallicity;
     }

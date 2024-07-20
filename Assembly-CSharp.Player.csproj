@@ -114,7 +114,7 @@
      <Compile Include="Assets\Scripts\SolarSystem\CelestialControllers\PlanetController.cs" />
      <Compile Include="Assets\Scripts\Planet\PlanetSphere.cs" />
      <Compile Include="Assets\Scripts\SolarSystemUI\UI_DebugMarkers.cs" />
-     <Compile Include="Assets\Scripts\Language\LocalizationManager.cs" />
+     <Compile Include="Assets\Scripts\Language\LanguageManager.cs" />
      <Compile Include="Assets\Scripts\SolarSystemUI\UI_StarInfo.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
      <Compile Include="Assets\Scripts\Menu_SystemCreation\StarDescriptions.cs" />
@@ -143,6 +143,9 @@
      <Compile Include="Assets\Scripts\SolarSystem\SystemStarData.cs" />
      <Compile Include="Assets\Scripts\SolarSystem\CelestialGen\MoonGenerator.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
+     <Compile Include="Assets\Scripts\Utils\UI_Tooltip.cs" />
+     <Compile Include="Assets\Scripts\Utils\UI_TooltipSystem.cs" />
+     <Compile Include="Assets\Scripts\Utils\UI_TooltipTrigger.cs" />
      <Folder Include="Assets" />
      <Folder Include="Assets\Resources\Prefabs\GO" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

@@ -234,7 +234,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &502057436
 Transform:
   m_ObjectHideFlags: 0
@@ -378,8 +378,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4287598591
-  m_fontColor: {r: 1, g: 0.56078434, b: 0.56078434, a: 1}
+    rgba: 4293717228
+  m_fontColor: {r: 0.9245283, g: 0.9245283, b: 0.9245283, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1044,8 +1044,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4287598591
-  m_fontColor: {r: 1, g: 0.56078434, b: 0.56078434, a: 1}
+    rgba: 4293717228
+  m_fontColor: {r: 0.9245283, g: 0.9245283, b: 0.9245283, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1242,8 +1242,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ButtonText: {fileID: 791533414}
-  TextDefaultColor: {r: 1, g: 0.56078434, b: 0.56078434, a: 1}
-  TextHighlightColor: {r: 0.56078434, g: 1, b: 1, a: 1}
+  TextDefaultColor: {r: 0.9245283, g: 0.9245283, b: 0.9245283, a: 1}
+  TextHighlightColor: {r: 0.4, g: 0.54901963, b: 1, a: 1}
   DefaultScale: {x: 1, y: 1, z: 1}
   HighlightScale: {x: 1.25, y: 1.25, z: 1}
 --- !u!225 &2029069645
@@ -1388,8 +1388,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ButtonText: {fileID: 1910089548}
-  TextDefaultColor: {r: 1, g: 0.56078434, b: 0.56078434, a: 1}
-  TextHighlightColor: {r: 0.56078434, g: 1, b: 1, a: 1}
+  TextDefaultColor: {r: 0.9245283, g: 0.9245283, b: 0.9245283, a: 1}
+  TextHighlightColor: {r: 0.4, g: 0.54901963, b: 1, a: 1}
   DefaultScale: {x: 1, y: 1, z: 1}
   HighlightScale: {x: 1.25, y: 1.25, z: 1}
 --- !u!225 &2086816934

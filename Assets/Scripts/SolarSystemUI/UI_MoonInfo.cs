@@ -1,3 +1,4 @@
+using Language;
 using SolarSystem;
 using TMPro;
 using UnityEngine;
@@ -23,13 +24,38 @@ namespace SolarSystemUI
         public TextMeshProUGUI HasAtmosphereText;
         public TextMeshProUGUI IsHabitableText;
         
-        private TextMeshProUGUI[] _textElements;
         private GameObject _currentMoon;
         private MoonInfo _currentMoonInfo;
-
+        
+        private LanguageManager _languageManager;
+        private string _parent_planet_name_label;
+        private string _name_label;
+        private string _radius_label;
+        private string _rot_period_label;
+        private string _orb_period_label;
+        private string _axial_tilt_label;
+        private string _surf_temp_label;
+        private string _surf_grav_label;
+        private string _mean_density_label;
+        private string _esc_vel_label;
+        private string _has_atmos_label;
+        private string _habitable_label;
+        
         private void Start()
         {
-            PopulateTextElementsArray();
+            _languageManager = LanguageManager.Instance;
+            _parent_planet_name_label = _languageManager.GetValue("obj_moon_parent_name_label");
+            _name_label = _languageManager.GetValue("obj_name_label");
+            _radius_label = _languageManager.GetValue("obj_radius_label");
+            _rot_period_label = _languageManager.GetValue("obj_rot_period_label");
+            _orb_period_label = _languageManager.GetValue("obj_orb_period_label");
+            _axial_tilt_label = _languageManager.GetValue("obj_axial_tilt_label");
+            _surf_temp_label = _languageManager.GetValue("obj_surf_temp_label");
+            _surf_grav_label = _languageManager.GetValue("obj_surf_grav_label");
+            _mean_density_label = _languageManager.GetValue("obj_mean_density_label");
+            _esc_vel_label = _languageManager.GetValue("obj_esc_vel_label");
+            _has_atmos_label = _languageManager.GetValue("obj_has_atmos_label");
+            _habitable_label = _languageManager.GetValue("obj_habitable_label");
         }
         
         private void Update()
@@ -44,33 +70,29 @@ namespace SolarSystemUI
                 if (_currentMoonInfo is not null)
                 {
                     ShowUIElements();
-                    SetSavedStarValues();
+                    SetMoonValues();
                 }
                 else
                 {
                     HideUIElements();
                 }
             }
-            else if (_currentMoonInfo is not null && StarInfoChanged())
-            {
-                SetSavedStarValues();
-            }
         }
         
-        private void SetSavedStarValues()
+        private void SetMoonValues()
         {
-            ParentPlanetNameText.text = "<color=#ff8f8f>Parent Planet Name:</color> " + _currentMoonInfo.ParentPlanetName;
-            NameText.text = "<color=#ff8f8f>Name:</color> " + _currentMoonInfo.Name;
-            RadiusText.text = "<color=#ff8f8f>Radius:</color> " + _currentMoonInfo.Radius.ToString("F2");
-            OrbitalPeriodText.text = "<color=#ff8f8f>Orbital Period:</color> " + _currentMoonInfo.OrbitalPeriod.ToString("F2");
-            RotationalPeriodText.text = "<color=#ff8f8f>Rotational Period:</color> " + _currentMoonInfo.RotationalPeriod.ToString("F2");
-            AxialTiltText.text = "<color=#ff8f8f>Axial Tilt:</color> " + _currentMoonInfo.AxialTilt.ToString("F2");
-            SurfaceTemperatureText.text = "<color=#ff8f8f>Surface Temperature:</color> " + _currentMoonInfo.SurfaceTemperature.ToString("F2");
-            MeanDensityText.text = "<color=#ff8f8f>Mean Density:</color> " + _currentMoonInfo.MeanDensity.ToString("F2");
-            SurfaceGravityText.text = "<color=#ff8f8f>Surface Gravity:</color> " + _currentMoonInfo.SurfaceGravity.ToString("F2");
-            EscapeVelocityText.text = "<color=#ff8f8f>Escape Velocity:</color> " + _currentMoonInfo.EscapeVelocity.ToString("F2");
-            HasAtmosphereText.text = "<color=#ff8f8f>Has Atmosphere:</color> " + _currentMoonInfo.HasAtmosphere;
-            IsHabitableText.text = "<color=#ff8f8f>Is Habitable:</color> " + _currentMoonInfo.IsHabitable;
+            ParentPlanetNameText.text = _parent_planet_name_label + _currentMoonInfo.ParentPlanetName;
+            NameText.text = _name_label + _currentMoonInfo.Name;
+            RadiusText.text = _radius_label + _currentMoonInfo.Radius.ToString("F2");
+            OrbitalPeriodText.text = _orb_period_label + _currentMoonInfo.OrbitalPeriod.ToString("F2");
+            RotationalPeriodText.text = _rot_period_label + _currentMoonInfo.RotationalPeriod.ToString("F2");
+            AxialTiltText.text = _axial_tilt_label + _currentMoonInfo.AxialTilt.ToString("F2");
+            SurfaceTemperatureText.text = _surf_temp_label + _currentMoonInfo.SurfaceTemperature.ToString("F2");
+            MeanDensityText.text = _mean_density_label + _currentMoonInfo.MeanDensity.ToString("F2");
+            SurfaceGravityText.text = _surf_grav_label + _currentMoonInfo.SurfaceGravity.ToString("F2");
+            EscapeVelocityText.text = _esc_vel_label + _currentMoonInfo.EscapeVelocity.ToString("F2");
+            HasAtmosphereText.text = _has_atmos_label + _currentMoonInfo.HasAtmosphere;
+            IsHabitableText.text = _habitable_label + _currentMoonInfo.IsHabitable;
         }
 
         private GameObject GetSelectedStar()
@@ -78,25 +100,6 @@ namespace SolarSystemUI
             return SystemCamera?.SelectedObject;
         }
 
-        private void PopulateTextElementsArray()
-        {
-            _textElements = new [] 
-            {
-                ParentPlanetNameText,
-                NameText,
-                RadiusText,
-                OrbitalPeriodText,
-                RotationalPeriodText,
-                AxialTiltText,
-                SurfaceTemperatureText,
-                MeanDensityText,
-                SurfaceGravityText,
-                EscapeVelocityText,
-                HasAtmosphereText,
-                IsHabitableText
-            };
-        }
-        
         private void ShowUIElements()
         {
             UI_SelectedMoon.SetActive(true);
@@ -105,24 +108,6 @@ namespace SolarSystemUI
         private void HideUIElements()
         {
             UI_SelectedMoon.SetActive(false);
-        }
-
-        private bool StarInfoChanged()
-        {
-            if (_currentMoonInfo is null) return false;
-
-            return ParentPlanetNameText.text != "<color=#ff8f8f>Parent Planet Name:</color> " + _currentMoonInfo.ParentPlanetName ||
-                   NameText.text != "<color=#ff8f8f>Name:</color> " + _currentMoonInfo.Name ||
-                   RadiusText.text != "<color=#ff8f8f>Radius:</color> " + _currentMoonInfo.Radius.ToString("F2") ||
-                   OrbitalPeriodText.text != "<color=#ff8f8f>Orbital Period:</color> " + _currentMoonInfo.OrbitalPeriod.ToString("F2") ||
-                   RotationalPeriodText.text != "<color=#ff8f8f>Rotational Period:</color> " + _currentMoonInfo.RotationalPeriod.ToString("F2") ||
-                   AxialTiltText.text != "<color=#ff8f8f>Axial Tilt:</color> " + _currentMoonInfo.AxialTilt.ToString("F2") ||
-                   SurfaceTemperatureText.text != "<color=#ff8f8f>Surface Temperature:</color> " + _currentMoonInfo.SurfaceTemperature.ToString("F2") ||
-                   MeanDensityText.text != "<color=#ff8f8f>Mean Density:</color> " + _currentMoonInfo.MeanDensity.ToString("F2") ||
-                   SurfaceGravityText.text != "<color=#ff8f8f>Surface Gravity:</color> " + _currentMoonInfo.SurfaceGravity.ToString("F2") ||
-                   EscapeVelocityText.text != "<color=#ff8f8f>Escape Velocity:</color> " + _currentMoonInfo.EscapeVelocity.ToString("F2") ||
-                   HasAtmosphereText.text != "<color=#ff8f8f>Has Atmosphere:</color> " + _currentMoonInfo.HasAtmosphere ||
-                   IsHabitableText.text != "<color=#ff8f8f>Is Habitable:</color> " + _currentMoonInfo.IsHabitable;
         }
     }
 }

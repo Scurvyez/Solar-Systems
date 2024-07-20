@@ -6,11 +6,11 @@ public class StarDescriptions : MonoBehaviour
 {
     public Dictionary<Star.SpectralType, string> StarDescription;
     
-    private LocalizationManager _locMan;
+    private LanguageManager _locMan;
     
     public void Start()
     {
-        _locMan = LocalizationManager.Instance;
+        _locMan = LanguageManager.Instance;
         StarDescription = new Dictionary<Star.SpectralType, string>()
         {
             { Star.SpectralType.O, _locMan.GetValue("desc_o_class") },

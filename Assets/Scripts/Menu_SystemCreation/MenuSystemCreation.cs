@@ -12,13 +12,27 @@ public class MenuSystemCreation : MonoBehaviour
     public TextMeshProUGUI PlanetsCountText;
     public TextMeshProUGUI MoonsCountText;
 
-    private LocalizationManager _locMan;
+    private LanguageManager _languageManager;
     private string _unknownValue;
-    
+    private string _sys_name_label;
+    private string _sys_age_label;
+    private string _b_years_old;
+    private string _m_years_old;
+    private string _sys_class_label;
+    private string _msc_num_planets;
+    private string _msc_num_moons;
+
     public void Start()
     {
-        _locMan = LocalizationManager.Instance;
-        _unknownValue = _locMan.GetValue("unknown");
+        _languageManager = LanguageManager.Instance;
+        _unknownValue = _languageManager.GetValue("unknown");
+        _sys_name_label = _languageManager.GetValue("sys_name_label");
+        _sys_age_label = _languageManager.GetValue("sys_age_label");
+        _b_years_old = _languageManager.GetValue("b_years_old");
+        _m_years_old = _languageManager.GetValue("m_years_old");
+        _sys_class_label = _languageManager.GetValue("sys_class_label");
+        _msc_num_planets = _languageManager.GetValue("msc_num_planets");
+        _msc_num_moons = _languageManager.GetValue("msc_num_moons");
         UpdateStarData();
     }
 
@@ -29,23 +43,19 @@ public class MenuSystemCreation : MonoBehaviour
     
     private void UpdateStarData()
     {
-        string systemName = "<color=#ff8f8f>System Name:</color> " 
-                            + (string.IsNullOrEmpty(SaveManager.Instance.ActiveSave.starSystemName) 
-                                ? _unknownValue : SaveManager.Instance.ActiveSave.starSystemName);
+        string systemName = _sys_name_label + (string.IsNullOrEmpty(SaveManager.Instance.ActiveSave.starSystemName) 
+            ? _unknownValue : SaveManager.Instance.ActiveSave.starSystemName);
         
         string systemAge = FormatAgeText(SaveManager.Instance.ActiveSave.starAge);
         
-        string stellarClass = "<color=#ff8f8f>Stellar Class:</color> " 
-                              + (string.IsNullOrEmpty(SaveManager.Instance.ActiveSave.starClassAsString) 
-                                  ? _unknownValue : SaveManager.Instance.ActiveSave.starClassAsString);
+        string stellarClass = _sys_class_label + (string.IsNullOrEmpty(SaveManager.Instance.ActiveSave.starClassAsString) 
+            ? _unknownValue : SaveManager.Instance.ActiveSave.starClassAsString);
         
-        string planetsCount = "<color=#ff8f8f>Number of Planets:</color> " 
-                              + ((SaveManager.Instance.ActiveSave.planetCount <= 0) 
-                                  ? _unknownValue : SaveManager.Instance.ActiveSave.planetCount.ToString());
+        string planetsCount = _msc_num_planets + ((SaveManager.Instance.ActiveSave.planetCount <= 0) 
+            ? _unknownValue : SaveManager.Instance.ActiveSave.planetCount.ToString());
         
-        string moonsCount = "<color=#ff8f8f>Number of Moons:</color> " 
-                              + ((SaveManager.Instance.ActiveSave.moons.Count <= 0) 
-                                  ? _unknownValue : SaveManager.Instance.ActiveSave.moons.Count.ToString());
+        string moonsCount = _msc_num_moons + ((SaveManager.Instance.ActiveSave.moons.Count <= 0) 
+            ? _unknownValue : SaveManager.Instance.ActiveSave.moons.Count.ToString());
 
         SystemNameText.text = systemName;
         SystemAgeText.text = systemAge;
@@ -58,10 +68,10 @@ public class MenuSystemCreation : MonoBehaviour
     {
         if (age <= 0)
         {
-            return "<color=#ff8f8f>Age: </color>" + _unknownValue;
+            return _sys_age_label + _unknownValue;
         }
-        return age >= ConstantsUtil.BILLION ? 
-            $"<color=#ff8f8f>Age:</color> {(age / ConstantsUtil.BILLION):0.00} " + _locMan.GetValue("b_years_old") : 
-            $"<color=#ff8f8f>Age:</color> {(age / ConstantsUtil.MILLION):0.00} " + _locMan.GetValue("m_years_old");
+        return age >= ConstantsUtil.BILLION 
+            ? _sys_age_label + (age / ConstantsUtil.BILLION).ToString("F2") + _b_years_old 
+            : _sys_age_label + (age / ConstantsUtil.MILLION).ToString("F2") + _m_years_old;
     }
 }

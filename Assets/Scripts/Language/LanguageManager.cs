@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace Language
 {
-    public class LocalizationManager : MonoBehaviour
+    public class LanguageManager : MonoBehaviour
     {
-        public static LocalizationManager Instance { get; private set; }
+        public static LanguageManager Instance { get; private set; }
 
         private Dictionary<string, string> _localizedStrings;
         private const string LanguageFolderPath = "Assets/Resources/Language/";
