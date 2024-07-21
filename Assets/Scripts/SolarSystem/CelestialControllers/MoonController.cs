@@ -89,8 +89,7 @@ public class MoonController : MonoBehaviour
             Debug.LogError("[MoonController.SetRandomGOStartingPosition] Parent planet does not have a PlanetInfo component.");
             return;
         }
-
-        MoonControllerUtil.cachedMoonPositions.Clear();
+        
         float parentPlanetRadius = parentPlanetInfo.GO_Radius;
         transform.localRotation = Quaternion.Euler(0, 0, _moonInfo.AxialTilt);
 

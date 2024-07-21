@@ -6,10 +6,16 @@ namespace Utils
     {
         public static readonly string[] RockyPlanetTextureFolders = 
         { 
-            "barren_1", "barren_2", "barren_3", "crystal_1", 
-            "crystal_2", "crystal_4", "crystal_5", "dark_1",
-            "desert_1", "desert_2", "desert_3", "forest_1",
-            "wetlands_1"
+            "barren_1", "barren_2", "barren_3", "barren_4", "barren_5",
+            "barren_6", "barren_7", "barren_8", "barren_10", "crystal_1", 
+            "crystal_2", "crystal_3", "crystal_4", "crystal_5", "crystal_6",
+            "crystal_7", "dark_1", "dark_2", "dark_3", "dark_4", 
+            "desert_1", "desert_2", "desert_3", "desert_4", "desert_6", 
+            "desert_7", "desert_8", "desolated_1", "forest_1", "frozen_1",
+            "frozen_3", "frozen_4", "frozen_6", "liquid_1", "liquid_3", 
+            "liquid_4", "liquid_5", "tundra_1", "tundra_2", "tundra_3", 
+            "wasteland_1", "wasteland_3", "wasteland_4", "wasteland_5", "wasteland_7", 
+            "wasteland_8", "wetlands_1", "wetlands_2", "white_desert_1"
         };
 
         public static readonly string[] GasGiantTextureFolders =

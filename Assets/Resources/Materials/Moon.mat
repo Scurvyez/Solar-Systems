@@ -121,7 +121,7 @@ Material:
     m_Floats:
     - _AOStrength: -50
     - _AlphaClip: 0
-    - _AtmosphereSize: 5
+    - _AtmosphereSize: 10
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
@@ -138,7 +138,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _HeightStrength: 2
+    - _HeightStrength: 0.5
     - _Metallic: 0
     - _NormalsStrength: 0.5
     - _OcclusionStrength: 1

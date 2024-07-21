@@ -225,7 +225,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -323,9 +323,9 @@ RectTransform:
   m_Father: {fileID: 1052722862}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -675, y: 330}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 270, y: -260}
   m_SizeDelta: {x: 500, y: 480}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &108426545
@@ -717,6 +717,7 @@ GameObject:
   - component: {fileID: 180770000}
   - component: {fileID: 180769999}
   - component: {fileID: 180769998}
+  - component: {fileID: 180770002}
   m_Layer: 5
   m_Name: BUTTON_Toggle_Axial_Tilt
   m_TagString: Untagged
@@ -865,6 +866,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 180769996}
   m_CullTransparentMesh: 1
+--- !u!114 &180770002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 180769996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f032c9932e94fb8a0987f2c18ecebfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HeaderKey: vss_header_default_tooltip
+  ContentKey: vss_toggle_axial_tilt_markers
+  ShowDelay: 1
 --- !u!1 &200769575
 GameObject:
   m_ObjectHideFlags: 0
@@ -1029,6 +1045,7 @@ GameObject:
   - component: {fileID: 273164154}
   - component: {fileID: 273164153}
   - component: {fileID: 273164152}
+  - component: {fileID: 273164156}
   m_Layer: 5
   m_Name: BUTTON_Toggle_Object_Info
   m_TagString: Untagged
@@ -1165,6 +1182,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 273164150}
   m_CullTransparentMesh: 1
+--- !u!114 &273164156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 273164150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f032c9932e94fb8a0987f2c18ecebfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HeaderKey: vss_header_default_tooltip
+  ContentKey: vss_toggle_info
+  ShowDelay: 1
 --- !u!1 &281933362
 GameObject:
   m_ObjectHideFlags: 0
@@ -2307,7 +2339,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -2913,7 +2945,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -3420,9 +3452,9 @@ RectTransform:
   m_Father: {fileID: 48959767}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -675, y: 390}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 270, y: -200}
   m_SizeDelta: {x: 500, y: 360}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &688002273
@@ -3693,7 +3725,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -3937,7 +3969,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ZoomSpeed: 100
-  ZoomMin: 0
+  ZoomMinOffset: 0.5
   ZoomMax: 1000
   SwivelSpeed: 50
   MaxSwivelSpeed: 100
@@ -4535,6 +4567,7 @@ GameObject:
   - component: {fileID: 835013127}
   - component: {fileID: 835013126}
   - component: {fileID: 835013125}
+  - component: {fileID: 835013129}
   m_Layer: 5
   m_Name: BUTTON_Toggle_Grid
   m_TagString: Untagged
@@ -4671,6 +4704,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 835013123}
   m_CullTransparentMesh: 1
+--- !u!114 &835013129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835013123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f032c9932e94fb8a0987f2c18ecebfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HeaderKey: vss_header_default_tooltip
+  ContentKey: vss_toggle_sys_grid
+  ShowDelay: 1
 --- !u!1 &856010186
 GameObject:
   m_ObjectHideFlags: 0
@@ -5831,7 +5879,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -5949,7 +5997,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -6636,9 +6684,9 @@ RectTransform:
   m_Father: {fileID: 1646873035}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -1120}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 100}
   m_SizeDelta: {x: 896, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1173431634
@@ -7312,6 +7360,7 @@ GameObject:
   - component: {fileID: 1270327815}
   - component: {fileID: 1270327816}
   - component: {fileID: 1270327817}
+  - component: {fileID: 1270327818}
   m_Layer: 5
   m_Name: Horizontal Layout
   m_TagString: Untagged
@@ -7341,9 +7390,9 @@ RectTransform:
   m_Father: {fileID: 1047364235}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 700, y: -550}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -230, y: 50}
   m_SizeDelta: {x: 358, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1270327814
@@ -7431,6 +7480,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1270327818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1270327811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f032c9932e94fb8a0987f2c18ecebfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HeaderKey: vss_header_default_tooltip
+  ContentKey: vss_time_controls
+  ShowDelay: 1
 --- !u!1 &1296886350
 GameObject:
   m_ObjectHideFlags: 0
@@ -8819,9 +8883,9 @@ RectTransform:
   m_Father: {fileID: 716787623}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 550}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -50}
   m_SizeDelta: {x: 190, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1636665532
@@ -8962,7 +9026,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -9253,9 +9317,9 @@ RectTransform:
   m_Father: {fileID: 558248176}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -675, y: 420}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 270, y: -170}
   m_SizeDelta: {x: 500, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1705357667
@@ -10152,6 +10216,7 @@ GameObject:
   - component: {fileID: 1978152419}
   - component: {fileID: 1978152418}
   - component: {fileID: 1978152417}
+  - component: {fileID: 1978152421}
   m_Layer: 5
   m_Name: BUTTON_Toggle_Spin_Direction
   m_TagString: Untagged
@@ -10300,6 +10365,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1978152415}
   m_CullTransparentMesh: 1
+--- !u!114 &1978152421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1978152415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f032c9932e94fb8a0987f2c18ecebfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HeaderKey: vss_header_default_tooltip
+  ContentKey: vss_toggle_spin_dir_markers
+  ShowDelay: 1
 --- !u!1 &2048442138
 GameObject:
   m_ObjectHideFlags: 0

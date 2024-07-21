@@ -14,7 +14,7 @@ namespace Utils
         
         private LanguageManager _languageManager;
         private string _header;
-        private string _content;
+        [Multiline] private string _content;
         private Coroutine _showTooltipCoroutine;
 
         private void Start()
@@ -22,6 +22,7 @@ namespace Utils
             _languageManager = LanguageManager.Instance;
             _content = _languageManager.GetValue(ContentKey);
             _header = _languageManager.GetValue(HeaderKey);
+            UI_TooltipSystem.Hide();
         }
 
         public void OnPointerEnter(PointerEventData eventData)
@@ -35,26 +36,6 @@ namespace Utils
         }
 
         public void OnPointerExit(PointerEventData eventData)
-        {
-            // Stop the coroutine if it's running and hide the tooltip immediately
-            if (_showTooltipCoroutine != null)
-            {
-                StopCoroutine(_showTooltipCoroutine);
-            }
-            UI_TooltipSystem.Hide();
-        }
-
-        public void OnMouseEnter()
-        {
-            // Start coroutine to show the tooltip after a delay
-            if (_showTooltipCoroutine != null)
-            {
-                StopCoroutine(_showTooltipCoroutine);
-            }
-            _showTooltipCoroutine = StartCoroutine(ShowTooltipAfterDelay());
-        }
-
-        public void OnMouseExit()
         {
             // Stop the coroutine if it's running and hide the tooltip immediately
             if (_showTooltipCoroutine != null)

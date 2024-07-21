@@ -646,7 +646,7 @@
             },
             "m_InputSlot": {
                 "m_Node": {
-                    "m_Id": "850e8c95ffd640dd8a3a44fb8c833776"
+                    "m_Id": "86d7066a8c0c4a61bb898a8db5670f86"
                 },
                 "m_SlotId": 0
             }
@@ -983,20 +983,6 @@
             "m_InputSlot": {
                 "m_Node": {
                     "m_Id": "2e671f9781b9470cb8d84dd0ca1f7c28"
-                },
-                "m_SlotId": 0
-            }
-        },
-        {
-            "m_OutputSlot": {
-                "m_Node": {
-                    "m_Id": "850e8c95ffd640dd8a3a44fb8c833776"
-                },
-                "m_SlotId": 2
-            },
-            "m_InputSlot": {
-                "m_Node": {
-                    "m_Id": "86d7066a8c0c4a61bb898a8db5670f86"
                 },
                 "m_SlotId": 0
             }
@@ -9747,8 +9733,8 @@
     "m_ObjectId": "dfcddb4599c24d04b237bf42ba091d0f",
     "m_Title": "AMBIENT OCCLUSION",
     "m_Position": {
-        "x": 10.0,
-        "y": 10.0
+        "x": -736.0,
+        "y": 1056.0
     }
 }
 

@@ -83,16 +83,16 @@ namespace SolarSystemUI
         {
             ParentPlanetNameText.text = _parent_planet_name_label + _currentMoonInfo.ParentPlanetName;
             NameText.text = _name_label + _currentMoonInfo.Name;
-            RadiusText.text = _radius_label + _currentMoonInfo.Radius.ToString("F2");
-            OrbitalPeriodText.text = _orb_period_label + _currentMoonInfo.OrbitalPeriod.ToString("F2");
-            RotationalPeriodText.text = _rot_period_label + _currentMoonInfo.RotationalPeriod.ToString("F2");
-            AxialTiltText.text = _axial_tilt_label + _currentMoonInfo.AxialTilt.ToString("F2");
-            SurfaceTemperatureText.text = _surf_temp_label + _currentMoonInfo.SurfaceTemperature.ToString("F2");
-            MeanDensityText.text = _mean_density_label + _currentMoonInfo.MeanDensity.ToString("F2");
-            SurfaceGravityText.text = _surf_grav_label + _currentMoonInfo.SurfaceGravity.ToString("F2");
-            EscapeVelocityText.text = _esc_vel_label + _currentMoonInfo.EscapeVelocity.ToString("F2");
-            HasAtmosphereText.text = _has_atmos_label + _currentMoonInfo.HasAtmosphere;
-            IsHabitableText.text = _habitable_label + _currentMoonInfo.IsHabitable;
+            RadiusText.text = _radius_label + _currentMoonInfo.Radius.ToString("F2") + " kilometers";
+            OrbitalPeriodText.text = _orb_period_label + _currentMoonInfo.OrbitalPeriod.ToString("F2") + " days";
+            RotationalPeriodText.text = _rot_period_label + _currentMoonInfo.RotationalPeriod.ToString("F2") + " hours";
+            AxialTiltText.text = _axial_tilt_label + _currentMoonInfo.AxialTilt.ToString("F2") + " <sup>O</sup>";
+            SurfaceTemperatureText.text = _surf_temp_label + _currentMoonInfo.SurfaceTemperature.ToString("F2") + " Kelvin";
+            MeanDensityText.text = _mean_density_label + _currentMoonInfo.MeanDensity.ToString("F2") + " kg/m<sup>3</sup>";
+            SurfaceGravityText.text = _surf_grav_label + _currentMoonInfo.SurfaceGravity.ToString("F2") + " m/s<sup>2</sup>";
+            EscapeVelocityText.text = _esc_vel_label + _currentMoonInfo.EscapeVelocity.ToString("F2") + " km/s";
+            HasAtmosphereText.text = _has_atmos_label + (_currentMoonInfo.HasAtmosphere ? "Yes" : "No");
+            IsHabitableText.text = _habitable_label + (_currentMoonInfo.IsHabitable ? "Yes" : "No");
         }
 
         private GameObject GetSelectedStar()

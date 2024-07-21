@@ -32,6 +32,7 @@ namespace SolarSystem
         private static readonly int _normalMap = Shader.PropertyToID("_NormalMap");
         private static readonly int _heightMap = Shader.PropertyToID("_HeightMap");
         private static readonly int _atmosphereColor = Shader.PropertyToID("_AtmosphereColor");
+        private static readonly int _atmosphereSize = Shader.PropertyToID("_AtmosphereSize");
         private static readonly int _ambientLightDirection = Shader.PropertyToID("_AmbientLightDirection");
         private MeshRenderer _meshRenderer;
 
@@ -124,6 +125,7 @@ namespace SolarSystem
             else
             {
                 _materialPropertyBlock.SetColor(_atmosphereColor, Color.black);
+                _materialPropertyBlock.SetFloat(_atmosphereSize, 0f);
             }
             _meshRenderer.SetPropertyBlock(_materialPropertyBlock);
         }

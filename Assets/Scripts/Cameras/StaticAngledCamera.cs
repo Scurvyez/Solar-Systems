@@ -6,7 +6,7 @@ public class StaticAngledCamera : MonoBehaviour
 {
     [Header("Zoom Settings")]
     public float ZoomSpeed = 2000.0f;
-    public float ZoomMin;
+    public float ZoomMinOffset = 10;
     public float ZoomMax = 20000.0f;
 
     [Header("Swivel Settings")]
@@ -22,6 +22,7 @@ public class StaticAngledCamera : MonoBehaviour
     public GameObject SelectedObject;
 
     private bool _isRotating = false;
+    private float _zoomMin;
     private float _zoomDirection = 1.0f;
     private float _zoomMultiplier = 1.0f;
     private float _currentSwivelSpeed;
@@ -36,6 +37,9 @@ public class StaticAngledCamera : MonoBehaviour
 
     private void Update()
     {
+        float zoomMinFactor = SelectedObject.transform.localScale.x / ZoomMinOffset;
+        _zoomMin = SelectedObject.transform.localScale.x + zoomMinFactor;
+        
         HandleCursorLocking();
         HandleZooming();
         HandleSwiveling();
@@ -51,8 +55,7 @@ public class StaticAngledCamera : MonoBehaviour
         SelectedObject = StarObject;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        ZoomMin = SelectedObject.transform.localScale.x + 5.0f;
+        
         _currentSwivelSpeed = SwivelSpeed;
 
         _mainCamera = Camera.main;
@@ -75,7 +78,7 @@ public class StaticAngledCamera : MonoBehaviour
         _mainCamera.transform.LookAt(StarObject.transform.position);
     }
     
-    private void HandleCursorLocking()
+    private static void HandleCursorLocking()
     {
         if (!Input.GetKeyDown(KeyCode.Space)) return;
         if (Cursor.lockState == CursorLockMode.Locked)
@@ -149,7 +152,7 @@ public class StaticAngledCamera : MonoBehaviour
     private void EnsureCameraZoomRange()
     {
         float distance = Vector3.Distance(_mainCamera.transform.position, SelectedObject.transform.position);
-        Vector3 targetPosition = SelectedObject.transform.position - (_mainCamera.transform.forward * Mathf.Clamp(distance, ZoomMin, ZoomMax));
+        Vector3 targetPosition = SelectedObject.transform.position - (_mainCamera.transform.forward * Mathf.Clamp(distance, _zoomMin, ZoomMax));
         if (targetPosition != _mainCamera.transform.position)
         {
             _mainCamera.transform.position = targetPosition;

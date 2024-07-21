@@ -92,5 +92,12 @@
 
     <!-- View_SolarSystem: Moon Info Labels -->
     <string key="obj_moon_parent_name_label">Parent planet name: </string>
+
+    <!-- View_SolarSystem: Scene Controls -->
+    <string key="vss_toggle_info">Toggle the visibility of celestial body information panels.</string>
+    <string key="vss_toggle_sys_grid">Toggle the visibility of the system grid.</string>
+    <string key="vss_toggle_axial_tilt_markers">Toggle the visibility of celestial body axial tilt markers.</string>
+    <string key="vss_toggle_spin_dir_markers">Toggle the visibility of celestial body axial rotation markers.</string>
+    <string key="vss_time_controls">Adjust the speed of the simulation.&#xA;(0.1x, 0.25x, 0.5x, 1x, 50x, 100x, or 200x)</string>
     
 </language>

@@ -55,6 +55,7 @@
      <Compile Include="Assets\Scripts\SolarSystem\CelestialControllers\MoonControllerUtil.cs" />
      <Compile Include="Assets\Scripts\Menu_Main\MenuCelestialGen.cs" />
      <Compile Include="Assets\Scripts\Utils\SystemNamingUtil.cs" />
+     <Compile Include="Assets\Scripts\Utils\UI_TooltipSystem.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
      <Compile Include="Assets\Scripts\SolarSystem\GameSpeedController.cs" />
@@ -81,6 +82,7 @@
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
      <Compile Include="Assets\Scripts\Saving\SerializableDictionary.cs" />
      <Compile Include="Assets\Scripts\Utils\AtomicMass.cs" />
+     <Compile Include="Assets\Scripts\Utils\UI_Tooltip.cs" />
      <Compile Include="Assets\Scripts\Menu_SystemCreation\SpectralTypeButton.cs" />
      <Compile Include="Assets\Scripts\Moon\Moon.cs" />
      <Compile Include="Assets\Scripts\Star\StarLuminosity.cs" />
@@ -100,6 +102,7 @@
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
      <Compile Include="Assets\Scripts\Star\StarTemperature.cs" />
+     <Compile Include="Assets\Scripts\Utils\UI_TooltipTrigger.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
      <Compile Include="Assets\Scripts\SolarSystem\CelestialInfo\PlanetInfo.cs" />
      <Compile Include="Assets\Scripts\Cameras\StaticAngledCamera.cs" />
@@ -143,9 +146,6 @@
      <Compile Include="Assets\Scripts\SolarSystem\SystemStarData.cs" />
      <Compile Include="Assets\Scripts\SolarSystem\CelestialGen\MoonGenerator.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
-     <Compile Include="Assets\Scripts\Utils\UI_Tooltip.cs" />
-     <Compile Include="Assets\Scripts\Utils\UI_TooltipSystem.cs" />
-     <Compile Include="Assets\Scripts\Utils\UI_TooltipTrigger.cs" />
      <Folder Include="Assets" />
      <Folder Include="Assets\Resources\Prefabs\GO" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

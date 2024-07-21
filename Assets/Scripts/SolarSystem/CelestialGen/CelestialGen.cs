@@ -247,6 +247,8 @@ public class CelestialGen : MonoBehaviour
     
     private void TryGenerateFinalMoons()
     {
+        MoonControllerUtil.cachedMoonPositions.Clear();
+        
         for (int index = 0; index < SaveManager.Instance.ActiveSave.moons.Count; index++)
         {
             Moon moon = SaveManager.Instance.ActiveSave.moons[index];

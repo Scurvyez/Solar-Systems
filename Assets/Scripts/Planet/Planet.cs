@@ -37,6 +37,7 @@ public class Planet
     public virtual bool HasRandomAtmosphere()
     {
         Info_HasAtmosphere = true;
+        //Info_HasAtmosphere = Random.value < 0.5f;
         return Info_HasAtmosphere;
     }
 

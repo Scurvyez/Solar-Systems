@@ -22,6 +22,7 @@ namespace Menu_Main
         private static readonly int _normalMap = Shader.PropertyToID("_NormalMap");
         private static readonly int _heightMap = Shader.PropertyToID("_HeightMap");
         private static readonly int _atmosphereColor = Shader.PropertyToID("_AtmosphereColor");
+        private static readonly int _atmosphereSize = Shader.PropertyToID("_AtmosphereSize");
         private static readonly int _ambientLightDirection = Shader.PropertyToID("_AmbientLightDirection");
         
         public void Start()
@@ -34,7 +35,6 @@ namespace Menu_Main
             AssignMaterialProperties();
             SetShaderAtmosphereColor();
             SetGOStartingPositionRotation();
-            SetGOScale();
             
             _lightSource = FindLightSource();
             if (_lightSource == null)
@@ -45,12 +45,8 @@ namespace Menu_Main
         
         private void Update()
         {
+            SetGOStartingPositionRotation();
             UpdateShaderLightProperties();
-        }
-        
-        private void SetGOScale()
-        {
-            transform.localScale = new Vector3(_planetInfo.GO_Radius, _planetInfo.GO_Radius, _planetInfo.GO_Radius);
         }
         
         private void SetGOStartingPositionRotation()
@@ -106,7 +102,15 @@ namespace Menu_Main
         
         private void SetShaderAtmosphereColor()
         {
-            _materialPropertyBlock.SetColor(_atmosphereColor, _finalAtmosphereColor);
+            if (_planetInfo.HasAtmosphere)
+            {
+                _materialPropertyBlock.SetColor(_atmosphereColor, _finalAtmosphereColor);
+            }
+            else
+            {
+                _materialPropertyBlock.SetColor(_atmosphereColor, Color.black);
+                _materialPropertyBlock.SetFloat(_atmosphereSize, 0f);
+            }
             _meshRenderer.SetPropertyBlock(_materialPropertyBlock);
         }
 
