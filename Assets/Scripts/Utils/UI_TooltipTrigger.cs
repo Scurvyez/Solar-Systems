@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using Language;
 using UnityEngine;
@@ -27,17 +26,11 @@ namespace Utils
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            // Start coroutine to show the tooltip after a delay
-            if (_showTooltipCoroutine != null)
-            {
-                StopCoroutine(_showTooltipCoroutine);
-            }
             _showTooltipCoroutine = StartCoroutine(ShowTooltipAfterDelay());
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            // Stop the coroutine if it's running and hide the tooltip immediately
             if (_showTooltipCoroutine != null)
             {
                 StopCoroutine(_showTooltipCoroutine);

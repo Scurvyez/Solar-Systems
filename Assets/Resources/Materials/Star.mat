@@ -73,6 +73,7 @@ Material:
     - _BumpScale: 1
     - _CellDensity: 5
     - _CellSpeed: 0.5
+    - _ColorBlendStrength: 2
     - _Cutoff: 0.5
     - _Detail: 15
     - _DetailNormalMapScale: 1
@@ -82,6 +83,8 @@ Material:
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
+    - _NoisePower: 5
+    - _NoiseScale: 250
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _QueueControl: 0
@@ -90,13 +93,16 @@ Material:
     - _SolarFlare: 1
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _TwirlDistortionScale: 25
+    - _TwirlStrength: 10
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _CellColor: {r: 0, g: 0.3916202, b: 0.6226415, a: 0}
-    - _Chromaticity: {r: 0.2129317, g: 0.727288, b: 0.8207547, a: 0}
+    - _CellColor: {r: 1, g: 1, b: 1, a: 0}
+    - _Chromaticity: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 0.6602482, b: 0.3726415, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _TwirlSpeed: {r: 0.1, g: 0.1, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &2132589969132315287
 MonoBehaviour:

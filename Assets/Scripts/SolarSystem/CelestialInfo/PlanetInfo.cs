@@ -36,7 +36,7 @@ namespace SolarSystem
         public SerializableDictionary<string, float> Composition;
         public SerializableDictionary<string, float> AtmosphereComposition;
         
-        private void Update()
+        private void Start()
         {
             CompositionString = DictionaryToString(Composition);
             AtmosphereCompositionString = DictionaryToString(AtmosphereComposition);

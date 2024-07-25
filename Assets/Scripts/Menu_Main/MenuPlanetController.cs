@@ -13,23 +13,19 @@ namespace Menu_Main
         private PlanetInfo _planetInfo;
         private Vector3 _startingPosition;
         private MaterialPropertyBlock _materialPropertyBlock;
+        private Vector4 _fakeAtmosphereColor;
         private Vector4 _finalAtmosphereColor;
         private MeshRenderer _meshRenderer;
         private Light _lightSource;
-        
-        private static readonly int _mainTex = Shader.PropertyToID("_MainTex");
-        private static readonly int _aOTex = Shader.PropertyToID("_AOTex");
-        private static readonly int _normalMap = Shader.PropertyToID("_NormalMap");
-        private static readonly int _heightMap = Shader.PropertyToID("_HeightMap");
-        private static readonly int _atmosphereColor = Shader.PropertyToID("_AtmosphereColor");
-        private static readonly int _atmosphereSize = Shader.PropertyToID("_AtmosphereSize");
-        private static readonly int _ambientLightDirection = Shader.PropertyToID("_AmbientLightDirection");
-        
+        private Camera _mainCamera;
+
         public void Start()
         {
+            _mainCamera = Camera.main;
             _meshRenderer = GetComponent<MeshRenderer>();
             _planetInfo = GetComponent<PlanetInfo>();
             
+            _fakeAtmosphereColor = new Vector4(0.75f, 0.75f, 0.75f, 0.75f);
             _finalAtmosphereColor = ColorUtil.GetAtmosphereColor(_planetInfo.AtmosphereComposition);
             _materialPropertyBlock = new MaterialPropertyBlock();
             AssignMaterialProperties();
@@ -52,17 +48,16 @@ namespace Menu_Main
         private void SetGOStartingPositionRotation()
         {
             // Get the main camera
-            Camera mainCamera = Camera.main;
-            if (mainCamera is null)
+            if (_mainCamera is null)
             {
                 Debug.LogError("Main camera not found");
                 return;
             }
 
             // Calculate the target position
-            Vector3 cameraPosition = mainCamera.transform.position;
-            Vector3 cameraForward = mainCamera.transform.forward;
-            Vector3 cameraRight = mainCamera.transform.right;
+            Vector3 cameraPosition = _mainCamera.transform.position;
+            Vector3 cameraForward = _mainCamera.transform.forward;
+            Vector3 cameraRight = _mainCamera.transform.right;
 
             // Offset the position to the left
             Vector3 offset = -cameraRight * OffsetFromCenter;
@@ -81,22 +76,30 @@ namespace Menu_Main
         private void AssignPlanetTextures(Material material, string planetTypeFolder)
         {
             TexturesUtil.GetPlanetTextures(planetTypeFolder, out Texture2D albedo, out Texture2D ambientOcclusion, out Texture2D normalMap, out Texture2D heightMap);
-
             if (albedo != null)
             {
-                material.SetTexture(_mainTex, albedo);
+                material.SetTexture(ShaderPropertyIDs.MainTex, albedo);
             }
             if (ambientOcclusion != null)
             {
-                material.SetTexture(_aOTex, ambientOcclusion);
+                material.SetTexture(ShaderPropertyIDs.AOTex, ambientOcclusion);
             }
             if (normalMap != null)
             {
-                material.SetTexture(_normalMap, normalMap);
+                material.SetTexture(ShaderPropertyIDs.NormalMap, normalMap);
             }
             if (heightMap != null)
             {
-                material.SetTexture(_heightMap, heightMap);
+                material.SetTexture(ShaderPropertyIDs.HeightMap, heightMap);
+            }
+
+            if (_planetInfo.HasAtmosphere)
+            {
+                TexturesUtil.GetCloudTexture(out Texture2D cloudTexture);
+                if (cloudTexture != null)
+                {
+                    material.SetTexture(ShaderPropertyIDs.CloudTex, cloudTexture);
+                }
             }
         }
         
@@ -104,25 +107,25 @@ namespace Menu_Main
         {
             if (_planetInfo.HasAtmosphere)
             {
-                _materialPropertyBlock.SetColor(_atmosphereColor, _finalAtmosphereColor);
+                _materialPropertyBlock.SetColor(ShaderPropertyIDs.AtmosphereColor, _finalAtmosphereColor);
             }
             else
             {
-                _materialPropertyBlock.SetColor(_atmosphereColor, Color.black);
-                _materialPropertyBlock.SetFloat(_atmosphereSize, 0f);
+                _materialPropertyBlock.SetColor(ShaderPropertyIDs.AtmosphereColor, _fakeAtmosphereColor);
+                //_materialPropertyBlock.SetColor(ShaderPropertyIDs.AtmosphereColor, Color.black);
+                //_materialPropertyBlock.SetFloat(ShaderPropertyIDs.AtmosphereSize, 0f);
             }
             _meshRenderer.SetPropertyBlock(_materialPropertyBlock);
         }
 
         private void UpdateShaderLightProperties()
         {
-            _materialPropertyBlock.SetVector(_ambientLightDirection, _lightSource.transform.forward);
+            _materialPropertyBlock.SetVector(ShaderPropertyIDs.AmbientLightDirection, _lightSource.transform.forward);
             _meshRenderer.SetPropertyBlock(_materialPropertyBlock);
         }
         
         private Light FindLightSource()
         {
-            // Example: Finding a light by tag
             GameObject lightObject = GameObject.Find("MenuPlanetLight");
 
             if (lightObject != null)

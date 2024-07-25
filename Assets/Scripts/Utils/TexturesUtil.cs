@@ -24,6 +24,35 @@ namespace Utils
             "gasgiant_5", "gasgiant_6", "gasgiant_8", "gasgiant_11"
         };
         
+        public static readonly string[] MoonTextureFolders =
+        {
+            "barren_1", "barren_2", "barren_3", "barren_4", "barren_5",
+            "barren_6", "barren_7", "barren_8", "barren_10", "dark_1", 
+            "dark_2", "dark_3", "dark_4", "desolated_1", "forest_1", 
+            "frozen_1", "frozen_3", "frozen_4", "frozen_6", "tundra_2", 
+            "tundra_3", "wasteland_1", "wasteland_3", "wasteland_4", "wasteland_5", 
+            "wasteland_7", "wasteland_8"
+        };
+
+        private static readonly string CloudsTextureFolder = "Textures/Clouds";
+
+        public static void GetCloudTexture(out Texture2D clouds)
+        {
+            clouds = null;
+            
+            Texture2D[] textures = Resources.LoadAll<Texture2D>(CloudsTextureFolder);
+            
+            if (textures.Length > 0)
+            {
+                int randomIndex = Random.Range(0, textures.Length);
+                clouds = textures[randomIndex];
+            }
+            else
+            {
+                Debug.LogWarning($"No cloud textures found in folder {CloudsTextureFolder}");
+            }
+        }
+        
         public static void GetPlanetTextures(string planetTypeFolder, out Texture2D albedo, out Texture2D ambientOcclusion, out Texture2D normalMap, out Texture2D heightMap)
         {
             // Initialize the output parameters

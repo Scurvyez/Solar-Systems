@@ -50,15 +50,7 @@ namespace Language
 
         public string GetValue(string key)
         {
-            if (_localizedStrings.TryGetValue(key, out string value))
-            {
-                return value;
-            }
-            else
-            {
-                Debug.LogWarning("Localization key not found: " + key);
-                return key;
-            }
+            return _localizedStrings.GetValueOrDefault(key, key);
         }
     }
 }

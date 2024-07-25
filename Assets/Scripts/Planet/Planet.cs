@@ -7,26 +7,25 @@ public class Planet
 {
     public string PlanetType { get; set; }
     public int GO_OrbitPosition { get; set; }
-    public string Info_Name { get; set; }
-    public float Info_Mass { get; set; }
     public float GO_Radius { get; set; }
-    public float Info_Radius { get; set; }
-    public float Info_RotationalPeriod { get; set; }
-    public float Info_OrbitalPeriod { get; set; }
+    public float GO_InnerRingRadius { get; set; }
+    public float GO_OuterRingRadius { get; set; }
+    public string Info_Name { get; set; }
+    public float Info_Mass { get; set; } // measured/returned in kilograms
+    public float Info_Radius { get; set; } // measured/returned in kilometers
+    public float Info_RotationalPeriod { get; set; } // measured/returned in Earth hours
+    public float Info_OrbitalPeriod { get; set; } // measured/returned in Earth days
     public Vector3 Info_FocusPoint { get; set; }
-    public float Info_AxialTilt { get; set; }
-    public float Info_SurfaceTemperature { get; set; }
+    public float Info_AxialTilt { get; set; } // measured/returned in degrees
+    public float Info_SurfaceTemperature { get; set; } // measured/returned in Kelvin
     public bool Info_HasAtmosphere { get; set; }
     public bool Info_IsHabitable { get; set; }
     public bool Info_HasRings { get; set; }
-    public float GO_InnerRingRadius { get; set; }
-    public float GO_OuterRingRadius { get; set; }
     public float Info_MeanDensity { get; set; }
-    public float Info_SurfacePressure { get; set; }
-    public float Info_SurfaceGravity { get; set; }
-    public float Info_EscapeVelocity { get; set; }
-    public float Info_Albedo { get; set; }
-    public float Info_MagneticFieldStrength { get; set; }
+    public float Info_SurfacePressure { get; set; } // measured/returned in Earth atmospheres
+    public float Info_SurfaceGravity { get; set; } // measured/returned in meters per second ^2
+    public float Info_EscapeVelocity { get; set; } // measured/returned in kilometers per second
+    public float Info_MagneticFieldStrength { get; set; } // measured in Gauss
     public int Info_Moons { get; set; }
     public SerializableDictionary<string, float> Info_Composition { get; set; }
     public SerializableDictionary<string, float> Info_AtmosphereComposition { get; set; }
@@ -36,8 +35,8 @@ public class Planet
     /// </summary>
     public virtual bool HasRandomAtmosphere()
     {
-        Info_HasAtmosphere = true;
-        //Info_HasAtmosphere = Random.value < 0.5f;
+        //Info_HasAtmosphere = true;
+        Info_HasAtmosphere = Random.value < 0.35f;
         return Info_HasAtmosphere;
     }
 
@@ -46,36 +45,21 @@ public class Planet
     /// </summary>
     public virtual float AtmosphereHeight(bool hasAtmosphere, float planetRadius)
     {
-        return (!hasAtmosphere) ? 0f : planetRadius * 2.5f;
+        return !hasAtmosphere ? 0f : planetRadius * 2.5f;
     }
 
-    public virtual Color GetColor()
-    {
-        return Color.white; // default base color of all planets
-    }
-
-    /// <summary>
-    /// The radius of the planet GameObject in our scene.
-    /// </summary>
     public virtual float GenerateGORadius()
     {
-        GO_Radius = 1f;
+        GO_Radius = 2f;
         return GO_Radius;
     }
     
-    /// <summary>
-    /// Returns a value in kilometers.
-    /// </summary>
     public virtual float GenerateInfoRadius()
     {
         Info_Radius = Random.Range(1000f, 15000f);
         return Info_Radius;
     }
 
-    /// <summary>
-    /// The length of time it takes the planet to make one full revolution around its parent star.
-    /// Measured in Earth days.
-    /// </summary>
     public virtual float GenerateOrbitalPeriod()
     {
         Info_OrbitalPeriod = Random.Range(9f, 5000f);
@@ -100,10 +84,6 @@ public class Planet
         return Info_FocusPoint / 2;
     }
 
-    /// <summary>
-    /// Generates a final mass value for the planet.
-    /// Returned in kilograms.
-    /// </summary> 
     public virtual float GenerateMass(float planetRadius, float planetMeanDensity)
     {
         float radiusInMeters = planetRadius * 1000f;
@@ -116,13 +96,13 @@ public class Planet
     
     public virtual float GenerateRotationalPeriod()
     {
-        Info_RotationalPeriod = Random.Range(9f, 5000f); // Measured in Earth hours
+        Info_RotationalPeriod = Random.Range(9f, 5000f);
         return Info_RotationalPeriod;
     }
 
     public virtual float GenerateAxialTilt()
     {
-        Info_AxialTilt = Random.Range(0f, 35f); // Measured in degrees
+        Info_AxialTilt = Random.Range(0f, 35f);
         return Info_AxialTilt;
     }
     
@@ -136,7 +116,7 @@ public class Planet
             _ => Random.Range(700f, 1000f),
         };
 
-        Info_SurfaceTemperature = temperatureFinal; // Kelvin
+        Info_SurfaceTemperature = temperatureFinal;
         return Info_SurfaceTemperature;
     }
 
@@ -243,9 +223,6 @@ public class Planet
         return GO_OuterRingRadius;
     }
     
-    /// <summary>
-    /// 
-    /// </summary>
     public virtual float GenerateMeanDensity(SerializableDictionary<string, float> planetComposition)
     {
         Info_MeanDensity = 0;
@@ -260,37 +237,21 @@ public class Planet
         return Info_MeanDensity / totalProportion;
     }
 
-    /// <summary>
-    /// Measured in Earth atmospheres.
-    /// </summary>
     public virtual float GenerateSurfacePressure(SerializableDictionary<string, float> planetAtmosphereComposition, float planetSurfaceGravity, float planetTemperature)
     {
         // Dictionary to store molar masses of common atmospheric gases (in kg/mol)
         Dictionary<string, float> molarMasses = new Dictionary<string, float>
         {
-            { "O", 32f },
-            { "N", 28f },
-            { "CO2", 44f },
-            { "CH4", 16f },
-            { "H", 2f },
-            { "He", 4f },
-            { "Ne", 20f },
-            { "Ar", 40f },
-            { "Kr", 84f },
-            { "Xe", 131f },
-            { "SO2", 64f },
-            { "NO", 30f },
-            { "O3", 48f },
-            { "H2O", 18f }
+            { "O", 32f }, { "N", 28f }, { "CO2", 44f }, { "CH4", 16f },
+            { "H", 2f }, { "He", 4f }, { "Ne", 20f }, { "Ar", 40f },
+            { "Kr", 84f }, { "Xe", 131f }, { "SO2", 64f }, { "NO", 30f },
+            { "O3", 48f }, { "H2O", 18f }
         };
         
         float totalPressure = 0f;
 
-        foreach (var gas in planetAtmosphereComposition)
+        foreach ((string gasName, float gasProportion) in planetAtmosphereComposition)
         {
-            string gasName = gas.Key;
-            float gasProportion = gas.Value;
-
             if (!molarMasses.TryGetValue(gasName, out float molarMass)) continue;
             // Convert molar mass from g/mol to kg/mol (1 g/mol = 0.001 kg/mol)
             molarMass *= 10f;
@@ -302,15 +263,10 @@ public class Planet
         }
 
         float surfacePressureInAtm = totalPressure / ConstantsUtil.EARTH_ATMOSPHERIC_PRESSURE;
-        Info_SurfacePressure = surfacePressureInAtm; // Convert to Earth atmospheres
+        Info_SurfacePressure = surfacePressureInAtm;
         return Info_SurfacePressure;
     }
     
-    /// <summary>
-    /// Checks if the planet's surface temperature is within the habitable range.
-    /// Checks if the planet has an atmosphere.
-    /// Checks if the atmospheric pressure is within the range required for liquid water.
-    /// </summary>
     public virtual bool HasLiquidWater(float planetSurfaceTemp, float planetSurfacePressure, bool hasAtmosphere)
     {
         if (planetSurfaceTemp is < 273 or > 373) return false;
@@ -318,9 +274,6 @@ public class Planet
         return planetSurfacePressure is >= 0.1f and <= 100f;
     }
 
-    /// <summary>
-    /// Measured/returned in meters per second squared.
-    /// </summary>
     public virtual float GenerateSurfaceGravity(float planetMass, float planetRadius)
     {
         float planetRadInM = planetRadius * 1000f;
@@ -330,9 +283,6 @@ public class Planet
         return Info_SurfaceGravity;
     }
     
-    /// <summary>
-    /// Measured/returned in kilometers per second.
-    /// </summary>
     public virtual float GenerateEscapeVelocity(float planetMass, float planetRadius)
     {
         float planetRadInM = planetRadius * 1000f;
@@ -342,15 +292,6 @@ public class Planet
         return Info_EscapeVelocity;
     }
 
-    public virtual float GenerateAlbedo()
-    {
-        Info_Albedo = Random.Range(0.1f, 0.9f);
-        return Info_Albedo;
-    }
-
-    /// <summary>
-    /// Measured in Gauss.
-    /// </summary>
     public virtual float GenerateMagneticFieldStrength()
     {
         Info_MagneticFieldStrength = Random.Range(0f, 100f);

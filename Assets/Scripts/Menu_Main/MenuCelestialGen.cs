@@ -1,5 +1,4 @@
 using SolarSystem;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Menu_Main
@@ -7,28 +6,15 @@ namespace Menu_Main
     public class MenuCelestialGen :MonoBehaviour
     {
         public GameObject PlanetPrefab;
-        public PlanetMesh PlanetMesh;
-        public Material PlanetMat;
 
         private void Start()
         {
-            PlanetMesh = this.AddComponent<PlanetMesh>();
-            if (PlanetMesh == null)
-            {
-                Debug.LogError("PlanetMesh or MoonMesh component not found on CelestialGen.");
-                return;
-            }
-            
             TryGenerateFinalPlanet();
         }
 
         private void TryGenerateFinalPlanet()
         {
-            MeshFilter combinedMesh = PlanetMesh.meshFilter;
-            
             GameObject planetInstance = Instantiate(PlanetPrefab);
-            planetInstance.AddComponent<MeshFilter>().mesh = combinedMesh.mesh;
-            planetInstance.AddComponent<MeshRenderer>().material = PlanetMat;
             planetInstance.layer = LayerMask.NameToLayer("Planet");
             
             Planet planet = new();

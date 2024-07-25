@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 public class PlanetMesh : MonoBehaviour
 {
     [Range(2, 100)] public int resolution = 96;

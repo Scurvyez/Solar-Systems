@@ -6,7 +6,7 @@ public class GasGiant : Planet
 {
     public override float GenerateGORadius()
     {
-        GO_Radius = 3f;
+        GO_Radius = 3.25f;
         return GO_Radius;
     }
     

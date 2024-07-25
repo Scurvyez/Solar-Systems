@@ -7,15 +7,15 @@ public class Star : MonoBehaviour
 {
     public enum SpectralType { O, B, A, F, G, K, M, Unknown }
     public SpectralType SpectralClass { get; set; }
-    public double Info_Age { get; set; }
-    public float Info_Radius { get; set; }
-    public float Info_Temperature { get; set; }
-    public float Info_Rotation { get; set; }
-    public float Info_MagneticField { get; set; }
+    public double Info_Age { get; set; } // measured/returned in Earth years
+    public float Info_Radius { get; set; } // measured/returned in solar radii
+    public float Info_Temperature { get; set; } // measured/returned in Kelvin
+    public float Info_Rotation { get; set; } // measured/returned in kilometers / second
+    public float Info_MagneticField { get; set; } // measured/returned in teslas
     public SerializableDictionary<string, float> Info_Metallicity { get; set; }
     public float Info_Variability { get; set; }
-    public float Info_Luminosity { get; set; }
-    public float Info_Mass { get; set; }
+    public float Info_Luminosity { get; set; } // measured/returned in solar luminosities
+    public float Info_Mass { get; set; } // measured/returned in solar masses
     public Vector3 GO_Size { get; set; }
     public Vector3 GO_Position { get; set; }
     public float GO_Radius { get; set; }
@@ -24,13 +24,9 @@ public class Star : MonoBehaviour
     public int PlanetCount { get; set; }
     public float GO_HabitableRangeInner { get; set; }
     public float GO_HabitableRangeOuter { get; set; }
-    
-    public bool ExtrinsicVariability;
-    public bool IntrinsicVariability;
+    public bool ExtrinsicVariability { get; set; }
+    public bool IntrinsicVariability { get; set; }
 
-    /// <summary>
-    /// Measured/returned in solar radii.
-    /// </summary>
     public float GenerateInfoRadius(SpectralType spectralType)
     {
         float randomNumber = Random.Range(0, 250);
@@ -56,27 +52,18 @@ public class Star : MonoBehaviour
         return Info_Radius;
     }
     
-    /// <summary>
-    /// Origin point for our star(s) and the rest of the system.
-    /// </summary>
     public Vector3 GenerateGOStartingPosition()
     {
         GO_Position = Vector3.zero;
         return GO_Position;
     }
 
-    /// <summary>
-    /// Physical radius of star game object.
-    /// </summary>
     public float GenerateGORadius()
     {
-        GO_Radius = 1f;
+        GO_Radius = 10f;
         return GO_Radius;
     }
 
-    /// <summary>
-    /// Measured in kelvins.
-    /// </summary>
     public float GenerateInfoTemperature(SpectralType spectralType)
     {
         Info_Temperature = spectralType switch
@@ -93,39 +80,24 @@ public class Star : MonoBehaviour
         return Info_Temperature;
     }
 
-    /// <summary>
-    /// Measured/returned in solar luminosities.
-    /// </summary>
     public float GenerateInfoLuminosity(float starRadius, float starTemperature)
     {
         float starRadiusInMeters = starRadius * ConstantsUtil.SOL_RADII_METERS;
         float luminosity = ConstantsUtil.STEFAN_BOLTZMANN_CONSTANT * (4 * Mathf.PI * Mathf.Pow(starRadiusInMeters, 2)) * Mathf.Pow(starTemperature, 4);
-
-        // Convert luminosity to solar luminosities
         Info_Luminosity = luminosity / ConstantsUtil.SOL_LUMINOSITY;
-
         return Info_Luminosity;
     }
 
-    /// <summary>
-    /// Measured/returned in solar masses.
-    /// </summary>
     public float GenerateInfoMass(float starLuminosity)
     {
         if (starLuminosity <= 0)
         {
             throw new ArgumentException("solarLuminosity must be a positive value.");
         }
-        
         Info_Mass = Mathf.Pow(starLuminosity, 3f / 4f);
         return Info_Mass;
     }
 
-    /// <summary>
-    /// Bigger stars (O class) burn hotter and faster, so shorter lives.
-    /// Smaller stars (M class) burn much slower and lower, so they have longer lives.
-    /// Measured in Earth years.
-    /// </summary>
     public double GenerateInfoAge(SpectralType spectralType)
     {
         Info_Age = spectralType switch
@@ -142,9 +114,6 @@ public class Star : MonoBehaviour
         return Info_Age;
     }
 
-    /// <summary>
-    /// Measured/returned in kilometers / second.
-    /// </summary>
     public float GenerateInfoRotation(SpectralType spectralType)
     {
         Info_Rotation = spectralType switch
@@ -161,9 +130,6 @@ public class Star : MonoBehaviour
         return Info_Rotation;
     }
 
-    /// <summary>
-    /// Measured/returned in teslas.
-    /// </summary>
     public float GenerateInfoMagneticField(SpectralType spectralType)
     {
         Info_MagneticField = spectralType switch
@@ -209,18 +175,16 @@ public class Star : MonoBehaviour
         // the range, -/+ the chromaticity,
         // to be filtered through for r, g, and b values of our output Color
         const float RGB_RANGE = 255;
-
-        GO_CellColor = new Color(
-            GO_Chromaticity.r + Random.Range(-RGB_RANGE, RGB_RANGE),
-            GO_Chromaticity.g + Random.Range(-RGB_RANGE, RGB_RANGE),
-            GO_Chromaticity.b + Random.Range(-RGB_RANGE, RGB_RANGE),
-            GO_Chromaticity.a);
+        GO_CellColor = new Color
+            (
+                GO_Chromaticity.r + Random.Range(-RGB_RANGE, RGB_RANGE),
+                GO_Chromaticity.g + Random.Range(-RGB_RANGE, RGB_RANGE),
+                GO_Chromaticity.b + Random.Range(-RGB_RANGE, RGB_RANGE),
+                GO_Chromaticity.a
+            );
         return GO_CellColor;
     }
 
-    /// <summary>
-    /// Returns a random number of planets for the star system.
-    /// </summary>
     public int GenerateNumPlanets()
     {
         int numPlanets = Random.Range(0, 16);
@@ -229,10 +193,7 @@ public class Star : MonoBehaviour
     }
 
     /// <summary>
-    /// Generates variability values for the star.
-    /// Rolls to see if star will have variability at all.
-    /// Can be intrinsic or extrinsic.
-    /// Or none, in which case output = 0f.
+    /// Can be intrinsic, extrinsic, or none.
     /// </summary>
     public float GenerateInfoIntrinsicVariability(SpectralType spectralType)
     {

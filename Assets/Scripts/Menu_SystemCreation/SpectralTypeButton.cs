@@ -13,8 +13,8 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
     public Button Button;
     public StarDescriptions StarDescriptions;
     public TextMeshProUGUI StarDescriptionText;
-    public Vector3 DefaultScale = new Vector3(1f, 1f, 1f);
-    public Vector3 HighlightScale = new Vector3(2.0f, 2.0f, 2.0f);
+    public Vector3 DefaultScale = new (1f, 1f, 1f);
+    public Vector3 HighlightScale = new (2.0f, 2.0f, 2.0f);
     
     public Star _star;
     private bool _isMouseOver = false;
@@ -94,7 +94,7 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
         foreach (Planet planet in planets)
         {
             planet.GO_OrbitPosition = PlanetGenerator.CurrentOrbitPosition;
-            PlanetGenerator.CurrentOrbitPosition += 10;
+            PlanetGenerator.CurrentOrbitPosition += 15;
             PlanetGenerator.GeneratePlanetData(planet);
             _planets.Add(planet);
         }
@@ -109,8 +109,8 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
             {
                 Moon moon = new ()
                 {
-                    Name = planet.Info_Name + "-" + (i + 1),
-                    ParentPlanetName = planet.Info_Name
+                    Info_Name = planet.Info_Name + "-" + (i + 1),
+                    Info_ParentPlanetName = planet.Info_Name
                 };
                 MoonGenerator.GenerateMoonData(moon);
                 _moons.Add(moon);

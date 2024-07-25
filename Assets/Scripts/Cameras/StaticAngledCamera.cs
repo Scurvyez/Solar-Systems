@@ -17,11 +17,17 @@ public class StaticAngledCamera : MonoBehaviour
     [Header("Rotation Settings")]
     public float RotateSpeed = 100.0f;
     public float TransitionDuration = 2.0f;
-
+    
+    [Header("Cursor Settings")]
+    public Texture2D CameraLockedCursor;
+    public Texture2D InspectCursor;
+    public Vector2 CursorHotspot = Vector2.zero;
+    
     public GameObject StarObject;
     public GameObject SelectedObject;
 
     private bool _isRotating = false;
+    private bool _isFocusTransition = false;
     private float _zoomMin;
     private float _zoomDirection = 1.0f;
     private float _zoomMultiplier = 1.0f;
@@ -29,7 +35,19 @@ public class StaticAngledCamera : MonoBehaviour
     private Camera _mainCamera;
     private Coroutine _focusCoroutine;
     private Vector3 _lastMousePosition;
+    private Texture2D _currentCursorTexture;
+    private float _clickTime;
+    private float _clickInterval = 0.3f;
 
+    private enum CameraState
+    {
+        Free,
+        Locked,
+        Focusing
+    }
+    
+    private CameraState _currentCameraState = CameraState.Free;
+    
     private void Start()
     {
         InitializeCamera();
@@ -39,13 +57,15 @@ public class StaticAngledCamera : MonoBehaviour
     {
         float zoomMinFactor = SelectedObject.transform.localScale.x / ZoomMinOffset;
         _zoomMin = SelectedObject.transform.localScale.x + zoomMinFactor;
-        
+    
         HandleCursorLocking();
         HandleZooming();
         HandleSwiveling();
         HandleMouseRotation();
         HandleMouseScrollZoom();
         EnsureCameraZoomRange();
+        DetectDoubleClick();
+        CursorTextureHandler();
     }
 
     private void InitializeCamera()
@@ -64,7 +84,7 @@ public class StaticAngledCamera : MonoBehaviour
         Vector3 sphereScale = StarObject.transform.localScale;
 
         // Calculate the offset position for a 45-degree angle
-        float distance = sphereScale.magnitude * 50.0f;
+        float distance = sphereScale.magnitude * 10.0f;
         Vector3 offset = new 
         (
             Mathf.Cos(Mathf.Deg2Rad * 45) * distance,
@@ -78,18 +98,20 @@ public class StaticAngledCamera : MonoBehaviour
         _mainCamera.transform.LookAt(StarObject.transform.position);
     }
     
-    private static void HandleCursorLocking()
+    private void HandleCursorLocking()
     {
         if (!Input.GetKeyDown(KeyCode.Space)) return;
         if (Cursor.lockState == CursorLockMode.Locked)
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+            _currentCameraState = CameraState.Free;
         }
         else
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            _currentCameraState = CameraState.Locked;
         }
     }
 
@@ -159,6 +181,20 @@ public class StaticAngledCamera : MonoBehaviour
         }
     }
 
+    private void DetectDoubleClick()
+    {
+        if (!Input.GetMouseButtonDown(0)) return;
+        if (Time.time - _clickTime < _clickInterval)
+        {
+            Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                SetFocus(hit.collider.gameObject);
+            }
+        }
+        _clickTime = Time.time;
+    }
+
     public void SetFocus(GameObject focusObject)
     {
         if (focusObject == SelectedObject) return;
@@ -166,6 +202,7 @@ public class StaticAngledCamera : MonoBehaviour
         {
             StopCoroutine(_focusCoroutine);
         }
+        _currentCameraState = CameraState.Focusing;
         _focusCoroutine = StartCoroutine(SmoothFocusTransition(focusObject));
     }
 
@@ -173,7 +210,7 @@ public class StaticAngledCamera : MonoBehaviour
     {
         Vector3 startPosition = _mainCamera.transform.position;
         Quaternion startRotation = _mainCamera.transform.rotation;
-        Vector3 offset = _mainCamera.transform.position - SelectedObject.transform.position; // Calculate initial offset
+        Vector3 offset = _mainCamera.transform.position - SelectedObject.transform.position;
 
         float elapsedTime = 0f;
 
@@ -192,9 +229,37 @@ public class StaticAngledCamera : MonoBehaviour
             yield return null;
         }
 
-        // Ensure the camera is exactly at the final target position and rotation
         _mainCamera.transform.position = newFocusObject.transform.position + offset;
         _mainCamera.transform.rotation = Quaternion.LookRotation(newFocusObject.transform.position - _mainCamera.transform.position);
         SelectedObject = newFocusObject;
+    
+        _currentCameraState = Cursor.lockState == CursorLockMode.Locked ? CameraState.Locked : CameraState.Free;
+    }
+
+    private void CursorTextureHandler()
+    {
+        Texture2D newCursorTexture = null;
+
+        switch (_currentCameraState)
+        {
+            case CameraState.Free:
+                newCursorTexture = null;
+                if (Physics.Raycast(_mainCamera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit))
+                {
+                    if (hit.collider is MeshCollider)
+                    {
+                        newCursorTexture = InspectCursor;
+                    }
+                }
+                break;
+            case CameraState.Locked:
+            case CameraState.Focusing:
+                newCursorTexture = CameraLockedCursor;
+                break;
+        }
+
+        if (newCursorTexture == _currentCursorTexture) return;
+        _currentCursorTexture = newCursorTexture;
+        Cursor.SetCursor(_currentCursorTexture, CursorHotspot, CursorMode.Auto);
     }
 }

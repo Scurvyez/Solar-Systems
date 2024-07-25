@@ -71,16 +71,29 @@
     
     <!-- View_SolarSystem: Star Info Tooltip Text -->
     <string key="vss_header_default_tooltip"/>
-    <string key="vss_star_class_tooltip">Stellar classification categorizes stars based on their spectral characteristics and temperature. The primary classes are O, B, A, F, G, K, and M, ranging from the hottest and most massive (O) to the coolest and least massive (M). This system helps to determine a star's color, temperature, and stage in its lifecycle, providing insight into its physical properties and evolutionary state.</string>
+    <string key="vss_star_class_tooltip">Stellar classification categorizes stars based on their spectral characteristics and temperature. The primary classes are O, B, A, F, G, K, and M, ranging from the hottest and most massive (O) to the coolest and least massive (M). These are known as "main sequence" stars.&#xA;&#xA;This system helps to determine a star's color, temperature, and stage in its lifecycle, providing insight into its physical properties and evolutionary state.</string>
     <string key="vss_star_name_tooltip">The name of our system. Who gave the star this name though? Perhaps an ancient clue lies buried deep on a planetary surface...</string>
-    <string key="vss_star_age_tooltip">The age of a star indicates how long it has been since its formation. It is estimated based on its evolutionary stage, luminosity, and temperature, compared to models of stellar evolution. For example, a star's age can be inferred from its position on the Hertzsprung-Russell diagram and its stage in the life cycle, such as main sequence or red giant.</string>
+    <string key="vss_star_age_tooltip">The age of a star indicates how long it has been since its formation. It is estimated based on its evolutionary stage, luminosity, and temperature, compared to models of stellar evolution.&#xA;&#xA;For example, a star's age can be inferred from its position on the Hertzsprung-Russell diagram and its stage in the life cycle, such as main sequence or red giant.</string>
     <string key="vss_star_mass_tooltip">The mass of a star is the total amount of matter it contains, usually measured in terms of the Sun's mass. It is determined using various methods, including observing the star’s gravitational effects on nearby objects or through stellar models. A star's mass influences its luminosity, life cycle, and the formation of planets and other celestial bodies.</string>
     <string key="vss_star_radius_tooltip">The radius of a star is the distance from its center to its surface. It is typically measured in terms of the Sun's radius using stellar models and observations of the star’s brightness and temperature. The radius helps determine the star’s size and plays a key role in understanding its luminosity and overall structure.</string>
     <string key="vss_star_lumin_tooltip">Luminosity is the total amount of energy a star emits per second. It is measured in watts and can be determined using the star's brightness and distance from Earth. A star's luminosity provides insight into its energy output and size, with more luminous stars being either larger or hotter.</string>
     <string key="vss_star_surf_temp_tooltip">A star's surface temperature is the temperature of its outer layer, known as the photosphere. It is determined by analyzing the star's light spectrum and comparing it to known temperature models. This temperature influences the star's color, with hotter stars appearing blue and cooler stars appearing red.</string>
     <string key="vss_star_rot_period_tooltip">A star's rotational period is the time it takes for the star to complete one full spin on its axis. It is typically measured by observing the movement of surface features, such as star spots, or by tracking variations in the star's light output due to rotational changes. This period can range from a few days to several months, depending on the star's type and age.</string>
     <string key="vss_star_mag_field_strength_tooltip">A stellar magnetic field arises from the motion of conductive plasma within a star, driven by convection. This field increases pressure in localized regions, causing them to rise and form star spots on the surface. It also creates coronal loops, which are visible as bright, arching structures in the star's outer atmosphere.</string>
-    <string key="vss_star_variability_tooltip">Stellar variability refers to changes in a star's brightness over time. These variations can be periodic, like in pulsating stars, or irregular, such as in eruptive or cataclysmic stars. Factors causing variability include pulsations, magnetic activity, or interactions with companion stars. Observing these changes helps astronomers understand stellar behavior and dynamics.</string>
+    <string key="vss_star_variability_tooltip">Stellar variability refers to changes in a star's brightness over time. These variations can be periodic, like in pulsating stars, or irregular, such as in eruptive or cataclysmic stars.&#xA;&#xA;Factors causing variability include pulsations, magnetic activity, or interactions with companion stars. Observing these changes helps astronomers understand stellar behavior and dynamics.</string>
+
+    <!-- View_SolarSystem: GameObject Mouseover Tooltips -->
+    <string key="obj_star_header_tooltip">[Star]</string>
+    <string key="obj_star_content_tooltip">placeholder</string>
+    
+    <string key="obj_rocky_planet_header_tooltip">[Rocky Planet]</string>
+    <string key="obj_rocky_planet_content_tooltip">placeholder</string>
+    
+    <string key="obj_gas_giant_header_tooltip">[Gas Giant]</string>
+    <string key="obj_gas_giant_content_tooltip">placeholder</string>
+    
+    <string key="obj_moon_header_tooltip">[Moon]</string>
+    <string key="obj_moon_content_tooltip">placeholder</string>
     
     <!-- View_SolarSystem: Planet Info Tooltip Text -->
     <string key="vss_planet_name_tooltip">The name of the currently selected planet. Planetary naming conventions typically follow the rules established by the International Astronomical Union (IAU), for which... there are not many..</string>

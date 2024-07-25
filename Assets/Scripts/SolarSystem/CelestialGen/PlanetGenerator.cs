@@ -5,7 +5,7 @@ namespace SolarSystem
 {
     public static class PlanetGenerator
     {
-        public static int CurrentOrbitPosition { get; set; } = 10;
+        public static int CurrentOrbitPosition { get; set; } = 15;
         
         public static void GeneratePlanetData(Planet planet)
         {
@@ -19,8 +19,6 @@ namespace SolarSystem
             planet.HasRandomAtmosphere();
             planet.AtmosphereHeight(planet.Info_HasAtmosphere, planet.Info_Radius);
             planet.GenerateMagneticFieldStrength();
-            planet.GetColor();
-            planet.GenerateAlbedo();
             planet.GenerateOrbitalPeriod();
             planet.GenerateFocusPoint();
             planet.GenerateRotationalPeriod();
@@ -30,10 +28,10 @@ namespace SolarSystem
             planet.GenerateEscapeVelocity(planet.Info_Mass, planet.Info_Radius);
             planet.GenerateNumMoons();
             planet.GenerateSurfaceTemperature();
-            planet.HasLiquidWater(planet.Info_SurfaceTemperature, planet.Info_SurfacePressure, planet.Info_HasAtmosphere);
             planet.IsRandomlyHabitable(sSD.habitableRangeInner, sSD.habitableRangeOuter, planet.Info_FocusPoint);
             planet.GenerateAtmosphereComposition(planet.Info_HasAtmosphere);
             planet.GenerateSurfacePressure(planet.Info_AtmosphereComposition, planet.Info_SurfaceGravity, planet.Info_SurfaceTemperature);
+            planet.HasLiquidWater(planet.Info_SurfaceTemperature, planet.Info_SurfacePressure, planet.Info_HasAtmosphere);
             planet.GenerateInnerRingRadius();
             planet.GenerateOuterRingRadius();
         }

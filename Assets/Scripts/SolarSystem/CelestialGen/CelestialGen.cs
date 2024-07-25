@@ -84,35 +84,28 @@ public class CelestialGen : MonoBehaviour
             GameObject planetInstance;
             Button planetButtonPrefab;
             string planetName = planetData.Info_Name;
-            MeshFilter combinedMesh = PlanetMesh.meshFilter;
             
             switch (planetData)
             {
                 case RockyPlanet:
                     planetInstance = Instantiate(RockyPlanetPrefab);
-                    planetInstance.AddComponent<MeshFilter>().mesh = combinedMesh.mesh;
-                    planetInstance.AddComponent<MeshRenderer>().material = RockyPlanetMat;
-                    planetInstance.name = planetName;
                     planetButtonPrefab = RockyPlanetButtonPrefab;
                     break;
                 case GasGiant:
                     planetInstance = Instantiate(GasGiantPlanetPrefab);
-                    planetInstance.AddComponent<MeshFilter>().mesh = combinedMesh.mesh;
-                    planetInstance.AddComponent<MeshRenderer>().material = GasGiantPlanetMat;
-                    planetInstance.name = planetName;
                     planetButtonPrefab = GasGiantPlanetButtonPrefab;
                     break;
                 default:
-                    Debug.Log($"[CelestialGen.TryGenerateFinalPlanets] Unknown planet type.");
+                    Debug.Log($"Unknown planet type.");
                     continue;
             }
             
+            planetInstance.name = planetName;
             Planets.Add(planetInstance);
             TryPopulatePlanetInfo(planetInstance, planetData);
             TryGeneratePlanetUIButton(planetInstance, planetButtonPrefab);
             GameObject starObject = GameObject.Find("Star");
             if (starObject == null) return;
-            planetInstance.transform.SetParent(starObject.transform);
             
             // Assign a new and unique layer to the planet
             if (layerIndex < 32) // Ensure we do not exceed the maximum number of layers
@@ -252,21 +245,19 @@ public class CelestialGen : MonoBehaviour
         for (int index = 0; index < SaveManager.Instance.ActiveSave.moons.Count; index++)
         {
             Moon moon = SaveManager.Instance.ActiveSave.moons[index];
-            MeshFilter combinedMesh = MoonMesh.meshFilter;
-            GameObject moonInstance = Instantiate(MoonPrefab);
-            moonInstance.AddComponent<MeshFilter>().mesh = combinedMesh.mesh;
-            moonInstance.AddComponent<MeshRenderer>().material = MoonMaterial;
-            Moons.Add(moonInstance);
-            GameObject moonObject = Moons[index];
-
-            TryPopulateMoonInfo(moonObject, moon, index);
-            TryGenerateMoonUIButton(moonObject);
-            
-            GameObject parentPlanet = Planets.FirstOrDefault(p => p.name == moon.ParentPlanetName);
+            GameObject parentPlanet = Planets.FirstOrDefault(p => p.name == moon.Info_ParentPlanetName);
             
             if (parentPlanet == null) continue;
-            moonObject.transform.SetParent(parentPlanet.transform);
+            
+            GameObject moonInstance = Instantiate(MoonPrefab);
+            Moons.Add(moonInstance);
+            GameObject moonObject = Moons[index];
+            TryPopulateMoonInfo(moonObject, moon, index);
+            TryGenerateMoonUIButton(moonObject);
+
             PlanetInfo planetInfo = parentPlanet.GetComponent<PlanetInfo>();
+            moonInstance.GetComponent<MoonInfo>().LayerName = planetInfo.LayerName;
+            moonInstance.layer = LayerMask.NameToLayer(planetInfo.LayerName);
             
             if (planetInfo == null) return;
             planetInfo.NumberOfMoons++;
@@ -275,20 +266,23 @@ public class CelestialGen : MonoBehaviour
 
     private static void TryPopulateMoonInfo(GameObject moonGO, Moon moon, int index)
     {
-        moonGO.name = moon.Name;
-        moonGO.GetComponent<MoonInfo>().ParentPlanetName = moon.ParentPlanetName;
-        moonGO.GetComponent<MoonInfo>().Name = moon.Name;
-        moonGO.GetComponent<MoonInfo>().Index = index + 1;
-        moonGO.GetComponent<MoonInfo>().Radius = moon.Radius;
-        moonGO.GetComponent<MoonInfo>().OrbitalPeriod = moon.OrbitalPeriod;
-        moonGO.GetComponent<MoonInfo>().RotationalPeriod = moon.RotationPeriod;
-        moonGO.GetComponent<MoonInfo>().AxialTilt = moon.AxialTilt;
-        moonGO.GetComponent<MoonInfo>().SurfaceTemperature = moon.SurfaceTemperature;
-        moonGO.GetComponent<MoonInfo>().MeanDensity = moon.MeanDensity;
-        moonGO.GetComponent<MoonInfo>().SurfaceGravity = moon.SurfaceGravity;
-        moonGO.GetComponent<MoonInfo>().EscapeVelocity = moon.EscapeVelocity;
-        moonGO.GetComponent<MoonInfo>().HasAtmosphere = moon.HasAtmosphere;
-        moonGO.GetComponent<MoonInfo>().IsHabitable = moon.IsHabitable;
+        MoonInfo moonInfo = moonGO.GetComponent<MoonInfo>();
+        moonGO.name = moon.Info_Name;
+        moonInfo.ParentPlanetName = moon.Info_ParentPlanetName;
+        moonInfo.Name = moon.Info_Name;
+        moonInfo.Index = index + 1;
+        moonInfo.Radius = moon.GO_Radius;
+        moonInfo.OrbitalPeriod = moon.Info_OrbitalPeriod;
+        moonInfo.RotationalPeriod = moon.Info_RotationPeriod;
+        moonInfo.AxialTilt = moon.Info_AxialTilt;
+        moonInfo.SurfaceTemperature = moon.Info_SurfaceTemperature;
+        moonInfo.MeanDensity = moon.Info_MeanDensity;
+        moonInfo.SurfaceGravity = moon.Info_SurfaceGravity;
+        moonInfo.EscapeVelocity = moon.Info_EscapeVelocity;
+        moonInfo.HasAtmosphere = moon.Info_HasAtmosphere;
+        moonInfo.IsHabitable = moon.Info_Habitable;
+        moonInfo.Composition = moon.Info_Composition;
+        moonInfo.AtmosphereComposition = moon.Info_AtmosphereComposition;
     }
 
     private void TryGenerateMoonUIButton(GameObject moonGO)

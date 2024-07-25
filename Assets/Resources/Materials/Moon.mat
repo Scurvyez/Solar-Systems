@@ -45,6 +45,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _CloudTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -121,11 +125,23 @@ Material:
     m_Floats:
     - _AOStrength: -50
     - _AlphaClip: 0
+    - _AtmosphereHalfMax: 1
+    - _AtmosphereHalfMin: 0
     - _AtmosphereSize: 10
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
+    - _CloudBlendStrength: 0.5
+    - _CloudNoiseBlendFactor: 0.8
+    - _CloudNoiseCellSize: 16
+    - _CloudNoiseScale: 25
+    - _CloudNoiseScrollSpeed: 1
+    - _CloudNoiseSpeed: 0.33
+    - _CloudScrollSpeed: 0.0225
+    - _CloudThreshold: 0.8
+    - _CloudTwirlDistScale: 30
+    - _CloudTwirlStrength: 2
     - _Cull: 2
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
@@ -139,8 +155,10 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _HeightStrength: 0.5
+    - _LightDirection: -1
+    - _LightDirectionDefault: -1
     - _Metallic: 0
-    - _NormalsStrength: 0.5
+    - _NormalsStrength: -50
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
@@ -155,11 +173,18 @@ Material:
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
+    - _fuck: 0.5
+    - _the: 0.5
+    - _what: 2
     m_Colors:
     - _AmbientLightDirection: {r: 0, g: 0, b: 0, a: 0}
     - _AtmosphereColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _CloudColor: {r: 1, g: 1, b: 1, a: 1}
+    - _CloudTwirlSpeed: {r: 0.1, g: 0.1, b: 0, a: 0}
     - _Color: {r: 0.7830188, g: 0.7830188, b: 0.7830188, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _HeightMapStep: {r: 1.5, g: 1.5, b: 100, a: 0}
+    - _LightDirectionOffset: {r: 1, g: 1, b: 1, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []

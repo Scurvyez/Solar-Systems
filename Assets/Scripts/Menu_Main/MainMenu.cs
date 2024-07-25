@@ -12,7 +12,7 @@ public class MainMenu : MonoBehaviour
 
     public void QuitSimulation()
     {
-        Application.Quit();
+        StartCoroutine(DelayedQuit());
     }
     
     private static IEnumerator DelayedAction(int sceneIndex)
@@ -21,7 +21,7 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene(sceneIndex);
     }
 
-    private IEnumerator DelayedQuit()
+    private static IEnumerator DelayedQuit()
     {
         yield return new WaitForSeconds(ConstantsUtil.BUTTON_ACTION_DELAY_SOUND);
         Application.Quit();
