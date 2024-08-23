@@ -119,7 +119,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 89
+  controlID: 103
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 41
+  controlID: 79
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -169,7 +169,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 95
+  controlID: 80
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -310,7 +310,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 66adfeff66c1feff12e0feffa421ffff0e33ffffcc37ffffae50ffffd683ffff2c9effffc2c4ffffb2cdffffe0d5fffff0e3ffff34fbffff
+      m_ExpandedIDs: 34fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -592,9 +592,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 925.9237, y: 539.0767, z: -3.914482}
+    m_Target: {x: 0.015801825, y: 0.14407468, z: 0.05736497}
     speed: 2
-    m_Value: {x: 925.9237, y: 539.0767, z: -3.914482}
+    m_Value: {x: 0.015801825, y: 0.14407468, z: 0.05736497}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -645,9 +645,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 597.55005
+    m_Target: 5.661056
     speed: 2
-    m_Value: 597.55005
+    m_Value: 5.661056
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -713,22 +713,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Resources/Shaders
+    - Assets
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Resources/Shaders
+  - Assets
   m_LastFoldersGridSize: -1
   m_LastProjectPath: E:\Unity\Simulators\Solar Systems
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 56}
-    m_SelectedIDs: e8710000
-    m_LastClickedID: 29160
-    m_ExpandedIDs: 00000000c4710000c6710000c8710000ca710000cc710000ce710000d0710000d2710000d4710000ffffff7f
+    scrollPos: {x: 0, y: 31}
+    m_SelectedIDs: b6700000
+    m_LastClickedID: 28854
+    m_ExpandedIDs: 00000000b6700000b8700000ba700000bc700000be700000c0700000c2700000c4700000c6700000ffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -756,7 +756,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000c4710000c6710000c8710000ca710000cc710000ce710000d0710000d2710000d4710000
+    m_ExpandedIDs: 00000000b6700000b8700000ba700000bc700000be700000c0700000c2700000c4700000c6700000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

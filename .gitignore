@@ -1,6 +1,19 @@
+.idea
+.vs
+.vsconfig
+
+obj
+Logs
 Library
+Packages
+ProjectSettings
+Temp
+UserSettings
+
 Assets/Real Stars Skybox
-Assets/TextMeshPro
-Assets/RAW_ASSETS
+Assets/TextMesh Pro
+Assets/TextMesh Pro.meta
+Assets/RAW_ASSETS.afdesign
+Assets/RAW_ASSETS.afdesign.meta
 Assets/Resources/Textures
 Assets/Resources/Fonts

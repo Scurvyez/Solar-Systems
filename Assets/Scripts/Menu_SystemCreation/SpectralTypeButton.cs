@@ -27,6 +27,24 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
         Button.onClick.AddListener(CelestialCreation);
     }
     
+    public void Update()
+    {
+        transform.localScale = Vector3.Lerp(transform.localScale, _isMouseOver ? HighlightScale : DefaultScale, ConstantsUtil.BUTTON_SCALE_LERP_SPEED);
+    }
+    
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        _isMouseOver = true;
+        Star.SpectralType spectralType = (Star.SpectralType)Index;
+        StarDescriptionText.text = StarDescriptions.StarDescription[spectralType];
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        _isMouseOver = false;
+        StarDescriptionText.text = "";
+    }
+    
     private void CelestialCreation()
     {
         if (_star != null)
@@ -116,24 +134,6 @@ public class SpectralTypeButton : MonoBehaviour, IPointerEnterHandler, IPointerE
                 _moons.Add(moon);
             }
         }
-    }
-
-    public void Update()
-    {
-        transform.localScale = Vector3.Lerp(transform.localScale, _isMouseOver ? HighlightScale : DefaultScale, ConstantsUtil.BUTTON_SCALE_LERP_SPEED);
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        _isMouseOver = true;
-        Star.SpectralType spectralType = (Star.SpectralType)Index;
-        StarDescriptionText.text = StarDescriptions.StarDescription[spectralType];
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        _isMouseOver = false;
-        StarDescriptionText.text = "";
     }
 
     private IEnumerator ScaleButton(Transform button, Vector3 startScale, Vector3 endScale, float duration)

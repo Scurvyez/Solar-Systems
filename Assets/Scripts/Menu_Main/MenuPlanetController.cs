@@ -10,14 +10,14 @@ namespace Menu_Main
         public float DistanceFromCamera = 10f;
         public float OffsetFromCenter = 2f;
         
-        private PlanetInfo _planetInfo;
-        private Vector3 _startingPosition;
-        private MaterialPropertyBlock _materialPropertyBlock;
-        private Vector4 _fakeAtmosphereColor;
-        private Vector4 _finalAtmosphereColor;
+        private Camera _mainCamera;
         private MeshRenderer _meshRenderer;
         private Light _lightSource;
-        private Camera _mainCamera;
+        private PlanetInfo _planetInfo;
+        private Vector3 _startingPosition;
+        private Vector4 _fakeAtmosphereColor;
+        private Vector4 _finalAtmosphereColor;
+        private MaterialPropertyBlock _materialPropertyBlock;
 
         public void Start()
         {
@@ -41,7 +41,7 @@ namespace Menu_Main
         
         private void Update()
         {
-            SetGOStartingPositionRotation();
+            SetGOStartingPositionRotation(); // FOR TESTING
             UpdateShaderLightProperties();
         }
         
@@ -93,28 +93,18 @@ namespace Menu_Main
                 material.SetTexture(ShaderPropertyIDs.HeightMap, heightMap);
             }
 
-            if (_planetInfo.HasAtmosphere)
+            if (!_planetInfo.HasAtmosphere) return;
+            TexturesUtil.GetCloudTexture(out Texture2D cloudTexture);
+            if (cloudTexture != null)
             {
-                TexturesUtil.GetCloudTexture(out Texture2D cloudTexture);
-                if (cloudTexture != null)
-                {
-                    material.SetTexture(ShaderPropertyIDs.CloudTex, cloudTexture);
-                }
+                material.SetTexture(ShaderPropertyIDs.CloudTex, cloudTexture);
             }
         }
         
         private void SetShaderAtmosphereColor()
         {
-            if (_planetInfo.HasAtmosphere)
-            {
-                _materialPropertyBlock.SetColor(ShaderPropertyIDs.AtmosphereColor, _finalAtmosphereColor);
-            }
-            else
-            {
-                _materialPropertyBlock.SetColor(ShaderPropertyIDs.AtmosphereColor, _fakeAtmosphereColor);
-                //_materialPropertyBlock.SetColor(ShaderPropertyIDs.AtmosphereColor, Color.black);
-                //_materialPropertyBlock.SetFloat(ShaderPropertyIDs.AtmosphereSize, 0f);
-            }
+            _materialPropertyBlock.SetColor(ShaderPropertyIDs.AtmosphereColor,
+                _planetInfo.HasAtmosphere ? _finalAtmosphereColor : _fakeAtmosphereColor);
             _meshRenderer.SetPropertyBlock(_materialPropertyBlock);
         }
 
@@ -124,19 +114,13 @@ namespace Menu_Main
             _meshRenderer.SetPropertyBlock(_materialPropertyBlock);
         }
         
-        private Light FindLightSource()
+        private static Light FindLightSource()
         {
             GameObject lightObject = GameObject.Find("MenuPlanetLight");
 
-            if (lightObject != null)
-            {
-                Light lightComponent = lightObject.GetComponent<Light>();
-                return lightComponent;
-            }
-            else
-            {
-                return null;
-            }
+            if (lightObject == null) return null;
+            Light lightComponent = lightObject.GetComponent<Light>();
+            return lightComponent;
         }
     }
 }

@@ -210,6 +210,7 @@ Material:
     - _EmissionColor: {r: 0, g: 1, b: 0.4125427, a: 1}
     - _HeightMapStep: {r: 1.5, g: 1.5, b: 100, a: 0}
     - _LightDirectionOffset: {r: 1, g: 1, b: 1, a: 0}
+    - _ParallaxOffset: {r: 0, g: 0, b: 0.43, a: 0}
     - _ReflectColor: {r: 1, g: 1, b: 1, a: 0.5}
     - _SpecColor: {r: 0.1999999, g: 0.1999999, b: 0.1999999, a: 1}
     - _Specular: {r: 0, g: 0, b: 0, a: 0}
