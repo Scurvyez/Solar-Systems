@@ -43,10 +43,8 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Star\Star.cs" />
      <Compile Include="Assets\Scripts\SolarSystemUI\UI_SystemEvents.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
      <Compile Include="Assets\Scripts\Menu_SystemCreation\MenuSystemCreation.cs" />
      <Compile Include="Assets\Scripts\Utils\TexturesUtil.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
      <Compile Include="Assets\Scripts\Saving\SaveManager.cs" />
      <Compile Include="Assets\Scripts\Planet\PlanetMesh.cs" />
      <Compile Include="Assets\Scripts\SolarSystemUI\UI_BillboardEffect.cs" />
@@ -56,13 +54,9 @@
      <Compile Include="Assets\Scripts\Menu_Main\MenuCelestialGen.cs" />
      <Compile Include="Assets\Scripts\Utils\SystemNamingUtil.cs" />
      <Compile Include="Assets\Scripts\Utils\UI_TooltipSystem.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
      <Compile Include="Assets\Scripts\SolarSystem\GameSpeedController.cs" />
      <Compile Include="Assets\Scripts\Utils\EasingFunctionsUtil.cs" />
      <Compile Include="Assets\Scripts\Utils\RomanNumConverter.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
      <Compile Include="Assets\Scripts\SolarSystem\CelestialGen\CelestialGen.cs" />
      <Compile Include="Assets\Scripts\Star\StarFlux.cs" />
      <Compile Include="Assets\Scripts\SolarSystem\ExpandingButton.cs" />
@@ -70,48 +64,30 @@
      <Compile Include="Assets\Scripts\SolarSystem\HabitableZoneDisplay.cs" />
      <Compile Include="Assets\Scripts\Menu_Main\MenuButton.cs" />
      <Compile Include="Assets\Scripts\SolarSystemUI\UI_SystemGrid.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
      <Compile Include="Assets\Scripts\Menu_SystemCreation\StarSelectionController.cs" />
      <Compile Include="Assets\Scripts\Utils\ColorUtil.cs" />
      <Compile Include="Assets\Scripts\Saving\SystemSaveData.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
      <Compile Include="Assets\Scripts\Utils\PlanetRatioUtil.cs" />
      <Compile Include="Assets\Scripts\SolarSystemUI\UI_PlanetInfo.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
      <Compile Include="Assets\Scripts\Saving\SerializableDictionary.cs" />
      <Compile Include="Assets\Scripts\Utils\AtomicMass.cs" />
      <Compile Include="Assets\Scripts\Utils\UI_Tooltip.cs" />
      <Compile Include="Assets\Scripts\Menu_SystemCreation\SpectralTypeButton.cs" />
      <Compile Include="Assets\Scripts\Moon\Moon.cs" />
      <Compile Include="Assets\Scripts\Star\StarLuminosity.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\Planet\Planet.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
      <Compile Include="Assets\Scripts\Planet\GasGiant.cs" />
      <Compile Include="Assets\Scripts\SolarSystem\CelestialControllers\StarController.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
      <Compile Include="Assets\Scripts\SolarSystem\Gravity.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
      <Compile Include="Assets\Scripts\Audio\AudioManager.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
      <Compile Include="Assets\Scripts\Audio\Sound.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
      <Compile Include="Assets\Scripts\Star\StarTemperature.cs" />
      <Compile Include="Assets\Scripts\Utils\UI_TooltipTrigger.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
      <Compile Include="Assets\Scripts\SolarSystem\CelestialInfo\PlanetInfo.cs" />
      <Compile Include="Assets\Scripts\Cameras\StaticAngledCamera.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
      <Compile Include="Assets\Scripts\Star\StarMass.cs" />
      <Compile Include="Assets\Scripts\Menu_Main\MainMenu.cs" />
      <Compile Include="Assets\Scripts\SolarSystemUI\UI_MoonInfo.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
      <Compile Include="Assets\Scripts\SolarSystem\CelestialControllers\MoonController.cs" />
      <Compile Include="Assets\Scripts\Utils\ShaderPropertyIDs.cs" />
      <Compile Include="Assets\Scripts\SolarSystem\CelestialControllers\PlanetController.cs" />
@@ -119,40 +95,28 @@
      <Compile Include="Assets\Scripts\SolarSystemUI\UI_DebugMarkers.cs" />
      <Compile Include="Assets\Scripts\Language\LanguageManager.cs" />
      <Compile Include="Assets\Scripts\SolarSystemUI\UI_StarInfo.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
      <Compile Include="Assets\Scripts\Menu_SystemCreation\StarDescriptions.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
      <Compile Include="Assets\Scripts\SolarSystem\CelestialInfo\StarInfo.cs" />
      <Compile Include="Assets\Scripts\SolarSystem\CelestialGen\StarGenerator.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
      <Compile Include="Assets\Scripts\Star\StarMagnitude.cs" />
      <Compile Include="Assets\Scripts\SolarSystem\CelestialGen\PlanetGenerator.cs" />
      <Compile Include="Assets\Scripts\SolarSystem\EllipseCalculator.cs" />
      <Compile Include="Assets\Scripts\StarSystemData\StarAmbientVolumeScaler.cs" />
      <Compile Include="Assets\Scripts\SolarSystem\CelestialInfo\MoonInfo.cs" />
      <Compile Include="Assets\Scripts\Language\LanguageData.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
      <Compile Include="Assets\Scripts\Utils\PolygonGenerator.cs" />
      <Compile Include="Assets\Scripts\Utils\ConstantsUtil.cs" />
      <Compile Include="Assets\Scripts\Utils\TrailTimersUtil.cs" />
      <Compile Include="Assets\Scripts\Menu_Main\MenuPlanetController.cs" />
      <Compile Include="Assets\Scripts\Lighting\PlanetLightPositioner.cs" />
      <Compile Include="Assets\Scripts\Cameras\MouseLook.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
      <Compile Include="Assets\Scripts\SolarSystem\SystemStarData.cs" />
      <Compile Include="Assets\Scripts\SolarSystem\CelestialGen\MoonGenerator.cs" />
-     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
      <Folder Include="Assets" />
      <Folder Include="Assets\Resources\Prefabs\GO" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <Folder Include="Assets\Scripts\Menu_SystemCreation" />
      <Folder Include="Assets\Resources\Textures\Clouds" />
-     <Folder Include="Assets\Resources\Textures\GasGiant" />
-     <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Sprites" />
      <Folder Include="Assets\Resources\Textures\Planets\barren_2" />
      <Folder Include="Assets\Resources\Lighting" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
@@ -173,12 +137,11 @@
      <Folder Include="Assets\Resources\Textures\Planets\wasteland_3" />
      <Folder Include="Assets\Resources\Textures\Planets\dark_1" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
-     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Oswald-Bold - OFL.txt" />
      <Folder Include="Assets\Resources\Textures\Planets\dark_2" />
      <Folder Include="Assets\Resources\Textures\Planets\barren_3" />
-     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Anton OFL.txt" />
      <Folder Include="Assets\TextMesh Pro\Resources\Fonts &amp; Materials" />
      <Folder Include="Assets\Resources\Textures\Planets" />
+     <None Include="Assets\Resources\BillingMode.json" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
      <Folder Include="Assets\Resources\Textures\Planets\gasgiant_6" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
@@ -203,9 +166,7 @@
      <Folder Include="Assets\Scripts\Saving" />
      <Folder Include="Assets\Resources\Prefabs\UI" />
      <Folder Include="Assets\Resources\Textures\Planets\tundra_2" />
-     <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts" />
      <Folder Include="Assets\Resources\Textures\Planets\frozen_4" />
-     <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Resources" />
      <Folder Include="Assets\Real Stars Skybox\StarSkybox04NamedConstell" />
      <None Include="Assets\Real Stars Skybox\Demo Scene\Documentation.txt" />
      <Folder Include="Assets\Scripts\Star" />
@@ -217,16 +178,13 @@
      <Folder Include="Assets\Resources\Textures\Planets\desert_7" />
      <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
-     <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Materials" />
      <Folder Include="Assets\Scripts\SolarSystemUI" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
      <Folder Include="Assets\Resources\Textures\Planets\barren_7" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
-     <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts" />
      <None Include="Assets\Resources\Shaders\FlowMap.shader" />
-     <Folder Include="Assets\Resources\Textures\FlowMaps" />
      <Folder Include="Assets\Resources\Textures\Planets\barren_10" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
      <Folder Include="Assets\Resources\Textures\Planets\tundra_3" />
@@ -234,7 +192,6 @@
      <Folder Include="Assets\Scripts\Lighting" />
      <Folder Include="Assets\Resources\Textures\Planets\frozen_1" />
      <Folder Include="Assets\Resources\Textures\Planets\desert_4" />
-     <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Resources\Sprite Assets" />
      <Folder Include="Assets\Resources\Textures\Planets\tundra_1" />
      <Folder Include="Assets\Scripts\Language" />
      <Folder Include="Assets\TextMesh Pro\Resources\Style Sheets" />
@@ -249,15 +206,12 @@
      <Folder Include="Assets\Scripts\Moon" />
      <Folder Include="Assets\Scripts\SolarSystem\CelestialInfo" />
      <Folder Include="Assets\Scripts\Cameras" />
-     <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Prefabs" />
      <None Include="Assets\Resources\Language\strings_en.xml" />
      <Folder Include="Assets\Scripts\SolarSystem\CelestialGen" />
-     <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Scenes" />
      <Folder Include="Assets\Resources\Textures\Planets\gasgiant_4" />
      <Folder Include="Assets\Scripts\Audio" />
      <None Include="Assets\Resources\Shaders\GridCutoff.shader" />
      <Folder Include="Assets\Real Stars Skybox\StarSkybox04Named" />
-     <Folder Include="Assets\Resources\Textures\Moon" />
      <Folder Include="Assets\Real Stars Skybox\Demo Scene" />
      <Folder Include="Assets\Scripts\StarSystemData" />
      <Folder Include="Assets\Resources\Textures\Planets\wetlands_1" />
@@ -277,25 +231,20 @@
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
      <Folder Include="Assets\Scenes" />
      <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
-     <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Textures" />
      <Folder Include="Assets\Resources\Fonts" />
      <Folder Include="Assets\TextMesh Pro\Documentation" />
      <Folder Include="Assets\Resources\Textures\Planets\crystal_7" />
-     <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras" />
      <Folder Include="Assets\Scripts\Utils" />
      <Folder Include="Assets\Resources\Textures\Planets\gasgiant_3" />
      <Folder Include="Assets\Resources\Textures\Planets\desert_1" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
-     <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Resources\Fonts &amp; Materials" />
      <Folder Include="Assets\Resources\Textures\Planets\white_desert_1" />
-     <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Resources\Color Gradient Presets" />
      <Folder Include="Assets\Resources\Sounds" />
      <None Include="Assets\TextMesh Pro\Sprites\EmojiOne.json" />
      <Folder Include="Assets\Scripts\SolarSystem" />
      <Folder Include="Assets\Resources\Textures\Planets\barren_5" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
      <Folder Include="Assets\Resources\Textures\Planets\frozen_3" />
-     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Bangers - OFL.txt" />
      <Folder Include="Assets\Resources\Textures\Planets\liquid_1" />
      <Folder Include="Assets\Resources\Textures\Planets\crystal_5" />
      <Reference Include="UnityEngine">
@@ -544,26 +493,20 @@
      <Reference Include="UnityEditor.UnityConnectModule">
      <HintPath>E:\Unity\Unity Editor\2021.3.16f1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
      </Reference>
-     <Reference Include="Unity.Burst.Cecil.Mdb">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\PackageCache\com.unity.burst@1.8.2\Unity.Burst.CodeGen\Unity.Burst.Cecil.Mdb.dll</HintPath>
+     <Reference Include="Newtonsoft.Json">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\PackageCache\com.unity.nuget.newtonsoft-json@3.0.2\Runtime\Newtonsoft.Json.dll</HintPath>
      </Reference>
-     <Reference Include="Unity.Burst.Cecil.Pdb">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\PackageCache\com.unity.burst@1.8.2\Unity.Burst.CodeGen\Unity.Burst.Cecil.Pdb.dll</HintPath>
+     <Reference Include="Unity.Analytics.StandardEvents">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\PackageCache\com.unity.analytics@3.6.12\AnalyticsStandardEvents\Unity.Analytics.StandardEvents.dll</HintPath>
      </Reference>
-     <Reference Include="Unity.Burst.Cecil">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\PackageCache\com.unity.burst@1.8.2\Unity.Burst.CodeGen\Unity.Burst.Cecil.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.Burst.Cecil.Rocks">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\PackageCache\com.unity.burst@1.8.2\Unity.Burst.CodeGen\Unity.Burst.Cecil.Rocks.dll</HintPath>
+     <Reference Include="Unity.Analytics.Editor">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\PackageCache\com.unity.analytics@3.6.12\Unity.Analytics.Editor.dll</HintPath>
      </Reference>
      <Reference Include="Unity.VisualScripting.Antlr3.Runtime">
      <HintPath>E:\Unity\Simulators\Solar Systems\Library\PackageCache\com.unity.visualscripting@1.7.8\Runtime\VisualScripting.Flow\Dependencies\NCalc\Unity.VisualScripting.Antlr3.Runtime.dll</HintPath>
      </Reference>
-     <Reference Include="ReportGeneratorMerged">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\PackageCache\com.unity.testtools.codecoverage@1.2.2\lib\ReportGenerator\ReportGeneratorMerged.dll</HintPath>
-     </Reference>
-     <Reference Include="Newtonsoft.Json">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\PackageCache\com.unity.nuget.newtonsoft-json@3.0.2\Runtime\Newtonsoft.Json.dll</HintPath>
+     <Reference Include="Unity.Analytics.Tracker">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\PackageCache\com.unity.analytics@3.6.12\Unity.Analytics.Tracker.dll</HintPath>
      </Reference>
      <Reference Include="netstandard">
      <HintPath>E:\Unity\Unity Editor\2021.3.16f1\Editor\Data\NetStandard\ref\2.1.0\netstandard.dll</HintPath>
@@ -934,26 +877,20 @@
      <Reference Include="Unity.VisualScripting.Flow.Editor">
      <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.VisualScripting.Flow.Editor.dll</HintPath>
      </Reference>
+     <Reference Include="Purchasing.Common">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Purchasing.Common.dll</HintPath>
+     </Reference>
      <Reference Include="Unity.VSCode.Editor">
      <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
      </Reference>
-     <Reference Include="Unity.RenderPipelines.Universal.Shaders">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Shaders.dll</HintPath>
+     <Reference Include="Unity.2D.Tilemap.Editor">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.2D.Tilemap.Editor.dll</HintPath>
      </Reference>
-     <Reference Include="Unity.RenderPipelines.Universal.Runtime">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Runtime.dll</HintPath>
-     </Reference>
-     <Reference Include="PPv2URPConverters">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\PPv2URPConverters.dll</HintPath>
+     <Reference Include="UnityEngine.Purchasing">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\UnityEngine.Purchasing.dll</HintPath>
      </Reference>
      <Reference Include="Unity.TextMeshPro.Editor">
      <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.Performance.Profile-Analyzer.Editor">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.Performance.Profile-Analyzer.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.TestTools.CodeCoverage.Editor.OpenCover.Model">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.OpenCover.Model.dll</HintPath>
      </Reference>
      <Reference Include="Unity.VisualStudio.Editor">
      <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
@@ -967,23 +904,26 @@
      <Reference Include="Unity.TextMeshPro">
      <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
      </Reference>
+     <Reference Include="UnityEngine.Purchasing.SecurityStub">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\UnityEngine.Purchasing.SecurityStub.dll</HintPath>
+     </Reference>
      <Reference Include="Unity.VisualScripting.State.Editor">
      <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.VisualScripting.State.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.Burst.Editor">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.Burst.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.Searcher.Editor">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.Searcher.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.2D.Sprite.Editor">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
      </Reference>
      <Reference Include="Unity.VisualScripting.SettingsProvider.Editor">
      <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.VisualScripting.SettingsProvider.Editor.dll</HintPath>
      </Reference>
-     <Reference Include="Unity.TestTools.CodeCoverage.Editor.OpenCover.Mono.Reflection">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.OpenCover.Mono.Reflection.dll</HintPath>
+     <Reference Include="Unity.Services.Analytics">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.Services.Analytics.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.2D.Sprite.Editor">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.Services.Analytics.Editor">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.Services.Analytics.Editor.dll</HintPath>
+     </Reference>
+     <Reference Include="UnityEngine.Advertisements">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\UnityEngine.Advertisements.dll</HintPath>
      </Reference>
      <Reference Include="Unity.VisualScripting.Flow">
      <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.VisualScripting.Flow.dll</HintPath>
@@ -997,38 +937,35 @@
      <Reference Include="Unity.Rider.Editor">
      <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
      </Reference>
-     <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
+     <Reference Include="Analytics">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Analytics.dll</HintPath>
      </Reference>
      <Reference Include="UnityEngine.UI">
      <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
      </Reference>
-     <Reference Include="Unity.RenderPipelines.Core.Runtime">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.RenderPipelines.Core.Runtime.dll</HintPath>
+     <Reference Include="UnityEngine.SpatialTracking">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\UnityEngine.SpatialTracking.dll</HintPath>
      </Reference>
      <Reference Include="Unity.VisualScripting.Core">
      <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.VisualScripting.Core.dll</HintPath>
      </Reference>
-     <Reference Include="Unity.EditorCoroutines.Editor">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.EditorCoroutines.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.Mathematics">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.ShaderGraph.Editor">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.ShaderGraph.Editor.dll</HintPath>
-     </Reference>
      <Reference Include="Unity.Services.Core">
      <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.Services.Core.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.Analytics.DataPrivacy">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.Analytics.DataPrivacy.dll</HintPath>
      </Reference>
      <Reference Include="Unity.Services.Core.Analytics">
      <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.Services.Core.Analytics.dll</HintPath>
      </Reference>
-     <Reference Include="Unity.Burst">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.Burst.dll</HintPath>
+     <Reference Include="UnityEngine.Purchasing.SecurityCore">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\UnityEngine.Purchasing.SecurityCore.dll</HintPath>
      </Reference>
-     <Reference Include="Unity.RenderPipelines.Universal.Editor">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Editor.dll</HintPath>
+     <Reference Include="UnityEngine.Purchasing.Codeless">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\UnityEngine.Purchasing.Codeless.dll</HintPath>
+     </Reference>
+     <Reference Include="UnityEngine.XR.LegacyInputHelpers">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
      </Reference>
      <Reference Include="Unity.VisualScripting.Shared.Editor">
      <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.VisualScripting.Shared.Editor.dll</HintPath>
@@ -1039,23 +976,44 @@
      <Reference Include="Unity.Timeline.Editor">
      <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
      </Reference>
-     <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
+     <Reference Include="UnityEngine.Purchasing.Stores">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\UnityEngine.Purchasing.Stores.dll</HintPath>
      </Reference>
-     <Reference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
+     <Reference Include="UnityEditor.XR.LegacyInputHelpers">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
      </Reference>
-     <Reference Include="Unity.Mathematics.Editor">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
+     <Reference Include="UnityEngine.Monetization">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\UnityEngine.Monetization.dll</HintPath>
      </Reference>
-     <Reference Include="Unity.TestTools.CodeCoverage.Editor">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.dll</HintPath>
+     <Reference Include="UnityEditor.Purchasing">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\UnityEditor.Purchasing.dll</HintPath>
+     </Reference>
+     <Reference Include="UnityEditor.SpatialTracking">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\UnityEditor.SpatialTracking.dll</HintPath>
+     </Reference>
+     <Reference Include="UnityEngine.Advertisements.Editor">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\UnityEngine.Advertisements.Editor.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.VisualScripting.State">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.RenderPipelines.Core.Runtime">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.RenderPipelines.Core.Runtime.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.Searcher.Editor">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.Searcher.Editor.dll</HintPath>
      </Reference>
      <Reference Include="Unity.RenderPipelines.Core.Editor">
      <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.RenderPipelines.Core.Editor.dll</HintPath>
      </Reference>
-     <Reference Include="Unity.VisualScripting.State">
-     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
+     <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.ShaderGraph.Editor">
+     <HintPath>E:\Unity\Simulators\Solar Systems\Library\ScriptAssemblies\Unity.ShaderGraph.Editor.dll</HintPath>
      </Reference>
   </ItemGroup>
   <ItemGroup>
